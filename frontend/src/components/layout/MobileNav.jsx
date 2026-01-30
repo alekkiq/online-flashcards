@@ -3,9 +3,13 @@ import { Link } from "react-router";
 import { X, Menu } from "lucide-react";
 import { navLinks } from "/src/config";
 import { NavButton } from "/src/components/ui/NavButton";
+import { useAuth } from "/src/hooks/useAuth";
+import AuthLinks from "/src/components/auth/AuthLinks";
 
 export default function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
+  const { user } = useAuth();
+  const links = navLinks(user);
 
   return (
     <>
@@ -23,7 +27,7 @@ export default function MobileNav() {
         onClick={() => setIsOpen(false)}
       />
       <div
-        className={`fixed top-0 left-0 h-full w-full max-w-xs bg-white shadow-lg z-[101] p-6 transition-transform duration-300 ${
+        className={`fixed top-0 left-0 h-full w-full max-w-xs bg-white shadow-lg z-[101] p-6 transition-transform duration-300 flex flex-col ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -39,8 +43,8 @@ export default function MobileNav() {
             <p className="text-2xl font-bold">Online Flashcards</p>
           </Link>
         </div>
-        <ul className="flex flex-col gap-4">
-          {navLinks.map((item) => (
+        <ul className="flex flex-col gap-4 flex-1">
+          {links.map((item) => (
             <li
               key={item.to}
               onClick={() => setIsOpen(false)}
@@ -50,6 +54,9 @@ export default function MobileNav() {
             </li>
           ))}
         </ul>
+        <div onClick={() => setIsOpen(false)} className="pt-4 border-t border-secondary/20">
+          <AuthLinks />
+        </div>
       </div>
     </>
   );
