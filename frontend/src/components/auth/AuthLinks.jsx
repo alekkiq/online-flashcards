@@ -30,7 +30,7 @@ export default function AuthLinks() {
           Log In
         </Button>
       </Link>
-      <Link to="/signup">
+      <Link to="/login?signup=true">
         <Button size="md">
           Sign Up
         </Button>
