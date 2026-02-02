@@ -33,7 +33,6 @@ export default function Home() {
                     <img src="/src/assets/images/hero_section_1.png" alt="Picture of searching quizzes" className="md:w-1/2 w-3/4 p-4 rounded-2xl bg-primary" />
                 </div>
                 <hr className="border-secondary mt-20" />
-
             </section>
             <section className="bg-grid z-1">
                 <div className="flex flex-col md:flex-row items-center justify-between text-center gap-4 md:gap-6 px-4 md:px-0 py-12 mt-[10vh]">
