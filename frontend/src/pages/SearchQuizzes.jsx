@@ -4,8 +4,10 @@ import { Input } from "../components/ui/Input";
 import { Button } from "../components/ui/Button";
 import { QuizCard } from "../components/ui/QuizCard";
 import { useQuiz } from "../hooks/useQuiz";
+import { useNavigate } from "react-router";
 
 export default function SearchQuizzes() {
+    const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
     const { searchQuery, setSearchQuery, filteredQuizzes } = useQuiz(searchParams, setSearchParams);
 
@@ -47,7 +49,7 @@ export default function SearchQuizzes() {
                         thumbnailUrl={quiz.thumbnailUrl}
                         author={quiz.author}
                         authorRole={quiz.authorRole}
-                        onClick={() => console.log("Navigate to quiz:", quiz.id)}
+                        onClick={() => navigate(`/quiz-details/${quiz.id}`)}
                     />
                 ))}
             </div>

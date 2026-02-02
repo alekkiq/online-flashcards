@@ -5,6 +5,8 @@ const SAMPLE_QUIZZES = [
     {
         id: 1,
         title: "Asia Geography Quiz",
+        description: "Asia Geography Quiz",
+        tries: 1,
         cardCount: 32,
         author: { name: "Aleksput"},
         authorRole: "Teacher",
@@ -12,6 +14,8 @@ const SAMPLE_QUIZZES = [
     {
         id: 2,
         title: "Albania Quiz",
+        description: "Albania Quiz",
+        tries: 1,
         cardCount: 5,
         author: { name: "BlendG"},
         authorRole: "Student",
@@ -19,6 +23,8 @@ const SAMPLE_QUIZZES = [
     {
         id: 3,
         title: "Live Like Teemu",
+        description: "Live Like Teemu",
+        tries: 1,
         cardCount: 392,
         author: { name: "TeemuLaasio"},
         authorRole: "User",
@@ -26,13 +32,17 @@ const SAMPLE_QUIZZES = [
     {
         id: 4,
         title: "Bugs 101",
+        description: "Bugs 101",
+        tries: 1,
         cardCount: 16,
         author: { name: "AlabbasA"},
         authorRole: "Bug",
     },
     {
         id: 5,
-        title: "Homo123",
+        title: "Persettä",
+        description: "Persettä",
+        tries: 1,
         cardCount: 16,
         author: { name: "Homo"},
         authorRole: "Bug",
@@ -69,10 +79,18 @@ export function useQuiz(searchParams, setSearchParams) {
         }
     }, [debouncedQuery]);
 
+    //TODO: fetch from backend using id
+    const fetchQuizById = (id) => {
+        //Get from fakedata
+        const quiz = SAMPLE_QUIZZES.find((quiz) => quiz.id === id);
+        return quiz;
+    }
+
     return {
         searchQuery,
         setSearchQuery,
         filteredQuizzes: quizzes,
         isLoading,
+        fetchQuizById,
     };
 }
