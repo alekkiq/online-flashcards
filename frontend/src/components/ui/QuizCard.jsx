@@ -1,4 +1,6 @@
 import { cn } from "/src/lib/utils";
+import { Badge } from "./Badge";
+import { Avatar } from "./Avatar";
 
 /**
  * quizcard component
@@ -31,27 +33,25 @@ export function QuizCard({
                 </h3>
 
                 {cardCount !== undefined && (
-                    <span className="inline-flex w-fit items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
+                    <Badge textColor="text-primary" bgColor="bg-primary/10">
                         {cardCount} cards
-                    </span>
+                    </Badge>
                 )}
             </div>
             <div className="mt-auto">
                 <hr className="border-secondary/20 mx-4" />
                 <div className="px-4 py-3 flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 rounded-full bg-gray-300 flex items-center justify-center text-xs text-gray-500">
-                            {author?.name?.charAt(0)?.toUpperCase()}
-                        </div>
+                        <Avatar name={author?.name} />
                         <span className="text-sm text-secondary">
                             {author?.name}
                         </span>
                     </div>
                     
                     {authorRole && (
-                        <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-primary text-white">
+                        <Badge textColor="text-white" bgColor="bg-primary">
                             {authorRole}
-                        </span>
+                        </Badge>
                     )}
                 </div>
             </div>
