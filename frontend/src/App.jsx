@@ -12,16 +12,19 @@ const Profile = lazy(() => import("/src/pages/Profile"));
 const MyQuizzes = lazy(() => import("/src/pages/MyQuizzes"));
 
 function App() {
-  return <>
+  return (
     <BrowserRouter>
       <AuthProvider>
         <Suspense fallback={<PageLoader />}>
           <Routes>
+            {/* Auth pages WITHOUT MainLayout */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+
+            {/* Rest of the app WITH MainLayout */}
             <Route path="/" element={<MainLayout />}>
               <Route index element={<Home />} />
               <Route path="search" element={<SearchQuizzes />} />
-              <Route path="login" element={<Login />} />
-              <Route path="signup" element={<Signup />} />
               <Route path="profile" element={<Profile />} />
               <Route path="my-quizzes" element={<MyQuizzes />} />
             </Route>
@@ -29,7 +32,7 @@ function App() {
         </Suspense>
       </AuthProvider>
     </BrowserRouter>
-  </>;
+  );
 }
 
 export default App;
