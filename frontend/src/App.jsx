@@ -13,25 +13,27 @@ const QuizDetails = lazy(() => import("/src/pages/QuizDetails"));
 const QuizGame = lazy(() => import("/src/pages/QuizGame"));
 
 function App() {
-  return <>
-    <BrowserRouter>
-      <AuthProvider>
-        <Suspense fallback={<PageLoader />}>
-          <Routes>
-            <Route path="/" element={<MainLayout />}>
-              <Route index element={<Home />} />
-              <Route path="search" element={<SearchQuizzes />} />
-              <Route path="login" element={<Login />} />
-              <Route path="profile" element={<Profile />} />
-              <Route path="my-quizzes" element={<MyQuizzes />} />
-              <Route path="quiz-details/:id" element={<QuizDetails />} />
-              <Route path="quiz/:id" element={<QuizGame />} />
-            </Route>
-          </Routes>
-        </Suspense>
-      </AuthProvider>
-    </BrowserRouter>
-  </>;
+  return (
+    <>
+      <BrowserRouter>
+        <AuthProvider>
+          <Suspense fallback={<PageLoader />}>
+            <Routes>
+              <Route path="/" element={<MainLayout />}>
+                <Route index element={<Home />} />
+                <Route path="search" element={<SearchQuizzes />} />
+                <Route path="login" element={<Login />} />
+                <Route path="profile" element={<Profile />} />
+                <Route path="my-quizzes" element={<MyQuizzes />} />
+                <Route path="quiz-details/:id" element={<QuizDetails />} />
+                <Route path="quiz/:id" element={<QuizGame />} />
+              </Route>
+            </Routes>
+          </Suspense>
+        </AuthProvider>
+      </BrowserRouter>
+    </>
+  );
 }
 
 export default App;

@@ -4,7 +4,7 @@ import { NavButton } from "/src/components/ui/NavButton";
 import MobileNav from "./MobileNav";
 import AuthLinks from "/src/components/auth/AuthLinks";
 import { useAuth } from "/src/hooks/useAuth";
-import { Spade } from "lucide-react"; 
+import { Spade } from "lucide-react";
 
 export default function NavBar() {
   const { user } = useAuth();
@@ -21,7 +21,7 @@ export default function NavBar() {
           </div>
         </Link>
       </div>
-      
+
       {/* desktop nav that is hidden on mobile */}
       <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 flex-row gap-2">
         {links.map((item) => (
@@ -30,7 +30,7 @@ export default function NavBar() {
           </NavButton>
         ))}
       </div>
-      
+
       {/* auth links + mobile nav */}
       <div className="flex items-center gap-3">
         <div className="hidden md:flex">

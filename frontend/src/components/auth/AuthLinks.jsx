@@ -12,8 +12,8 @@ export default function AuthLinks() {
         <Button variant="outline" size="md" onClick={handleLogout}>
           Sign Out
         </Button>
-        <Link 
-          to="/profile" 
+        <Link
+          to="/profile"
           aria-label="Profile"
           className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center hover:bg-primary/20 transition-colors overflow-hidden"
         >
@@ -31,9 +31,7 @@ export default function AuthLinks() {
         </Button>
       </Link>
       <Link to="/login?signup=true">
-        <Button size="md">
-          Sign Up
-        </Button>
+        <Button size="md">Sign Up</Button>
       </Link>
     </div>
   );
