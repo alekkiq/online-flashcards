@@ -9,8 +9,6 @@ import com.example.flashcards.common.exceptions.UnauthorizedException;
 import com.example.flashcards.user.User;
 import com.example.flashcards.user.UserRepository;
 import com.example.flashcards.user.UserRole;
-import com.example.flashcards.user.exceptions.DuplicateUserException;
-import com.example.flashcards.user.exceptions.UserNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
