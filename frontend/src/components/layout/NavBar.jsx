@@ -4,6 +4,7 @@ import { NavButton } from "/src/components/ui/NavButton";
 import MobileNav from "./MobileNav";
 import AuthLinks from "/src/components/auth/AuthLinks";
 import { useAuth } from "/src/hooks/useAuth";
+import { Spade } from "lucide-react"; 
 
 export default function NavBar() {
   const { user } = useAuth();
@@ -14,7 +15,10 @@ export default function NavBar() {
       {/* logo */}
       <div>
         <Link to="/">
-          <p className="text-xl md:text-2xl font-bold">Online Flashcards</p>
+          <div className="flex items-center">
+            <Spade className="text-primary" />
+            <p className="font-serif text-xl md:text-2xl font-black">Online Flashcards</p>
+          </div>
         </Link>
       </div>
       

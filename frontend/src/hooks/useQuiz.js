@@ -63,6 +63,7 @@ export function useQuiz(searchParams, setSearchParams) {
         }
     };
 
+    // fetch only necessary stuff for display like title, description, author, card count, tries
     useEffect(() => {
         //TODO: fetch from backend using debouncedQuery
         if (!debouncedQuery.trim()) {
@@ -79,18 +80,13 @@ export function useQuiz(searchParams, setSearchParams) {
         }
     }, [debouncedQuery]);
 
-    //TODO: fetch from backend using id
-    const fetchQuizById = (id) => {
-        //Get from fakedata
-        const quiz = SAMPLE_QUIZZES.find((quiz) => quiz.id === id);
-        return quiz;
-    }
+    
+
 
     return {
         searchQuery,
         setSearchQuery,
         filteredQuizzes: quizzes,
         isLoading,
-        fetchQuizById,
     };
 }

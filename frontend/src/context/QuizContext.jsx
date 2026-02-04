@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 
 const QuizContext = createContext(null);
 
@@ -7,6 +7,15 @@ const QuizProvider = ({ children }) => {
     const [quizHistory, setQuizHistory] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+
+    // game state
+    const [currentCardIndex, setCurrentCardIndex] = useState(0);
+    const [score, setScore] = useState(0);
+    const [progress, setProgress] = useState(0);
+    const [answeredCards, setAnsweredCards] = useState([]);
+    const [isAnswered, setIsAnswered] = useState(false);
+
+
 
     /** 
      * fetch a specific quiz by ID
@@ -169,12 +178,77 @@ const QuizProvider = ({ children }) => {
     };
 
     /** 
+     * get current card
+     * @returns {object|null} The current card
+     */
+    const getCurrentCard = () => {
+        if (!currentQuiz) return null;
+        return currentQuiz.flashcards[currentCardIndex];
+    }
+
+    /** 
+     * get next card
+     * @returns {object|null} The next card
+     */
+    const getNextCard = () => {
+        if (!currentQuiz) return null;
+        if (currentCardIndex === currentQuiz.flashcards.length - 1) return null;
+        const nextIndex = currentCardIndex + 1;
+        setCurrentCardIndex(nextIndex);
+        setIsAnswered(answeredCards.includes(nextIndex));
+        return currentQuiz.flashcards[nextIndex];
+    }
+
+    /** 
+     * get previous card
+     * @returns {object|null} The previous card
+     */
+    const getPreviousCard = () => {
+        if (!currentQuiz) return null;
+        if (currentCardIndex === 0) return null;
+        const prevIndex = currentCardIndex - 1;
+        setCurrentCardIndex(prevIndex);
+        setIsAnswered(answeredCards.includes(prevIndex));
+        return currentQuiz.flashcards[prevIndex];
+    }
+
+    /** 
+     * calculate progress bar
+     * @returns {number} The progress bar value
+     */
+    const progressBar = () => {
+        if (!currentQuiz) return 0;
+        setProgress((currentCardIndex + 1) / currentQuiz.flashcards.length * 100);
+    }
+
+    const advanceProgress = (isCorrect) => {
+        if (isAnswered) return; // prevent double answering
+        if (isCorrect) {
+            setScore((prev) => prev + 1);
+        } 
+        setAnsweredCards((prev) => [...prev, currentCardIndex]);
+        setIsAnswered(true);
+        progressBar();
+    }
+
+    /** 
      * clear quiz data
      */
     const clearQuiz = () => {
         setCurrentQuiz(null);
         setQuizHistory([]);
         setError(null);
+    };
+
+    /**
+     * reset game state (call when leaving quiz page)
+     */
+    const resetGameState = () => {
+        setCurrentCardIndex(0);
+        setScore(0);
+        setProgress(0);
+        setAnsweredCards([]);
+        setIsAnswered(false);
     };
 
     return (
@@ -188,6 +262,18 @@ const QuizProvider = ({ children }) => {
                 saveQuizAttempt,
                 clearQuiz,
                 setCurrentQuiz,
+                // game state
+                currentCardIndex,
+                score,
+                progress,
+                getCurrentCard,
+                getNextCard,
+                getPreviousCard,
+                progressBar,
+                advanceProgress,
+                isAnswered,
+                setIsAnswered,
+                resetGameState,
             }}
         >
             {children}
