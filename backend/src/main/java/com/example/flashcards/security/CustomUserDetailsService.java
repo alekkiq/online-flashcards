@@ -1,7 +1,7 @@
 package com.example.flashcards.security;
 
-import com.example.flashcards.user.User;
-import com.example.flashcards.user.UserRepository;
+import com.example.flashcards.entity.user.User;
+import com.example.flashcards.entity.user.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

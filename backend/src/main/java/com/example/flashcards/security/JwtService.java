@@ -1,6 +1,6 @@
 package com.example.flashcards.security;
 
-import com.example.flashcards.user.User;
+import com.example.flashcards.entity.user.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;

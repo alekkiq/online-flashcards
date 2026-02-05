@@ -1,7 +1,7 @@
-package com.example.flashcards.user.dto;
+package com.example.flashcards.entity.user.dto;
 
-import com.example.flashcards.user.User;
-import com.example.flashcards.user.UserRole;
+import com.example.flashcards.entity.user.User;
+import com.example.flashcards.entity.user.UserRole;
 
 public record UserResponse(
     Long userId,

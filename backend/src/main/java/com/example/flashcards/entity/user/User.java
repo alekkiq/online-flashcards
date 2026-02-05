@@ -1,4 +1,4 @@
-package com.example.flashcards.user;
+package com.example.flashcards.entity.user;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -43,11 +43,11 @@ public class User {
     // for JPA!!!!!!
     protected User() {}
 
-    public User(String username, String email, String password, UserRole role) {
+    public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.role = role;
+        this.role = DEFAULT_ROLE;
     }
 
     public long getUserId() {

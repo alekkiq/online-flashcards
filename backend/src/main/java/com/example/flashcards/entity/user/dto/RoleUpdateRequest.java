@@ -1,6 +1,6 @@
-package com.example.flashcards.user.dto;
+package com.example.flashcards.entity.user.dto;
 
-import com.example.flashcards.user.UserRole;
+import com.example.flashcards.entity.user.UserRole;
 import jakarta.validation.constraints.NotNull;
 
 public record RoleUpdateRequest(

@@ -1,7 +1,7 @@
 package com.example.flashcards.auth.dto;
 
-import com.example.flashcards.user.UserRole;
-import com.example.flashcards.user.User;
+import com.example.flashcards.entity.user.UserRole;
+import com.example.flashcards.entity.user.User;
 
 public record AuthResponse(
     String token,

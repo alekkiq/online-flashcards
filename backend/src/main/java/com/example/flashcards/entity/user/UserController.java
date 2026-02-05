@@ -1,11 +1,11 @@
-package com.example.flashcards.user;
+package com.example.flashcards.entity.user;
 
 import com.example.flashcards.common.response.ApiResponse;
 import com.example.flashcards.security.CustomUserDetails;
-import com.example.flashcards.user.dto.EmailUpdateRequest;
-import com.example.flashcards.user.dto.PasswordUpdateRequest;
-import com.example.flashcards.user.dto.RoleUpdateRequest;
-import com.example.flashcards.user.dto.UserResponse;
+import com.example.flashcards.entity.user.dto.EmailUpdateRequest;
+import com.example.flashcards.entity.user.dto.PasswordUpdateRequest;
+import com.example.flashcards.entity.user.dto.RoleUpdateRequest;
+import com.example.flashcards.entity.user.dto.UserResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
