@@ -37,8 +37,7 @@ public class AuthService implements IAuthService {
         User user = new User(
             request.username(),
             request.email(),
-            hashedPassword,
-            UserRole.STUDENT
+            hashedPassword
         );
 
         return this.userRepository.save(user);
