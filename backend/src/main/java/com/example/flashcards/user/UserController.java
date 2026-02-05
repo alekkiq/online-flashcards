@@ -1,6 +1,6 @@
 package com.example.flashcards.user;
 
-import com.example.flashcards.common.ApiResponse;
+import com.example.flashcards.common.response.ApiResponse;
 import com.example.flashcards.security.CustomUserDetails;
 import com.example.flashcards.user.dto.EmailUpdateRequest;
 import com.example.flashcards.user.dto.PasswordUpdateRequest;

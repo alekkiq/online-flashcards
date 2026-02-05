@@ -1,7 +1,7 @@
 package com.example.flashcards.user;
 
-import com.example.flashcards.common.exceptions.DuplicateResourceException;
-import com.example.flashcards.common.exceptions.ResourceNotFoundException;
+import com.example.flashcards.common.exception.DuplicateResourceException;
+import com.example.flashcards.common.exception.ResourceNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

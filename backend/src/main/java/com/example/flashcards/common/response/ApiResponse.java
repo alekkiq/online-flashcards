@@ -1,4 +1,4 @@
-package com.example.flashcards.common;
+package com.example.flashcards.common.response;
 
 public class ApiResponse<T> {
 

@@ -1,4 +1,4 @@
-package com.example.flashcards.common.exceptions;
+package com.example.flashcards.common.exception;
 
 public class DuplicateResourceException extends ApiException {
     private final String resourceName;

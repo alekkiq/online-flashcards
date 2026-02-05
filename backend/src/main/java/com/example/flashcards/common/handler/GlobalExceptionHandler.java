@@ -1,6 +1,8 @@
-package com.example.flashcards.common;
+package com.example.flashcards.common.handler;
 
-import com.example.flashcards.common.exceptions.*;
+import com.example.flashcards.common.exception.*;
+import com.example.flashcards.common.response.ApiError;
+import com.example.flashcards.common.response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

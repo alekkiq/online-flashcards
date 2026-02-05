@@ -1,4 +1,4 @@
-package com.example.flashcards.common;
+package com.example.flashcards.common.response;
 
 import java.util.Map;
 

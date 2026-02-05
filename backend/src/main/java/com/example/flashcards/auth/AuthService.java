@@ -1,11 +1,9 @@
 package com.example.flashcards.auth;
 
-import com.example.flashcards.auth.dto.AuthResponse;
 import com.example.flashcards.auth.dto.LoginRequest;
 import com.example.flashcards.auth.dto.UserRegistrationRequest;
-import com.example.flashcards.common.exceptions.DuplicateResourceException;
-import com.example.flashcards.common.exceptions.ResourceNotFoundException;
-import com.example.flashcards.common.exceptions.UnauthorizedException;
+import com.example.flashcards.common.exception.DuplicateResourceException;
+import com.example.flashcards.common.exception.UnauthorizedException;
 import com.example.flashcards.user.User;
 import com.example.flashcards.user.UserRepository;
 import com.example.flashcards.user.UserRole;
