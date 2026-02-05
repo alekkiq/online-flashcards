@@ -42,7 +42,7 @@ The backend follows a layered architecture pattern, separating concerns into dif
 When creating new endpoints, follow this structure:
 
 ```
-com.example.flashcards
+com.example.flashcards.entity/
  ├── <resource_name>/
  │    ├── <resource_name>               # the core domain model
  │    ├── <resource_name>Controller     # main entrypoint for HTTP requests
