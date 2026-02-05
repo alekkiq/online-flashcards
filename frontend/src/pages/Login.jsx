@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useSearchParams } from "react-router";
+import LoginForm from "../components/auth/LoginForm";
 
 export default function Login() {
   const [searchParams] = useSearchParams();
@@ -10,6 +11,7 @@ export default function Login() {
   return (
     <div>
       <h1>{isSignup || !isLogin ? "Sign Up" : "Login"}</h1>
+      <LoginForm />
     </div>
   );
 }
