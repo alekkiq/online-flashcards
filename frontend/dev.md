@@ -2,16 +2,16 @@
 
 The frontend is done with Vite and React. The structure of the project is as follows:
 - `src/components`: React components
-- `src/hooks`: custom hooks here *** Remember to conduct tests for all custom hooks here ***
+- `src/hooks`: custom hooks here (Remember to conduct tests for all custom hooks)
 - `src/pages`: Page components
 - `src/api`: API services, define here all the necessary api calls to the backend
-- `src/test`: Test files *** Test all context, custom hooks, and lib utils here***
-- `src/lib`: Utility functions like fetchdata, dateformatting, tailwind merge, zod schemas, etc. *** Remember to conduct tests for all lib utils here***
-- `src/context`: Contexts here *** Remember to conduct tests for all contexts here***
+- `src/test`: Test files (Test all context, custom hooks, and lib utils here)
+- `src/lib`: Utility functions like fetchdata, dateformatting, tailwind merge, zod schemas, etc. (Remember to conduct tests for all lib utils)
+- `src/context`: Contexts here (Remember to conduct tests for all contexts)
 - `src/config`: configuration files, like navlinks, etc.
 - `src/assets`: assets like images, icons, etc.
 - `src/App.jsx`: Main application component
-- `src/main.jsx`: Entry point of the application
+- `src/main.jsx`: Entry point of the appilcation
 
 ## UI guidelines
 
@@ -20,12 +20,12 @@ The frontend is done with Vite and React. The structure of the project is as fol
 - use lucide react for icons
 - use zod for schema validation
 - use react hook form for form handling
-- split components if they are too large or used in multiple places
+- split components if they are too large or used in multiple place
 
 ## API guidelines
 
 - use fetchdata.js for api calls, found in `src/lib/fetchdata.js`
-- create own api services in `src/api` for each featuree
+- create own api services in `src/api` for each feature
 - handle all false successes and errors and show them to the user
 
 
@@ -47,7 +47,7 @@ Coverage reports are generated in the `coverage/` directory after running `npm r
 
 - use jsdoc for hooks and lib utils
 - extract all "business logic" into custom hooks
-- keep components small and focused on a single responsibility
+- keep components small and focused on a single responsibiliy
 - use descriptive variable and function names
 - keep functions small and focused on a single responsibility
 - use descriptive variable and function names
