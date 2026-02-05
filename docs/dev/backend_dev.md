@@ -17,7 +17,7 @@ The backend is built using Spring Boot with Maven as the build tool. The project
 1. Open the project from the PROJECT ROOT directory.
 2. Ensure that Maven is configured correctly in IntelliJ.
 3. Create `.env` file to project root based off `.env.example` and fill in the required environment variables.
-4. In order to get the environment variables correctly working in dev, go to IntelliJ's `Run -> Edit Configurations` (top right corner menu) and do the following:
+4. In order to get the environment variables correctly working in dev, go to IntelliJ's `Run -> Edit Configurations` (top left 3 lines hamburger) and do the following:
    - Select the `Application` configuration for the backend
    - Choose SDK version 17 or higher
    - In the `Environment variables` field, click on the folder icon and select the `.env` file you created in step 3.
