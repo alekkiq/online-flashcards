@@ -11,9 +11,12 @@ const QuizProvider = ({ children }) => {
   // game state
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [score, setScore] = useState(0);
-  const [progress, setProgress] = useState(0);
   const [answeredCards, setAnsweredCards] = useState([]);
   const [isAnswered, setIsAnswered] = useState(false);
+
+  const progress = currentQuiz
+    ? (answeredCards.length / currentQuiz.flashcards.length) * 100
+    : 0;
 
   /**
    * fetch a specific quiz by ID
@@ -85,7 +88,11 @@ const QuizProvider = ({ children }) => {
           cardCount: 5,
           author: { name: "BlendG" },
           authorRole: "Student",
-          history: [],
+          history: [
+            { id: 1, date: "2026-01-15", score: 28 },
+            { id: 2, date: "2026-01-20", score: 55 },
+            { id: 3, date: "2026-01-25", score: 95 },
+          ],
           flashcards: [
             { id: 1, question: "What is the capital of Albania?", answer: "Tirana" },
             { id: 2, question: "What currency is used in Albania?", answer: "Albanian Lek (ALL)" },
@@ -283,15 +290,6 @@ const QuizProvider = ({ children }) => {
     return currentQuiz.flashcards[prevIndex];
   };
 
-  /**
-   * calculate progress bar
-   * @returns {number} The progress bar value
-   */
-  const progressBar = () => {
-    if (!currentQuiz) return 0;
-    setProgress(((currentCardIndex + 1) / currentQuiz.flashcards.length) * 100);
-  };
-
   const advanceProgress = (isCorrect) => {
     if (isAnswered) return; // prevent double answering
     if (isCorrect) {
@@ -299,7 +297,6 @@ const QuizProvider = ({ children }) => {
     }
     setAnsweredCards((prev) => [...prev, currentCardIndex]);
     setIsAnswered(true);
-    progressBar();
   };
 
   /**
@@ -317,7 +314,6 @@ const QuizProvider = ({ children }) => {
   const resetGameState = () => {
     setCurrentCardIndex(0);
     setScore(0);
-    setProgress(0);
     setAnsweredCards([]);
     setIsAnswered(false);
   };
@@ -340,7 +336,6 @@ const QuizProvider = ({ children }) => {
         getCurrentCard,
         getNextCard,
         getPreviousCard,
-        progressBar,
         advanceProgress,
         isAnswered,
         setIsAnswered,

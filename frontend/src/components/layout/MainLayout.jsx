@@ -7,7 +7,7 @@ export default function MainLayout() {
     <QuizProvider>
       <div className="min-h-screen">
         <NavBar />
-        <main className="w-full max-w-7xl mx-auto px-4">
+        <main className="w-full max-w-7xl mx-auto px-4 mb-[10vh]">
           <Outlet />
         </main>
       </div>

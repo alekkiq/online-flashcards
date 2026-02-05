@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router";
 import { useQuizContext } from "../hooks/useQuizContext";
 import FlipCard from "../components/Quiz/FlipCard";
-import { Button } from "../components/ui/button";
+import { Button } from "../components/ui/Button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { PageLoader } from "/src/components/ui/PageLoader";
 
@@ -17,7 +17,6 @@ export default function QuizGame() {
     isAnswered,
     progress,
     setIsAnswered,
-    currentCardIndex,
     resetGameState,
     loading,
   } = useQuizContext();
@@ -40,16 +39,9 @@ export default function QuizGame() {
   };
 
   useEffect(() => {
-    if (!currentQuiz) {
-      fetchQuiz(id);
-    }
-  }, [id, currentQuiz, fetchQuiz]);
-
-  useEffect(() => {
-    return () => {
-      resetGameState();
-    };
-  }, []);
+    resetGameState();
+    fetchQuiz(id);
+  }, [id]);
 
   useEffect(() => {
     if (isFlipped) {
@@ -71,7 +63,7 @@ export default function QuizGame() {
   }
 
   return (
-    <>
+    <div>
       <div className="flex items-center mt-2 gap-2">
         <Button variant="link" onClick={() => navigate("/search")}>
           <ArrowLeft />
@@ -145,6 +137,6 @@ export default function QuizGame() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

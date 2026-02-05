@@ -7,6 +7,8 @@ import { Button } from "../components/ui/Button";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router";
 import { useQuizContext } from "../hooks/useQuizContext";
+import { ScoreBadge } from "../components/ui/ScoreBadge";
+import { History } from 'lucide-react';
 
 export default function QuizDetails() {
   const { id } = useParams();
@@ -40,20 +42,18 @@ export default function QuizDetails() {
                 )}
               </div>
             </div>
-            <hr className="w-full border-secondary my-2" />
+            <hr className="w-full border-secondary/50 my-2" />
             {user ? (
               <div className="flex flex-col gap-2">
-                <p className="font-inter font-bold text-sm md:text-lg text-secondary">History</p>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-row items-center gap-1">
+                  <History className="w-5 h-5 text-secondary" strokeWidth={3} />
+                  <p className="font-inter font-bold text-sm md:text-lg text-secondary">History</p>
+                </div>
+                <div className="flex flex-col gap-5">
                   {/* //TODO: fetch history from backend */}
                   {quizHistory.map((h) => (
-                    <div key={h.id} className="flex flex-row items-center gap-2">
-                      <p className="font-inter font-bold text-sm md:text-lg text-secondary">
-                        {h.date}
-                      </p>
-                      <p className="font-inter font-bold text-sm md:text-lg text-secondary">
-                        {h.score}
-                      </p>
+                    <div key={h.id} className="flex flex-col gap-2">
+                      <ScoreBadge percentage={h.score} date={h.date} />
                     </div>
                   ))}
                 </div>
