@@ -5,7 +5,7 @@ const API_BASE = "/api/v1";
  * use this for fetching data, makes it easier
  * @param {*} endpoint without slash
  * @param {*} options options for fetch
- * @returns {response.json()}
+ * @returns {*} {success: boolean, data, error?: Error}
  */
 export async function fetchData(endpoint, options = {}) {
   try {

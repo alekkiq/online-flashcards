@@ -39,6 +39,12 @@ export default defineConfig({
       provider: "v8",
       reporter: ["text", "json", "html"],
       reportsDirectory: "./coverage",
+      all: true,
+      include: [
+        "src/hooks/**/*.{js,jsx}",
+        "src/context/**/*.{js,jsx}",
+        "src/lib/**/*.{js,jsx}",
+      ],
       exclude: [
         "node_modules/",
         "src/test/",
