@@ -1,4 +1,4 @@
-package com.example.flashcards.user;
+package com.example.flashcards.entity.user;
 
 import com.example.flashcards.common.exception.DuplicateResourceException;
 import com.example.flashcards.common.exception.ResourceNotFoundException;

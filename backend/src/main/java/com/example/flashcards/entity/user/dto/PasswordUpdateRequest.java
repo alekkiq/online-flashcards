@@ -1,4 +1,4 @@
-package com.example.flashcards.user.dto;
+package com.example.flashcards.entity.user.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

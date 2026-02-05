@@ -1,4 +1,4 @@
-package com.example.flashcards.user;
+package com.example.flashcards.entity.user;
 
 /**
  * Enumeration representing the roles of a user in the application.

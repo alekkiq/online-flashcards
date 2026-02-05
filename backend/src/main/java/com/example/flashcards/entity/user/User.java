@@ -1,4 +1,4 @@
-package com.example.flashcards.user;
+package com.example.flashcards.entity.user;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

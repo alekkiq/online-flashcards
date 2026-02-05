@@ -1,4 +1,4 @@
-package com.example.flashcards.user;
+package com.example.flashcards.entity.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -5,7 +5,7 @@ import com.example.flashcards.auth.dto.LoginRequest;
 import com.example.flashcards.auth.dto.UserRegistrationRequest;
 import com.example.flashcards.common.response.ApiResponse;
 import com.example.flashcards.security.JwtService;
-import com.example.flashcards.user.User;
+import com.example.flashcards.entity.user.User;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
