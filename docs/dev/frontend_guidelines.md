@@ -59,7 +59,7 @@ Coverage reports are generated in the `coverage/` directory after running `npm r
 - use prebuilt components found in `src/components/ui` for building forms
 - place schemas into a folder inside `src/lib/schemas/`
 
-###How to use prebuilt components for building forms
+### How to use prebuilt components for building forms
 
 ```javascript
 import { useForm } from "react-hook-form";
