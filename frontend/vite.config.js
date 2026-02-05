@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { defineConfig } from "vite";
 import path from "path";
 import react from "@vitejs/plugin-react";
@@ -7,7 +8,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   build: {
-    outDir: path.resolve(__dirname, '../server/public'),
+    outDir: path.resolve(__dirname, "../server/public"),
     emptyOutDir: true,
   },
   theme: {
@@ -25,6 +26,26 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
       },
+    },
+  },
+
+  // Vitest configuration
+  test: {
+    globals: true,
+    environment: "jsdom",
+    setupFiles: ["./src/test/setup.js"],
+    css: true,
+    coverage: {
+      provider: "v8",
+      reporter: ["text", "json", "html"],
+      reportsDirectory: "./coverage",
+      exclude: [
+        "node_modules/",
+        "src/test/",
+        "**/*.d.ts",
+        "**/*.config.{js,ts}",
+        "**/main.jsx",
+      ],
     },
   },
 });

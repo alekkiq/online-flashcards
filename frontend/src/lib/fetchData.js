@@ -7,7 +7,6 @@ const API_BASE = "/api/v1";
  * @param {*} options options for fetch
  * @returns {response.json()}
  */
-
 export async function fetchData(endpoint, options = {}) {
   try {
     const url = `${API_BASE}/${endpoint}`;
@@ -15,9 +14,10 @@ export async function fetchData(endpoint, options = {}) {
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    return response.json();
+    const data = await response.json();
+    return { success: true, data };
   } catch (error) {
     console.error("Error fetching data: ", error);
-    throw error;
+    return { success: false, error };
   }
 }

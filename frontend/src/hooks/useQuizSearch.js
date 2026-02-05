@@ -49,7 +49,7 @@ const SAMPLE_QUIZZES = [
   },
 ];
 
-export function useQuiz(searchParams, setSearchParams) {
+export function useQuizSearch(searchParams, setSearchParams) {
   const searchQuery = searchParams.get("q") || "";
   const [debouncedQuery] = useDebounce(searchQuery, 1000);
   const [quizzes, setQuizzes] = useState(SAMPLE_QUIZZES);

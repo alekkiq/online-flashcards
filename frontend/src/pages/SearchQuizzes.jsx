@@ -3,13 +3,13 @@ import { useSearchParams } from "react-router";
 import { Input } from "../components/ui/Input";
 import { Button } from "../components/ui/Button";
 import { QuizCard } from "../components/ui/QuizCard";
-import { useQuiz } from "../hooks/useQuiz";
+import { useQuizSearch } from "../hooks/useQuizSearch";
 import { useNavigate } from "react-router";
 
 export default function SearchQuizzes() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { searchQuery, setSearchQuery, filteredQuizzes } = useQuiz(searchParams, setSearchParams);
+  const { searchQuery, setSearchQuery, filteredQuizzes } = useQuizSearch(searchParams, setSearchParams);
 
   return (
     <div className="py-8">
