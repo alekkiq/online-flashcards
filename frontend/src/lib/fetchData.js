@@ -10,14 +10,24 @@ const API_BASE = "/api/v1";
 export async function fetchData(endpoint, options = {}) {
   try {
     const url = `${API_BASE}/${endpoint}`;
-    const response = await fetch(url, options);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+    const response = await fetch(url, {
+      ...options,
+      headers: {
+        "Content-Type": "application/json",
+        ...options.headers,
+      },
+    });
     const data = await response.json();
+    if (!response.ok || !data.success) {
+      return { 
+        success: false, 
+        error: data.error?.message || "Request failed", 
+        status: response.status 
+      };
+    }
     return { success: true, data };
   } catch (error) {
     console.error("Error fetching data: ", error);
-    return { success: false, error };
+    return { success: false, error: error.message };
   }
 }
