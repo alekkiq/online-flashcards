@@ -11,4 +11,15 @@ export const login = async (username, password) => {
     return response;
 };
 
+export const autoLogin = async (token) => {
+    const response = await fetchData("users/me", {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+    });
+    return response;
+};
+
 //TODO: Implement register

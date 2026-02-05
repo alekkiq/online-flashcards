@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import { useNavigate, useLocation } from "react-router";
+import { login } from "../api";
 
 const AuthContext = createContext(null);
 
@@ -9,16 +10,24 @@ const AuthProvider = ({ children }) => {
   const location = useLocation();
 
   const handleRegister = async (credentials) => {
-    //TODO: connect backend here
+    //TODO: do the same as login but for register
     return { success: true };
   };
 
-  const handleLogin = async (credentials, redirectTo = null) => {
-    //TODO: connect backend here
-    if (redirectTo) {
-      navigate(redirectTo);
-      return { success: true };
+  const handleLogin = async (credentials) => {
+    const response = await login(credentials.username, credentials.password);
+    if (!response.success) {
+      return response;
     }
+
+    const data = response.data.data;
+
+    setUser({
+      id: data.userId,
+      username: data.username,
+      role: data.role,
+    });
+    localStorage.setItem("token", data.token);
 
     navigate("/");
     return { success: true };
@@ -32,8 +41,21 @@ const AuthProvider = ({ children }) => {
 
   const handleAutoLogin = async () => {
     const token = localStorage.getItem("token");
-    if (!token) return;
-    //TODO: connect backend here
+    if (!token) {
+      handleLogout();
+      return;
+    }
+    const response = await autoLogin(token);
+    if (!response.success) {
+      handleLogout();
+      return;
+    }
+    const data = response.data.data;
+    setUser({
+      id: data.userId,
+      username: data.username,
+      role: data.role,
+    });
     navigate(location.pathname);
   };
 
