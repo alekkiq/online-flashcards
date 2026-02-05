@@ -36,21 +36,24 @@ public class UserService implements IUserService {
 
     @Override
     @Transactional
-    public void updatePassword(Long userId, String newPassword) {
-        User user = this.userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User", userId, "User with ID " + userId + " not found."));
+    public void updatePassword(Long userId, String oldPassword, String newPassword) {
+        User user = getUserById(userId);
 
-        String hashedPassword = this.passwordEncoder.encode(newPassword);
-        user.setPassword(hashedPassword);
-        this.userRepository.save(user);
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new IllegalArgumentException("Current password is incorrect.");
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
     }
 
     @Override
     @Transactional
-    public void promoteToTeacher(Long userId) {
+    public void updateUserRole(Long userId, UserRole newRole) {
         User user = this.userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User", userId, "User with ID " + userId + " not found."));
-        user.setRole(UserRole.TEACHER);
+                .orElseThrow(() -> new ResourceNotFoundException("User", userId,
+                        "User with ID " + userId + " not found."));
+        user.setRole(newRole);
         this.userRepository.save(user);
     }
 
@@ -63,5 +66,20 @@ public class UserService implements IUserService {
     public User getUserById(Long userId) {
         return this.userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", userId, "User with ID " + userId + " not found."));
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        return this.userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "User with username " + username + " not found."));
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(Long userId) {
+        if (!this.userRepository.existsById(userId)) {
+            throw new ResourceNotFoundException("User", userId, "User with ID " + userId + " not found.");
+        }
+        this.userRepository.deleteById(userId);
     }
 }

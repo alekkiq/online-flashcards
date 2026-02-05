@@ -4,6 +4,7 @@ import com.example.flashcards.common.response.ApiResponse;
 import com.example.flashcards.security.CustomUserDetails;
 import com.example.flashcards.user.dto.EmailUpdateRequest;
 import com.example.flashcards.user.dto.PasswordUpdateRequest;
+import com.example.flashcards.user.dto.RoleUpdateRequest;
 import com.example.flashcards.user.dto.UserResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,6 @@ public class UserController {
      * @return the list of all user responses
      */
     @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping("/")
     public ResponseEntity<ApiResponse<List<UserResponse>>> getAllUsers() {
         List<User> users = this.userService.getAllUsers();
         List<UserResponse> responses = users.stream()
@@ -100,10 +100,14 @@ public class UserController {
         @AuthenticationPrincipal CustomUserDetails userDetails,
         @RequestBody @Valid PasswordUpdateRequest request
     ) {
-        this.userService.updatePassword(userDetails.getUserId(), request.password());
+        this.userService.updatePassword(
+            userDetails.getUserId(),
+            request.oldPassword(),
+            request.newPassword()
+        );
 
         return ResponseEntity.ok(
-                ApiResponse.success(null, "Password updated successfully.")
+            ApiResponse.success(null, "Password updated successfully.")
         );
     }
 
@@ -114,8 +118,11 @@ public class UserController {
      */
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{userId}/role")
-    public ResponseEntity<ApiResponse<UserResponse>> promoteToTeacher(@PathVariable Long userId) {
-        this.userService.promoteToTeacher(userId);
+    public ResponseEntity<ApiResponse<UserResponse>> updateUserRole(
+        @PathVariable Long userId,
+        @RequestBody @Valid RoleUpdateRequest request
+    ) {
+        this.userService.updateUserRole(userId, request.role());
         User user = this.userService.getUserById(userId);
 
         UserResponse response = new UserResponse(
@@ -126,6 +133,22 @@ public class UserController {
         );
 
         return ResponseEntity.ok(
-            ApiResponse.success(response, "User promoted to teacher successfully.")
+            ApiResponse.success(response, "User role updated successfully.")
         );
-    }}
+    }
+
+    /**
+     * Delete a user by ID.
+     * @param userId
+     * @return
+     */
+    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable Long userId) {
+        this.userService.deleteUser(userId);
+
+        return ResponseEntity.ok(
+            ApiResponse.success(null, "User deleted successfully.")
+        );
+    }
+}
