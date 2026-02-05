@@ -4,5 +4,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public record PasswordUpdateRequest(
-    @NotBlank @Size(min = 6) String password
+    @NotBlank(message = "Current password must not be blank")
+    String oldPassword,
+
+    @NotBlank(message = "New password is required")
+    @Size(min = 6) String newPassword
 ) {}
