@@ -2,6 +2,10 @@ import { useState } from "react";
 import { NavLink } from "react-router";
 import AuthLayout from "/src/components/auth/AuthLayout";
 
+import { FormField } from "@/components/ui/FormField";
+import { Input } from "@/components/ui/Input";
+import { Button } from "@/components/ui/Button";
+
 export default function Signup() {
   const [isTeacher, setIsTeacher] = useState(false);
 
@@ -10,9 +14,6 @@ export default function Signup() {
     "text-[var(--color-primary)] border-b-2 border-[var(--color-primary)]";
   const tabInactive =
     "text-gray-300 border-b-2 border-transparent hover:text-[var(--color-main)]";
-
-  const inputClass =
-    "w-full rounded border border-gray-300 px-3 py-2 text-sm outline-none focus:border-[var(--color-primary)]";
 
   return (
     <AuthLayout>
@@ -40,31 +41,44 @@ export default function Signup() {
 
         <form className="space-y-4">
           <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1">
-              <label className="text-xs text-gray-500">First name *</label>
-              <input type="text" className={inputClass} />
-            </div>
-            <div className="space-y-1">
-              <label className="text-xs text-gray-500">Last name *</label>
-              <input type="text" className={inputClass} />
-            </div>
+            <FormField label="First name *">
+              <Input
+                type="text"
+                placeholder="First name"
+                autoComplete="given-name"
+              />
+            </FormField>
+
+            <FormField label="Last name *">
+              <Input
+                type="text"
+                placeholder="Last name"
+                autoComplete="family-name"
+              />
+            </FormField>
           </div>
 
-          <div className="space-y-1">
-            <label className="text-xs text-gray-500">Email address *</label>
-            <input type="email" className={inputClass} />
-          </div>
+          <FormField label="Email address *">
+            <Input type="email" placeholder="Email address" autoComplete="email" />
+          </FormField>
 
-          <div className="space-y-1">
-            <label className="text-xs text-gray-500">Password *</label>
-            <input type="password" className={inputClass} />
-          </div>
+          <FormField label="Password *">
+            <Input
+              type="password"
+              placeholder="Password"
+              autoComplete="new-password"
+            />
+          </FormField>
 
-          <div className="space-y-1">
-            <label className="text-xs text-gray-500">Repeat password *</label>
-            <input type="password" className={inputClass} />
-          </div>
+          <FormField label="Repeat password *">
+            <Input
+              type="password"
+              placeholder="Repeat password"
+              autoComplete="new-password"
+            />
+          </FormField>
 
+          {/* Teacher checkbox */}
           <label className="flex items-center gap-2 text-xs text-[var(--color-secondary)]">
             <input
               type="checkbox"
@@ -74,14 +88,12 @@ export default function Signup() {
             Are you a teacher?
           </label>
 
+          {/* Organization + info */}
           {isTeacher && (
             <div className="space-y-2">
-              <div className="space-y-1">
-                <label className="text-xs text-gray-500">
-                  Organization name *
-                </label>
-                <input type="text" className={inputClass} />
-              </div>
+              <FormField label="Organization name *">
+                <Input type="text" placeholder="Organization name" />
+              </FormField>
 
               <p className="text-[11px] leading-relaxed text-gray-500">
                 We will review your request for the teacher role before you can
@@ -91,12 +103,9 @@ export default function Signup() {
             </div>
           )}
 
-          <button
-            type="button"
-            className="w-full bg-[var(--color-primary)] text-white py-2 rounded hover:opacity-90 text-sm"
-          >
+          <Button type="button" className="w-full h-10">
             Sign Up
-          </button>
+          </Button>
         </form>
       </div>
     </AuthLayout>

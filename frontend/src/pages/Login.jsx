@@ -1,15 +1,16 @@
 import { NavLink } from "react-router";
 import AuthLayout from "/src/components/auth/AuthLayout";
 
+import { FormField } from "@/components/ui/FormField";
+import { Input } from "@/components/ui/Input";
+import { Button } from "@/components/ui/Button";
+
 export default function Login() {
   const tabBase = "pb-2 text-sm font-medium";
   const tabActive =
     "text-[var(--color-primary)] border-b-2 border-[var(--color-primary)]";
   const tabInactive =
     "text-gray-300 border-b-2 border-transparent hover:text-[var(--color-main)]";
-
-  const inputClass =
-    "w-full rounded border border-gray-300 px-3 py-2 text-sm outline-none focus:border-[var(--color-primary)]";
 
   return (
     <AuthLayout>
@@ -36,22 +37,25 @@ export default function Login() {
         </div>
 
         <form className="space-y-4">
-          <div className="space-y-1">
-            <label className="text-xs text-gray-500">Email address *</label>
-            <input type="email" className={inputClass} />
-          </div>
+          <FormField label="Email address *">
+            <Input
+              type="email"
+              placeholder="Email address"
+              autoComplete="email"
+            />
+          </FormField>
 
-          <div className="space-y-1">
-            <label className="text-xs text-gray-500">Password *</label>
-            <input type="password" className={inputClass} />
-          </div>
+          <FormField label="Password *">
+            <Input
+              type="password"
+              placeholder="Password"
+              autoComplete="current-password"
+            />
+          </FormField>
 
-          <button
-            type="button"
-            className="w-full bg-[var(--color-primary)] text-white py-2 rounded hover:opacity-90 text-sm"
-          >
+          <Button type="button" className="w-full h-10">
             Log In
-          </button>
+          </Button>
         </form>
       </div>
     </AuthLayout>
