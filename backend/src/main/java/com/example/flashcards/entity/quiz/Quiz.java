@@ -87,23 +87,12 @@ public class Quiz {
     }
 
     public void addFlashcard(Flashcard flashcard) {
-        flashcards.add(flashcard);
+        this.flashcards.add(flashcard);
         flashcard.setQuiz(this);
     }
 
     public void removeFlashcard(Flashcard flashcard) {
-        flashcards.remove(flashcard);
+        this.flashcards.remove(flashcard);
         flashcard.setQuiz(null);
-    }
-
-    @Override
-    public String toString() {
-        return "Quiz{" +
-                "quizId=" + quizId +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", creator=" + creator.getUsername() +
-                ", subject=" + subject.getName() +
-                '}';
     }
 }

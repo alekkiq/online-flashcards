@@ -2,12 +2,6 @@ package com.example.flashcards.entity.flashcard;
 
 import com.example.flashcards.entity.quiz.Quiz;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Size;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "flashcards")
@@ -29,9 +23,10 @@ public class Flashcard {
     protected Flashcard() {
     }
 
-    public Flashcard(String question, String answer) {
+    public Flashcard(String question, String answer, Quiz quiz) {
         this.question = question;
         this.answer = answer;
+        this.quiz = quiz;
     }
 
     public long getFlashcardId() {
@@ -64,14 +59,5 @@ public class Flashcard {
 
     public void setQuiz(Quiz quiz) {
         this.quiz = quiz;
-    }
-
-    @Override
-    public String toString() {
-        return "Flashcard{" +
-                "flashcardId=" + flashcardId +
-                ", question='" + question + '\'' +
-                ", answer='" + answer + '\'' +
-                '}';
     }
 }
