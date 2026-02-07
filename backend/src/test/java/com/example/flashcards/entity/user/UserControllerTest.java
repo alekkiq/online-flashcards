@@ -1,27 +1,23 @@
 package com.example.flashcards.entity.user;
 
 import com.example.flashcards.config.SecurityConfig;
+import com.example.flashcards.config.TestSecurityConfig;
 import com.example.flashcards.entity.user.dto.EmailUpdateRequest;
 import com.example.flashcards.entity.user.dto.PasswordUpdateRequest;
 import com.example.flashcards.entity.user.dto.RoleUpdateRequest;
 import com.example.flashcards.common.exception.DuplicateResourceException;
 import com.example.flashcards.common.exception.ResourceNotFoundException;
 import com.example.flashcards.security.*;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,7 +26,6 @@ import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -48,27 +43,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         }
     )
 )
-@Import(UserControllerTest.TestSecurityConfig.class)
+@Import(TestSecurityConfig.class)
 class UserControllerTest {
-
-    @TestConfiguration
-    @EnableWebSecurity
-    static class TestSecurityConfig {
-        @Bean
-        public SecurityFilterChain securityFilterChain(
-                HttpSecurity http) throws Exception {
-            return http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/api/v1/users/me/**").authenticated()
-                    .requestMatchers("/api/v1/users").hasRole("ADMIN")
-                    .requestMatchers("/api/v1/users/{id}/role").hasRole("ADMIN")
-                    .requestMatchers("/api/v1/users/{id}").hasRole("ADMIN")
-                    .anyRequest().authenticated())
-                .build();
-        }
-    }
-
     @Autowired
     private MockMvc mockMvc;
 
@@ -76,6 +52,11 @@ class UserControllerTest {
     private UserService userService;
 
     private final ObjectMapper objectMapper = new ObjectMapper();
+
+    @BeforeAll
+    static void initAll() {
+        System.out.println("UserController test start");
+    }
 
     @Test
     @DisplayName("getAllUsers(): returns list of users")
@@ -89,9 +70,9 @@ class UserControllerTest {
         user2.setUserId(2L);
         user2.setRole(UserRole.TEACHER);
 
-        when(userService.getAllUsers()).thenReturn(List.of(user1, user2));
+        when(this.userService.getAllUsers()).thenReturn(List.of(user1, user2));
 
-        mockMvc.perform(get("/api/v1/users")
+        this.mockMvc.perform(get("/api/v1/users")
                 .with(user("admin").roles("ADMIN")))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
@@ -102,15 +83,15 @@ class UserControllerTest {
             .andExpect(jsonPath("$.data[1].userId").value(2))
             .andExpect(jsonPath("$.data[1].username").value("user2"));
 
-        verify(userService, times(1)).getAllUsers();
+        verify(this.userService, times(1)).getAllUsers();
     }
 
     @Test
     @DisplayName("getAllUsers(): forbidden without ADMIN role")
     void getAllUsers_withoutAdminRole_forbidden() throws Exception {
-        mockMvc.perform(get("/api/v1/users")).andExpect(status().isForbidden());
+        this.mockMvc.perform(get("/api/v1/users")).andExpect(status().isForbidden());
 
-        verify(userService, never()).getAllUsers();
+        verify(this.userService, never()).getAllUsers();
     }
 
     @Test
@@ -122,24 +103,23 @@ class UserControllerTest {
 
         CustomUserDetails userDetails = new CustomUserDetails(user);
 
-        when(userService.getUserById(5L)).thenReturn(user);
+        when(this.userService.getUserById(5L)).thenReturn(user);
 
-        mockMvc.perform(get("/api/v1/users/me")
-                    .with(user(userDetails)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.data.userId").value(5))
-                .andExpect(jsonPath("$.data.username").value("testuser"))
-                .andExpect(jsonPath("$.data.email").value("test@test.com"));
+        this.mockMvc.perform(get("/api/v1/users/me")
+                .with(user(userDetails)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.success").value(true))
+            .andExpect(jsonPath("$.data.userId").value(5))
+            .andExpect(jsonPath("$.data.username").value("testuser"))
+            .andExpect(jsonPath("$.data.email").value("test@test.com"));
 
-        verify(userService, times(1)).getUserById(5L);
+        verify(this.userService, times(1)).getUserById(5L);
     }
 
     @Test
     @DisplayName("getCurrentUser(): unauthorized without authentication")
     void getCurrentUser_withoutAuth_unauthorized() throws Exception {
-        mockMvc.perform(get("/api/v1/users/me"))
-                .andExpect(status().isForbidden());
+        this.mockMvc.perform(get("/api/v1/users/me")).andExpect(status().isForbidden());
     }
 
     @Test
@@ -149,14 +129,14 @@ class UserControllerTest {
         user.setUserId(999L);
         CustomUserDetails userDetails = new CustomUserDetails(user);
 
-        when(userService.getUserById(999L))
-                .thenThrow(new ResourceNotFoundException("User", "User not found"));
+        when(this.userService.getUserById(999L))
+            .thenThrow(new ResourceNotFoundException("User", "User not found"));
 
-        mockMvc.perform(get("/api/v1/users/me")
-                        .with(user(userDetails)))
-                .andExpect(status().isNotFound());
+        this.mockMvc.perform(get("/api/v1/users/me")
+                .with(user(userDetails)))
+            .andExpect(status().isNotFound());
 
-        verify(userService, times(1)).getUserById(999L);
+        verify(this.userService, times(1)).getUserById(999L);
     }
 
 
@@ -170,20 +150,19 @@ class UserControllerTest {
         CustomUserDetails userDetails = new CustomUserDetails(user);
         EmailUpdateRequest request = new EmailUpdateRequest("newemail@test.com");
 
-        doNothing().when(userService).updateEmail(3L, "newemail@test.com");
-        when(userService.getUserById(3L)).thenReturn(user);
+        doNothing().when(this.userService).updateEmail(3L, "newemail@test.com");
+        when(this.userService.getUserById(3L)).thenReturn(user);
 
-        mockMvc.perform(put("/api/v1/users/me/email")
-                        .with(user(userDetails))
-                        .with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.message").value("Email updated successfully."))
-                .andExpect(jsonPath("$.data.email").value("newemail@test.com"));
+        this.mockMvc.perform(put("/api/v1/users/me/email")
+                .with(user(userDetails))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(this.objectMapper.writeValueAsString(request)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.success").value(true))
+            .andExpect(jsonPath("$.message").value("Email updated successfully."))
+            .andExpect(jsonPath("$.data.email").value("newemail@test.com"));
 
-        verify(userService, times(1)).updateEmail(3L, "newemail@test.com");
+        verify(this.userService, times(1)).updateEmail(3L, "newemail@test.com");
     }
 
     @Test
@@ -196,16 +175,15 @@ class UserControllerTest {
         EmailUpdateRequest request = new EmailUpdateRequest("taken@test.com");
 
         doThrow(new DuplicateResourceException("User", "Email already in use"))
-                .when(userService).updateEmail(3L, "taken@test.com");
+            .when(this.userService).updateEmail(3L, "taken@test.com");
 
-        mockMvc.perform(put("/api/v1/users/me/email")
+        this.mockMvc.perform(put("/api/v1/users/me/email")
                 .with(user(userDetails))
-                .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(request)))
+                .content(this.objectMapper.writeValueAsString(request)))
             .andExpect(status().isConflict());
 
-        verify(userService, times(1)).updateEmail(3L, "taken@test.com");
+        verify(this.userService, times(1)).updateEmail(3L, "taken@test.com");
     }
 
     @Test
@@ -217,13 +195,13 @@ class UserControllerTest {
 
         EmailUpdateRequest request = new EmailUpdateRequest("invalid-email");
 
-        mockMvc.perform(put("/api/v1/users/me/email")
-                        .with(user(userDetails))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest());
+        this.mockMvc.perform(put("/api/v1/users/me/email")
+                .with(user(userDetails))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(this.objectMapper.writeValueAsString(request)))
+            .andExpect(status().isBadRequest());
 
-        verify(userService, never()).updateEmail(anyLong(), anyString());
+        verify(this.userService, never()).updateEmail(anyLong(), anyString());
     }
 
 
@@ -236,18 +214,17 @@ class UserControllerTest {
         CustomUserDetails userDetails = new CustomUserDetails(user);
         PasswordUpdateRequest request = new PasswordUpdateRequest("oldPassword", "newPassword");
 
-        doNothing().when(userService).updatePassword(4L, "oldPassword", "newPassword");
+        doNothing().when(this.userService).updatePassword(4L, "oldPassword", "newPassword");
 
-        mockMvc.perform(put("/api/v1/users/me/password")
-                        .with(user(userDetails))
-                        .with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.message").value("Password updated successfully."));
+        this.mockMvc.perform(put("/api/v1/users/me/password")
+                .with(user(userDetails))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(this.objectMapper.writeValueAsString(request)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.success").value(true))
+            .andExpect(jsonPath("$.message").value("Password updated successfully."));
 
-        verify(userService, times(1)).updatePassword(4L, "oldPassword", "newPassword");
+        verify(this.userService, times(1)).updatePassword(4L, "oldPassword", "newPassword");
     }
 
     @Test
@@ -260,16 +237,15 @@ class UserControllerTest {
         PasswordUpdateRequest request = new PasswordUpdateRequest("wrongPassword", "newPassword");
 
         doThrow(new IllegalArgumentException("Incorrect old password"))
-                .when(userService).updatePassword(4L, "wrongPassword", "newPassword");
+            .when(this.userService).updatePassword(4L, "wrongPassword", "newPassword");
 
-        mockMvc.perform(put("/api/v1/users/me/password")
-                        .with(user(userDetails))
-                        .with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest());
+        this.mockMvc.perform(put("/api/v1/users/me/password")
+                .with(user(userDetails))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(this.objectMapper.writeValueAsString(request)))
+            .andExpect(status().isBadRequest());
 
-        verify(userService, times(1)).updatePassword(4L, "wrongPassword", "newPassword");
+        verify(this.userService, times(1)).updatePassword(4L, "wrongPassword", "newPassword");
     }
 
     @Test
@@ -281,13 +257,13 @@ class UserControllerTest {
 
         PasswordUpdateRequest request = new PasswordUpdateRequest("oldPassword", "");
 
-        mockMvc.perform(put("/api/v1/users/me/password")
-                        .with(user(userDetails))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest());
+        this.mockMvc.perform(put("/api/v1/users/me/password")
+                .with(user(userDetails))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(this.objectMapper.writeValueAsString(request)))
+            .andExpect(status().isBadRequest());
 
-        verify(userService, never()).updatePassword(anyLong(), anyString(), anyString());
+        verify(this.userService, never()).updatePassword(anyLong(), anyString(), anyString());
     }
 
 
@@ -300,19 +276,19 @@ class UserControllerTest {
 
         RoleUpdateRequest request = new RoleUpdateRequest(UserRole.TEACHER);
 
-        doNothing().when(userService).updateUserRole(7L, UserRole.TEACHER);
-        when(userService.getUserById(7L)).thenReturn(user);
+        doNothing().when(this.userService).updateUserRole(7L, UserRole.TEACHER);
+        when(this.userService.getUserById(7L)).thenReturn(user);
 
-        mockMvc.perform(put("/api/v1/users/7/role")
-                        .with(user("admin").roles("ADMIN"))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.message").value("User role updated successfully."))
-                .andExpect(jsonPath("$.data.role").value("TEACHER"));
+        this.mockMvc.perform(put("/api/v1/users/7/role")
+                .with(user("admin").roles("ADMIN"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(this.objectMapper.writeValueAsString(request)))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.success").value(true))
+            .andExpect(jsonPath("$.message").value("User role updated successfully."))
+            .andExpect(jsonPath("$.data.role").value("TEACHER"));
 
-        verify(userService, times(1)).updateUserRole(7L, UserRole.TEACHER);
+        verify(this.userService, times(1)).updateUserRole(7L, UserRole.TEACHER);
     }
 
     @Test
@@ -320,12 +296,12 @@ class UserControllerTest {
     void updateUserRole_withoutAdminRole_forbidden() throws Exception {
         RoleUpdateRequest request = new RoleUpdateRequest(UserRole.TEACHER);
 
-        mockMvc.perform(put("/api/v1/users/7/role")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isForbidden());
+        this.mockMvc.perform(put("/api/v1/users/7/role")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(this.objectMapper.writeValueAsString(request)))
+            .andExpect(status().isForbidden());
 
-        verify(userService, never()).updateUserRole(any(), any());
+        verify(this.userService, never()).updateUserRole(any(), any());
     }
 
     @Test
@@ -334,63 +310,62 @@ class UserControllerTest {
         RoleUpdateRequest request = new RoleUpdateRequest(UserRole.TEACHER);
 
         doThrow(new ResourceNotFoundException("User", "User not found"))
-                .when(userService).updateUserRole(99L, UserRole.TEACHER);
+            .when(this.userService).updateUserRole(99L, UserRole.TEACHER);
 
-        mockMvc.perform(put("/api/v1/users/99/role")
-                        .with(user("admin").roles("ADMIN"))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isNotFound());
+        this.mockMvc.perform(put("/api/v1/users/99/role")
+                .with(user("admin").roles("ADMIN"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(this.objectMapper.writeValueAsString(request)))
+            .andExpect(status().isNotFound());
 
-        verify(userService, times(1)).updateUserRole(99L, UserRole.TEACHER);
+        verify(this.userService, times(1)).updateUserRole(99L, UserRole.TEACHER);
     }
 
     @Test
     @DisplayName("updateUserRole(): fails with null role")
     void updateUserRole_nullRole_badRequest() throws Exception {
-        mockMvc.perform(put("/api/v1/users/7/role")
-                        .with(user("admin").roles("ADMIN"))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{}"))
-                .andExpect(status().isBadRequest());
+        this.mockMvc.perform(put("/api/v1/users/7/role")
+                .with(user("admin").roles("ADMIN"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{}"))
+            .andExpect(status().isBadRequest());
 
-        verify(userService, never()).updateUserRole(anyLong(), any());
+        verify(this.userService, never()).updateUserRole(anyLong(), any());
     }
 
 
     @Test
     @DisplayName("deleteUser(): successfully deletes user")
     void deleteUser() throws Exception {
-        doNothing().when(userService).deleteUser(10L);
+        doNothing().when(this.userService).deleteUser(10L);
 
-        mockMvc.perform(delete("/api/v1/users/10")
-                        .with(user("admin").roles("ADMIN")))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.message").value("User deleted successfully."));
+        this.mockMvc.perform(delete("/api/v1/users/10")
+                .with(user("admin").roles("ADMIN")))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.success").value(true))
+            .andExpect(jsonPath("$.message").value("User deleted successfully."));
 
-        verify(userService, times(1)).deleteUser(10L);
+        verify(this.userService, times(1)).deleteUser(10L);
     }
 
     @Test
     @DisplayName("deleteUser(): forbidden without ADMIN role")
     void deleteUser_withoutAdminRole_forbidden() throws Exception {
-        mockMvc.perform(delete("/api/v1/users/10"))
-                .andExpect(status().isForbidden());
+        this.mockMvc.perform(delete("/api/v1/users/10")).andExpect(status().isForbidden());
 
-        verify(userService, never()).deleteUser(any());
+        verify(this.userService, never()).deleteUser(any());
     }
 
     @Test
     @DisplayName("deleteUser(): user not found throws exception")
     void deleteUser_userNotFound_throwsException() throws Exception {
         doThrow(new ResourceNotFoundException("User", "User not found"))
-                .when(userService).deleteUser(99L);
+            .when(this.userService).deleteUser(99L);
 
-        mockMvc.perform(delete("/api/v1/users/99")
-                        .with(user("admin").roles("ADMIN")))
-                .andExpect(status().isNotFound());
+        this.mockMvc.perform(delete("/api/v1/users/99")
+                .with(user("admin").roles("ADMIN")))
+            .andExpect(status().isNotFound());
 
-        verify(userService, times(1)).deleteUser(99L);
+        verify(this.userService, times(1)).deleteUser(99L);
     }
 }
