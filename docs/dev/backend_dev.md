@@ -18,8 +18,10 @@ The backend is built using Spring Boot with Maven as the build tool. The project
 2. Ensure that Maven is configured correctly in IntelliJ.
 3. Create `.env` file to project root based off `.env.example` and fill in the required environment variables.
 4. In order to get the environment variables correctly working in dev, go to IntelliJ's `Run -> Edit Configurations` (top left 3 lines hamburger) and do the following:
+   - Choose a convenient name for your configuration, e.g., `OnlineFlashcards API` (doesn't matter)
    - Select the `Application` configuration for the backend
    - Choose SDK version 17 or higher
+   - Set the main class to `com.example.flashcards.OnlineFlashcardsApi`
    - In the `Environment variables` field, click on the folder icon and select the `.env` file you created in step 3.
 5. Run the application using the IntelliJ run button.
 6. If everything went correctly, the last thing printed in terminal should be something like:
@@ -27,6 +29,8 @@ The backend is built using Spring Boot with Maven as the build tool. The project
     ... Started OnlineFlashcardsAPi in XX seconds
     ```
    
+TODO: instructions if db fails
+
 ### Backend structure
 
 The backend follows a layered architecture pattern, separating concerns into different layers:
