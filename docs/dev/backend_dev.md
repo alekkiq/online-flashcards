@@ -16,6 +16,7 @@ The backend is built using Spring Boot with Maven as the build tool. The project
 
 1. Open the project from the PROJECT ROOT directory.
 2. Ensure that Maven is configured correctly in IntelliJ.
+   - For sanity check, right-click on the `pom.xml` file and select `Maven > Sync Project` to ensure all dependencies and plugins are present.
 3. Create `.env` file to project root based off `.env.example` and fill in the required environment variables.
 4. In order to get the environment variables correctly working in dev, go to IntelliJ's `Run -> Edit Configurations` (top left 3 lines hamburger) and do the following:
    - Choose a convenient name for your configuration, e.g., `OnlineFlashcards API` (doesn't matter)
