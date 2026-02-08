@@ -40,7 +40,7 @@ The backend follows a layered architecture pattern, separating concerns into dif
 - **common/**: Contains common utilities, constants, and configurations used across the application.
 - **config/**: Contains configuration classes for the application.
 - **security/**: Contains security-related classes and configurations.
-- **<resource_name>/**: Each resource (e.g., user, flashcard, quiz etc.)
+- **entity/**: Each entity resource (e.g., user, flashcard, quiz etc.)
 
 ### Creating endpoints/resources
 
@@ -65,6 +65,7 @@ An example of each file can be found in the `com.example.flashcards.user` packag
 #### DTOs
 
 Use Java Records for DTOs. Place them in the `dto/` subpackage. Name them according to their purpose, e.g., `<ResourceName>Response`, `<ResourceName>CreateRequest`, etc.
+JPA annotations work well in validating e.g. incoming requests etc. so use them in the DTOs when appropriate.
 
 #### Exceptions
 
@@ -80,6 +81,12 @@ Define service interfaces in the `IService` class and implement them in the `Ser
 
 Repositories should extend `JpaRepository` and be placed in the `Repository` class. They handle database interactions.
 
+#### Controllers
+
+Controllers handle direct HTTP requests. They should call the service layer to perform operations and return appropriate responses.
+
 ### Testing
 
 Write unit tests for services and controllers in the `src/test/java` directory. Use JUnit and Mockito for testing. Ensure that all new functionality is covered by tests.
+
+Classes of an entity that REQUIRE tests are the Service and Controller.
