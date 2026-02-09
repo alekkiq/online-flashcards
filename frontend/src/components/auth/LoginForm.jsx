@@ -1,68 +1,59 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Button } from "../ui/Button.jsx";
-import { Input } from "../ui/Input.jsx";
-import { FormField } from "../ui/FormField.jsx";
-import { useState } from "react";
-import { useAuth } from "/src/hooks/useAuth";
-
-// Zod validation schema // Place scehmas into a folder inside src/lib/schemas/loginSchema please.
-const loginSchema = z.object({
-    username: z.string().min(5, "Username is required"),
-    password: z.string().min(5, "Password is required"),
-});
+import { loginSchema } from "@/lib/authSchemas";
+import { useLogin } from "@/hooks/useLogin";
+import { FormField } from "@/components/ui/FormField";
+import { Input } from "@/components/ui/Input";
+import { Button } from "@/components/ui/Button";
 
 export default function LoginForm() {
-    const [serverError, setServerError] = useState(null);
-    const { handleLogin } = useAuth();
-    const {
-        register,
-        handleSubmit,
-        formState: { errors, isSubmitting },
-    } = useForm({
-        resolver: zodResolver(loginSchema),
-        defaultValues: {
-            username: "",
-            password: "",
-        },
-    });
+  const { submit, isLoading, error } = useLogin();
 
-    const onSubmit = async (data) => {
-        console.log("Form data:", data);
-       const response = await handleLogin(data);
-       if (!response.success) {
-        setServerError(response.error);
-       }
-    };
+  const form = useForm({
+    resolver: zodResolver(loginSchema),
+    defaultValues: { email: "", password: "" },
+    mode: "onSubmit",
+  });
 
-    // THIS IS AN EXAMPLE OF HOW TO USE PREBUILT COMPONENTS FOR BUILDING FORMS, PLEASE USE IT THE SAME WAY FOR OTHER FORMS
+  async function onSubmit(values) {
+    await submit(values);
+  }
 
-    return (
-        <div>
-            <h1>Login</h1>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <FormField error={errors.username?.message } label="Username" >
-                    <Input
-                        id="username"
-                        type="text"
-                        hasError={!!errors.username}
-                        {...register("username")}
-                    />
-                </FormField>
-                <FormField error={errors.password?.message} label="Password">
-                    <Input
-                        id="password"
-                        type="password"
-                        hasError={!!errors.password}
-                        {...register("password")}
-                    />
-                </FormField>
-                {serverError && <p className="text-red-500">{serverError}</p>}
-                <Button type="submit" loading={isSubmitting} loadingText="Logging in...">
-                    Login
-                </Button>
-            </form>
-        </div>
-    );
+  return (
+    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <FormField label="Email address *">
+        <Input
+          type="email"
+          placeholder="Email address"
+          autoComplete="email"
+          {...form.register("email")}
+        />
+        {form.formState.errors.email && (
+          <p className="text-xs text-red-500 mt-1">
+            {form.formState.errors.email.message}
+          </p>
+        )}
+      </FormField>
+
+      <FormField label="Password *">
+        <Input
+          type="password"
+          placeholder="Password"
+          autoComplete="current-password"
+          {...form.register("password")}
+        />
+        {form.formState.errors.password && (
+          <p className="text-xs text-red-500 mt-1">
+            {form.formState.errors.password.message}
+          </p>
+        )}
+      </FormField>
+
+      {error && <p className="text-sm text-red-600">{error}</p>}
+
+      <Button type="submit" className="w-full h-11" disabled={isLoading}>
+        {isLoading ? "Logging in..." : "Log In"}
+      </Button>
+    </form>
+  );
 }
