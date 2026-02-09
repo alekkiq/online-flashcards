@@ -1,6 +1,5 @@
-import { Input } from "./Input";
-import { Label } from "./Label";
 import { Badge } from "./Badge";
+import { FormField } from "./FormField";
 
 /**
  * FlashcardInput component for a single card in the quiz creation form
@@ -24,10 +23,7 @@ export function FlashcardInput({ index, register, errors, onRemove }) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ml-11">
-        <div className="flex flex-col gap-2">
-          <Label htmlFor={`card-${index}-question`} className="text-xs font-bold uppercase tracking-wider text-main/80">
-            Front
-          </Label>
+        <FormField label="Front" error={questionError}>
           <textarea
             id={`card-${index}-question`}
             {...register(`cards.${index}.question`)}
@@ -36,13 +32,9 @@ export function FlashcardInput({ index, register, errors, onRemove }) {
             }`}
             placeholder="Type the question..."
           />
-          {questionError && <p className="text-xs font-medium text-destructive">{questionError}</p>}
-        </div>
+        </FormField>
 
-        <div className="flex flex-col gap-2">
-          <Label htmlFor={`card-${index}-answer`} className="text-xs font-bold uppercase tracking-wider text-main/80">
-            Back
-          </Label>
+        <FormField label="Back" error={answerError}>
           <textarea
             id={`card-${index}-answer`}
             {...register(`cards.${index}.answer`)}
@@ -51,8 +43,7 @@ export function FlashcardInput({ index, register, errors, onRemove }) {
             }`}
             placeholder="Type the answer..."
           />
-          {answerError && <p className="text-xs font-medium text-destructive">{answerError}</p>}
-        </div>
+        </FormField>
       </div>
     </div>
   );

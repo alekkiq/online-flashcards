@@ -51,34 +51,36 @@ const SAMPLE_QUIZZES = [
 
 export function useQuizSearch(searchParams, setSearchParams) {
   const searchQuery = searchParams.get("q") || "";
-  const [debouncedQuery] = useDebounce(searchQuery, 1000);
   const [quizzes, setQuizzes] = useState(SAMPLE_QUIZZES);
   const [isLoading, setIsLoading] = useState(false);
 
   const setSearchQuery = (query) => {
-    if (query) {
-      setSearchParams({ q: query });
-    } else {
-      setSearchParams({});
-    }
+    setSearchParams((prev) => {
+      const newParams = new URLSearchParams(prev);
+      if (query) {
+        newParams.set("q", query);
+      } else {
+        newParams.delete("q");
+      }
+      return newParams;
+    });
   };
 
-  // fetch only necessary stuff for display like title, description, author, card count, tries
   useEffect(() => {
-    //TODO: fetch from backend using debouncedQuery
-    if (!debouncedQuery.trim()) {
-      setQuizzes(SAMPLE_QUIZZES);
-    } else {
-      const query = debouncedQuery.toLowerCase();
-      setQuizzes(
-        SAMPLE_QUIZZES.filter(
-          (quiz) =>
-            quiz.title.toLowerCase().includes(query) ||
+    const query = searchQuery.toLowerCase();
+    setQuizzes(
+      SAMPLE_QUIZZES.filter(
+        (quiz) =>
+          quiz.title.toLowerCase().includes(query) ||
             quiz.author.name.toLowerCase().includes(query)
         )
       );
-    }
-  }, [debouncedQuery]);
+  }, [searchQuery]);
+
+  useEffect(() => {
+    // load all
+    
+  }, []);
 
   return {
     searchQuery,

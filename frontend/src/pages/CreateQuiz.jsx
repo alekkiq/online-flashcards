@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "../components/ui/Button";
 import { Input } from "../components/ui/Input";
-import { Label } from "../components/ui/Label";
+import { FormField } from "../components/ui/FormField";
 import { FlashcardInput } from "../components/ui/FlashcardInput";
 import { useMyQuizzes } from "../hooks/useMyQuizzes";
 import { useState, useEffect } from "react";
@@ -86,26 +86,23 @@ export default function CreateQuiz() {
                 <div className="p-6 md:p-8 flex flex-col gap-6 border-b border-secondary/10">
                     <h2 className="font-bold text-lg text-main">General Information</h2>
                     
-                    <div className="flex flex-col gap-2">
-                        <Label htmlFor="title">Title</Label>
+                    <FormField label="Title" error={errors.title?.message}>
                         <Input
                         id="title"
-                        {...register("title")}
                         placeholder="Enter quiz title"
                         hasError={!!errors.title}
+                        {...register("title")}
                         />
-                        {errors.title && <p className="text-sm font-medium text-destructive">{errors.title.message}</p>}
-                    </div>
+                    </FormField>
 
-                    <div className="flex flex-col gap-2">
-                        <Label htmlFor="description">Description</Label>
+                    <FormField label="Description" error={errors.description?.message}>
                         <textarea
                         id="description"
                         {...register("description")}
                         className="flex min-h-[120px] w-full rounded-xl border border-secondary/30 bg-white p-3 text-sm text-main transition-colors placeholder:text-secondary/60 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50 resize-none"
                         placeholder="Enter description (optional)"
                         />
-                    </div>
+                    </FormField>
                 </div>
 
                 <div className="p-6 md:p-8 flex flex-col gap-6">

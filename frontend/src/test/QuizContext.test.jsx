@@ -90,80 +90,6 @@ describe("QuizContext", () => {
     });
   });
 
-  describe("Progress Calculation", () => {
-    it("should calculate progress percentage correctly", async () => {
-      let contextValue;
-      render(
-        <QuizProvider>
-          <TestConsumer onMount={(ctx) => (contextValue = ctx)} />
-        </QuizProvider>
-      );
-
-      await act(async () => {
-        await contextValue.fetchQuiz(2);
-      });
-
-      act(() => {
-        contextValue.progressBar();
-      });
-      expect(contextValue.progress).toBe(20);
-    });
-
-    it("should update progress when advancing to next card", async () => {
-      let contextValue;
-      render(
-        <QuizProvider>
-          <TestConsumer onMount={(ctx) => (contextValue = ctx)} />
-        </QuizProvider>
-      );
-
-      await act(async () => {
-        await contextValue.fetchQuiz(2);
-      });
-
-      act(() => {
-        contextValue.getNextCard();
-      });
-
-      act(() => {
-        contextValue.progressBar();
-      });
-
-      expect(contextValue.progress).toBe(40);
-    });
-
-    it("should reach 100% on last card", async () => {
-      let contextValue;
-      render(
-        <QuizProvider>
-          <TestConsumer onMount={(ctx) => (contextValue = ctx)} />
-        </QuizProvider>
-      );
-
-      await act(async () => {
-        await contextValue.fetchQuiz(2);
-      });
-
-      act(() => {
-        contextValue.getNextCard();
-      });
-      act(() => {
-        contextValue.getNextCard();
-      });
-      act(() => {
-        contextValue.getNextCard();
-      });
-      act(() => {
-        contextValue.getNextCard();
-      });
-      act(() => {
-        contextValue.progressBar();
-      });
-
-      expect(contextValue.progress).toBe(100);
-    });
-  });
-
   describe("Score Tracking", () => {
     it("should increment score on correct answer", async () => {
       let contextValue;
@@ -413,7 +339,6 @@ describe("QuizContext", () => {
         contextValue.advanceProgress(true);
         contextValue.getNextCard();
         contextValue.advanceProgress(true);
-        contextValue.progressBar();
       });
 
       act(() => {

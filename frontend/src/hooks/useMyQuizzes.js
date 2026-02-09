@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useAuth } from "/src/hooks/useAuth";
 
 const SAMPLE_MY_QUIZZES = [
   {
@@ -19,13 +20,12 @@ export function useMyQuizzes() {
   const [quizzes, setQuizzes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchQuizzes = async () => {
       setIsLoading(true);
       try {
-        // const data = await getMyQuizzes();
-        // setQuizzes(data);
         setTimeout(() => {
           setQuizzes(SAMPLE_MY_QUIZZES);
           setIsLoading(false);
@@ -40,21 +40,27 @@ export function useMyQuizzes() {
   }, []);
 
   const handleCreateQuiz = async (quizData) => {
-    console.log("Creating quiz:", quizData);
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({ success: true, id: Math.floor(Math.random() * 1000) });
-      }, 1000);
-    });
+    setIsLoading(true);
+    const data = {
+      title: quizData.title,
+      description: quizData.description,
+      flashcards: quizData.cards,
+      userId: user.id,
+    };
+
+    // TODO: Implement quiz creation
   };
 
   const handleUpdateQuiz = async (id, quizData) => {
-    console.log("Updating quiz:", id, quizData);
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({ success: true });
-      }, 1000);
-    });
+    setIsLoading(true);
+    const data = {
+      title: quizData.title,
+      description: quizData.description,
+      flashcards: quizData.cards,
+      userId: user.id,
+    };
+
+    // TODO: Implement quiz update
   };
 
   return {
