@@ -1,52 +1,44 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema } from "@/lib/authSchemas";
-import { useLogin } from "@/hooks/useLogin";
-import { FormField } from "@/components/ui/FormField";
-import { Input } from "@/components/ui/Input";
-import { Button } from "@/components/ui/Button";
+import { loginSchema } from "/src/lib/authSchemas";
+import { FormField } from "/src/components/ui/FormField";
+import { Input } from "/src/components/ui/Input";
+import { Button } from "/src/components/ui/Button";
+import { useAuth } from "/src/hooks/useAuth";
 
 export default function LoginForm() {
-  const { submit, isLoading, error } = useLogin();
+  const { handleLogin, isLoading, error } = useAuth();
 
   const form = useForm({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: "", password: "" },
+    defaultValues: { username: "", password: "" },
     mode: "onSubmit",
   });
 
   async function onSubmit(values) {
-    await submit(values);
+    await handleLogin(values);
   }
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-      <FormField label="Email address *">
+      <FormField label="Username *" error={form.formState.errors.username?.message}>
         <Input
-          type="email"
-          placeholder="Email address"
-          autoComplete="email"
-          {...form.register("email")}
+          type="text"
+          placeholder="Username"
+          autoComplete="username"
+          hasError={!!form.formState.errors.username}
+          {...form.register("username")}
         />
-        {form.formState.errors.email && (
-          <p className="text-xs text-red-500 mt-1">
-            {form.formState.errors.email.message}
-          </p>
-        )}
       </FormField>
 
-      <FormField label="Password *">
+      <FormField label="Password *" error={form.formState.errors.password?.message}>
         <Input
           type="password"
           placeholder="Password"
           autoComplete="current-password"
+          hasError={!!form.formState.errors.password}
           {...form.register("password")}
         />
-        {form.formState.errors.password && (
-          <p className="text-xs text-red-500 mt-1">
-            {form.formState.errors.password.message}
-          </p>
-        )}
       </FormField>
 
       {error && <p className="text-sm text-red-600">{error}</p>}
