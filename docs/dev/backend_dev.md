@@ -16,6 +16,7 @@ The backend is built using Spring Boot with Maven as the build tool. The project
 
 1. Open the project from the PROJECT ROOT directory.
 2. Ensure that Maven is configured correctly in IntelliJ.
+   - For sanity check, right-click on the `pom.xml` file and select `Maven > Sync Project` to ensure all dependencies and plugins are present.
 3. Create `.env` file to project root based off `.env.example` and fill in the required environment variables.
 4. In order to get the environment variables correctly working in dev, go to IntelliJ's `Run -> Edit Configurations` (top left 3 lines hamburger) and do the following:
    - Choose a convenient name for your configuration, e.g., `OnlineFlashcards API` (doesn't matter)
@@ -39,7 +40,6 @@ The backend follows a layered architecture pattern, separating concerns into dif
 - **common/**: Contains common utilities, constants, and configurations used across the application.
 - **config/**: Contains configuration classes for the application.
 - **security/**: Contains security-related classes and configurations.
-- **<resource_name>/**: Each resource (e.g., user, flashcard, quiz etc.)
 
 ### Creating endpoints/resources
 
@@ -64,6 +64,7 @@ An example of each file can be found in the `com.example.flashcards.user` packag
 #### DTOs
 
 Use Java Records for DTOs. Place them in the `dto/` subpackage. Name them according to their purpose, e.g., `<ResourceName>Response`, `<ResourceName>CreateRequest`, etc.
+JPA annotations work well in validating e.g. incoming requests etc. so use them in the DTOs when appropriate.
 
 #### Exceptions
 
@@ -79,6 +80,12 @@ Define service interfaces in the `IService` class and implement them in the `Ser
 
 Repositories should extend `JpaRepository` and be placed in the `Repository` class. They handle database interactions.
 
+#### Controllers
+
+Controllers handle direct HTTP requests. They should call the service layer to perform operations and return appropriate responses.
+
 ### Testing
 
 Write unit tests for services and controllers in the `src/test/java` directory. Use JUnit and Mockito for testing. Ensure that all new functionality is covered by tests.
+
+Classes of an entity that REQUIRE tests are the Service and Controller.

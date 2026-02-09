@@ -5,6 +5,9 @@ import com.example.flashcards.common.response.ApiError;
 import com.example.flashcards.common.response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -45,6 +48,26 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.failure(error));
     }
 
+    @ExceptionHandler(AuthenticationCredentialsNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleAuthenticationCredentialsNotFound(AuthenticationCredentialsNotFoundException ex) {
+        ApiError error = new ApiError(
+            HttpStatus.UNAUTHORIZED,
+            "Authentication required. Please log in."
+        );
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.failure(error));
+    }
+
+    @ExceptionHandler({AccessDeniedException.class, AuthorizationDeniedException.class})
+    public ResponseEntity<ApiResponse<Void>> handleAccessDenied(Exception ex) {
+        ApiError error = new ApiError(
+            HttpStatus.FORBIDDEN,
+            "Access denied. You do not have permission to access this resource."
+        );
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ApiResponse.failure(error));
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Void>> handleValidation(MethodArgumentNotValidException ex) {
         Map<String, Object> details = new HashMap<>();
@@ -59,6 +82,26 @@ public class GlobalExceptionHandler {
         );
 
         return ResponseEntity.badRequest().body(ApiResponse.failure(error));
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ApiResponse<Void>> handleIllegalArgument(IllegalArgumentException ex) {
+        ApiError error = new ApiError(
+            HttpStatus.BAD_REQUEST,
+            ex.getMessage()
+        );
+
+        return ResponseEntity.badRequest().body(ApiResponse.failure(error));
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<ApiResponse<Void>> handleNullPointer(NullPointerException ex) {
+        ApiError error = new ApiError(
+            HttpStatus.UNAUTHORIZED,
+            "Authentication required. Please log in."
+        );
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.failure(error));
     }
 
     @ExceptionHandler(Exception.class)
