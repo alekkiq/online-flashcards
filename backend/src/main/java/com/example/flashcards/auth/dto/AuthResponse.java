@@ -7,6 +7,7 @@ public record AuthResponse(
     String token,
     Long userId,
     String username,
+    String email,
     UserRole role
 ) {
     public static AuthResponse from(User user, String token) {
@@ -14,6 +15,7 @@ public record AuthResponse(
             token,
             user.getUserId(),
             user.getUsername(),
+            user.getEmail(),
             user.getRole()
         );
     }
