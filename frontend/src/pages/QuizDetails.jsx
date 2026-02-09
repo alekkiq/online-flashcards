@@ -22,7 +22,7 @@ export default function QuizDetails() {
   return (
     <>
       {currentQuiz ? (
-        <div className="flex flex-col gap-8 mt-[10vh] ml-[5vw] mr-[5vw] md:ml-[10vw] md:mr-[10vw]">
+        <div className="max-w-7xl mx-auto flex flex-col gap-8 mt-[10vh]">
           <div className="flex flex-col gap-4 p-8 bg-white rounded-lg">
             <h1 className="font-serif text-2xl md:text-4xl font-bold">{currentQuiz.title}</h1>
             <p className="font-serif font-semibold text-sm md:text-lg text-secondary max-w-[50vw]">

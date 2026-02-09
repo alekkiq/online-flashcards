@@ -277,6 +277,12 @@ const QuizProvider = ({ children }) => {
     return currentQuiz.flashcards[nextIndex];
   };
 
+  const isQuizFinished = () => {
+    if (!currentQuiz) return false;
+    const isFinished = answeredCards.length === currentQuiz.flashcards.length;
+    return isFinished;
+  };
+
   /**
    * get previous card
    * @returns {object|null} The previous card
@@ -340,6 +346,7 @@ const QuizProvider = ({ children }) => {
         isAnswered,
         setIsAnswered,
         resetGameState,
+        isQuizFinished,
       }}
     >
       {children}

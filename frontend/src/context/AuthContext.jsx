@@ -68,6 +68,7 @@ const AuthProvider = ({ children }) => {
     }
     const response = await autoLogin(token);
     if (!response.success) {
+      console.log(response);
       handleLogout();
       return;
     }

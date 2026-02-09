@@ -12,7 +12,7 @@ export default function SearchQuizzes() {
   const { searchQuery, setSearchQuery, filteredQuizzes } = useQuizSearch(searchParams, setSearchParams);
 
   return (
-    <div className="py-8">
+    <div className="max-w-7xl mx-auto py-8">
       <div className="mb-8">
         <h1 className="font-serif text-4xl md:text-5xl font-bold text-main mb-2">Search Quizzes</h1>
         <p className="text-secondary">Search for community made Quizzes.</p>

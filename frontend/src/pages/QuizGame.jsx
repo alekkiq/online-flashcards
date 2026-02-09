@@ -16,9 +16,9 @@ export default function QuizGame() {
     advanceProgress,
     isAnswered,
     progress,
-    setIsAnswered,
     resetGameState,
     loading,
+    isQuizFinished,
   } = useQuizContext();
   const { id } = useParams();
   const [isFlipped, setIsFlipped] = useState(false);
@@ -44,14 +44,7 @@ export default function QuizGame() {
   }, [id]);
 
   useEffect(() => {
-    if (isFlipped) {
-      setIsAnswered(true);
-      advanceProgress(false);
-    }
-  }, [isFlipped]);
-
-  useEffect(() => {
-    if (progress === 100) {
+    if (isQuizFinished()) {
       navigate(`/quiz/results`);
     }
   }, [progress]);
@@ -63,7 +56,7 @@ export default function QuizGame() {
   }
 
   return (
-    <div>
+    <div className="max-w-7xl mx-auto">
       <div className="flex items-center mt-2 gap-2">
         <Button variant="link" onClick={() => navigate("/search")}>
           <ArrowLeft />

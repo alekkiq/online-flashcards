@@ -6,7 +6,7 @@ import { Input } from "../components/ui/Input";
 export default function Home() {
   const navigate = useNavigate();
   return (
-    <div>
+    <div className="max-w-7xl mx-auto">
       <section className="relative flex flex-col items-center md:items-start gap-4 md:gap-6 px-4 md:px-0 py-12 mt-[10vh] h-[70vh]">
         <h1 className="font-serif text-center md:text-left font-bold text-5xl md:text-6xl lg:text-7xl text-main">
           Flashcard learning
@@ -30,8 +30,8 @@ export default function Home() {
         </div>
         <hr className="border-secondary w-full absolute bottom-0" />
       </section>
-      <section className="bg-grid z-1">
-        <div className="flex flex-col md:flex-row items-center justify-between text-center gap-4 md:gap-6 px-4 md:px-0 py-12 mt-[10vh]">
+      <section className="bg-grid">
+        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between text-center gap-4 md:gap-6 px-4 md:px-0 py-12 mt-[10vh]">
           <div className="flex flex-col font-serif gap-6 items-center md:items-start font-bold text-center md:text-left max-w-md text-base md:text-lg">
             <h2 className="font-serif text-center md:text-left font-bold text-5xl md:text-6xl lg:text-7xl text-main">
               Find <br /> <span className="text-secondary">community made</span> <br />{" "}
@@ -50,8 +50,8 @@ export default function Home() {
         </div>
         <hr className="border-secondary mt-20" />
       </section>
-      <section className="bg-grid z-1">
-        <div className="flex flex-col md:flex-row items-center justify-between text-center gap-4 md:gap-6 px-4 md:px-0 py-12 mt-[10vh]">
+      <section className="bg-grid">
+        <div className="relative z-10 flex flex-col md:flex-row items-center justify-between text-center gap-4 md:gap-6 px-4 md:px-0 py-12 mt-[10vh]">
           <img
             src="/src/assets/images/hero_section_2.png"
             alt="Picture of quiz creation process"

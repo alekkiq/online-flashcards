@@ -13,60 +13,62 @@ export default function Login() {
   }, [searchParams]);
 
   return (
-    <div className="min-h-[calc(100vh-56px)] py-12">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start pt-6">
-        <div className="md:flex flex-col hidden">
-          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl text-main font-bold leading-tight">
-            Login to start
-            <br />
-            <span className="text-gray-500 font-bold">learning</span>
-            <br />
-            <span className="text-primary/50 font-bold">teaching</span>
-          </h1>
+    <div className="min-h-screen grid md:grid-cols-2">
+      <div className="hidden md:flex flex-col items-center min-h-screen px-12 lg:px-20 pt-[20vh] bg-grid">
+        <h1 className="relative z-10 font-serif text-left font-bold text-5xl md:text-6xl lg:text-7xl text-main">
+          Login to start
+          <br />
+          <span className="text-secondary">teaching</span>
+          <br />
+          <span className="text-gray-400">learning</span>
+        </h1>
 
-          <p className="mt-6 text-sm text-gray-500 leading-relaxed">
-            In vulputate cursus sem ac consectetur. Nam nec ex scelerisque, blandit neque sit amet, sollicitudin eros. Maecenas risus eros, sodales quis diam sed, cursus cursus magna. Nunc venenatis
+        <div className="relative z-10 flex flex-col font-serif items-start font-bold text-left max-w-md text-base md:text-lg mt-6">
+          <p className="text-secondary">
+            In vulputate cursus sem ac consectetur. Nam nec ex scelerisque, blandit neque sit amet.
+          </p>
+          <p className="text-gray-500">
+            Morbi efficitur augue in odio posuere, vel lacinia purus auctor. Donec finibus non odio sed pellentesque.
+          </p>
+        </div>
+      </div>
+
+      <div className="md:min-h-screen bg-white flex flex-col items-center px-8 md:px-12 lg:px-20 md:mt-0 mt-10 md:pt-[20vh] pt-10 rounded-3xl md:rounded-none">
+        <div className="md:hidden text-center mb-8">
+          <h1 className="font-serif text-3xl font-bold text-main">
+            Login to start learning
+          </h1>
+          <p className="mt-2 text-gray-500">
+            Learn faster and smarter with online flashcards
           </p>
         </div>
 
-        {/* FORM CARD */}
-        <div className="w-full max-w-lg bg-white rounded-xl border border-gray-200 px-8 py-8 shadow-sm justify-self-center">
-          {/* HERO – mobile */}
-          <div className="md:hidden text-center mb-6">
-            <h1 className="text-2xl font-semibold text-main">
-              Online Flashcards
-            </h1>
-            <p className="mt-2 text-sm text-gray-500">
-              Learn faster with smart flashcards
-            </p>
-          </div>
+        <div className="flex mb-8 w-full max-w-md">
+          <NavLink
+            to="/login"
+            end
+            className={`flex-1 pb-3 text-center text-sm font-medium border-b-2 ${
+              activeTab === "login"
+                ? "text-primary border-primary"
+                : "text-gray-300 border-gray-200 hover:text-primary"
+            }`}
+          >
+            Log In
+          </NavLink>
 
-          {/* TABS */}
-          <div className="flex justify-center gap-12 mb-8 border-b border-gray-200">
-            <NavLink
-              to="/login"
-              end
-              className={`pb-2 text-sm font-medium ${
-                activeTab === "login"
-                  ? "text-[var(--color-primary)] border-b-2 border-[var(--color-primary)]"
-                  : "text-gray-300 hover:text-[var(--color-main)]"
-              }`}
-            >
-              Log In
-            </NavLink>
+          <NavLink
+            to="/login?signup=true"
+            className={`flex-1 pb-3 text-center text-sm font-medium border-b-2 ${
+              activeTab === "register"
+                ? "text-primary border-primary"
+                : "text-gray-300 border-gray-200 hover:text-primary"
+            }`}
+          >
+            Sign Up
+          </NavLink>
+        </div>
 
-            <NavLink
-              to="/login?signup=true"
-              className={`pb-2 text-sm font-medium ${
-                activeTab === "register"
-                  ? "text-[var(--color-primary)] border-b-2 border-[var(--color-primary)]"
-                  : "text-gray-300 hover:text-[var(--color-main)]"
-              }`}
-            >
-              Register
-            </NavLink>
-          </div>
-
+        <div className="w-full max-w-md">
           {activeTab === "login" ? <LoginForm /> : <RegisterForm />}
         </div>
       </div>

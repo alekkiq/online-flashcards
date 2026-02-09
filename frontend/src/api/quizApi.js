@@ -29,3 +29,7 @@ export async function deleteQuiz(id) {
     method: "DELETE",
   });
 }
+
+export async function getMyQuizzes() {
+  return fetchData("quiz/my");
+}

@@ -28,7 +28,7 @@ export default function ResultsPage() {
     };
 
     return (
-        <div className="flex flex-col gap-8 mt-[10vh] ml-[5vw] mr-[5vw] md:ml-[10vw] md:mr-[10vw]">
+        <div className="max-w-7xl mx-auto flex flex-col gap-8 mt-[10vh]">
             <div className="flex flex-col gap-6 p-8 bg-white rounded-lg">
                 <div className="flex flex-col items-center gap-4">
                     <div className="w-16 h-16 md:w-20 md:h-20 bg-primary/10 rounded-full flex items-center justify-center">
