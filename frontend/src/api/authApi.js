@@ -34,4 +34,3 @@ export const autoLogin = async (token) => {
     return response;
 };
 
-//TODO: Implement register
