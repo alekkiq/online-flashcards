@@ -3,6 +3,9 @@ import { useNavigate } from "react-router";
 import { Label } from "../components/ui/Label";
 import { Input } from "../components/ui/Input";
 
+import hero_section_1 from "/src/assets/images/hero_section_1.png";
+import hero_section_2 from "/src/assets/images/hero_section_2.png";
+
 export default function Home() {
   const navigate = useNavigate();
   return (
@@ -43,7 +46,7 @@ export default function Home() {
             </p>
           </div>
           <img
-            src="/src/assets/images/hero_section_1.png"
+            src={hero_section_1}
             alt="Picture of searching quizzes"
             className="md:w-1/2 w-3/4 p-4 rounded-2xl bg-primary"
           />
@@ -53,7 +56,7 @@ export default function Home() {
       <section className="bg-grid">
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between text-center gap-4 md:gap-6 px-4 md:px-0 py-12 mt-[10vh]">
           <img
-            src="/src/assets/images/hero_section_2.png"
+            src={hero_section_2}
             alt="Picture of quiz creation process"
             className="md:w-1/3 w-3/4 py-4 px-20 rounded-2xl bg-primary"
           />
