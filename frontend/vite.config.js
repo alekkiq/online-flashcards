@@ -6,10 +6,6 @@ import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  build: {
-    outDir: path.resolve(__dirname, "../server/public"),
-    emptyOutDir: true,
-  },
   theme: {
     extend: {
       fontFamily: {
