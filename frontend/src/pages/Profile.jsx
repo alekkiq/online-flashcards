@@ -1,54 +1,34 @@
-import { Link } from "react-router";
+import { Link, redirect } from "react-router";
 import { useAuth } from "/src/hooks/useAuth";
 import { Avatar } from "/src/components/ui/Avatar";
 import { Badge } from "/src/components/ui/Badge";
 import { Button } from "/src/components/ui/Button";
+import { useEffect } from "react";
 
 export default function Profile() {
-  const { user, handleLogout } = useAuth();
+  const { user } = useAuth();
 
-  // jos käyttäjä ei ole kirjautunut, ohjataan “login” actioneihin (ei arvata redirect-logiikkaa)
+  useEffect(() => {
+    if (!user) {
+      redirect("/login");
+    }
+  }, [user]);
+
+  const roleLabel = user?.role ? String(user.role) : "User";
+
   if (!user) {
-    return (
-      <div className="mx-auto max-w-5xl">
-        <div className="mt-10 rounded-2xl bg-white p-8 shadow-sm border border-secondary/20">
-          <h1 className="font-serif text-3xl md:text-4xl font-black text-main">Profile</h1>
-          <p className="mt-2 text-secondary">
-            You are not logged in.
-          </p>
-
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link to="/login">
-              <Button>Log In</Button>
-            </Link>
-            <Link to="/signup">
-              <Button variant="outline">Sign Up</Button>
-            </Link>
-            <Link to="/search">
-              <Button variant="ghost">Search Quizzes</Button>
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
+    return null;
   }
-
-  const roleLabel = user.role ? String(user.role) : "User";
 
   return (
     <div className="mx-auto max-w-5xl">
-      {/* page header */}
       <div className="mt-10">
         <h1 className="font-serif text-3xl md:text-5xl font-black text-main">Profile</h1>
-        <p className="mt-2 text-secondary">
-          Manage your account and jump back into studying.
-        </p>
+        <p className="mt-2 text-secondary">Manage your account and jump back into studying.</p>
       </div>
 
-      {/* main card */}
-      <div className="mt-8 rounded-2xl bg-white p-8 shadow-sm border border-secondary/20">
+      <div className="mt-8 rounded-2xl bg-white p-8">
         <div className="flex items-center justify-between gap-6 flex-wrap">
-          {/* user identity */}
           <div className="flex items-center gap-4">
             <Avatar
               name={user.username}
@@ -65,14 +45,8 @@ export default function Profile() {
               <p className="text-sm text-secondary">User ID: {user.id}</p>
             </div>
           </div>
-
-          {/* sign out */}
-          <Button variant="outline" onClick={handleLogout}>
-            Sign Out
-          </Button>
         </div>
 
-        {/* quick actions */}
         <div className="mt-8">
           <h2 className="text-sm font-semibold text-secondary uppercase tracking-wide">
             Quick Actions
@@ -93,11 +67,8 @@ export default function Profile() {
           </div>
         </div>
 
-        {/* info note (no guessing about results) */}
         <div className="mt-8 rounded-xl bg-primary/5 p-4 border border-primary/10">
-          <p className="text-sm text-secondary">
-            Tip: Your study results and history will appear here once the results API is available.
-          </p>
+          <p className="text-sm text-secondary">TODO IMPLEMENT HISTORY API</p>
         </div>
       </div>
     </div>
