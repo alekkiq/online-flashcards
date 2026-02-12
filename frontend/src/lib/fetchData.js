@@ -1,4 +1,3 @@
-//TODO: Implement fetchData
 const API_BASE = "/api/v1";
 
 /**

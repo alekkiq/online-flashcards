@@ -5,14 +5,13 @@ import { AuthProvider, AuthContext } from "../context/AuthContext";
 import { BrowserRouter } from "react-router";
 import * as api from "../api";
 
-// Mock the API module
 vi.mock("../api", () => ({
   login: vi.fn(),
   autoLogin: vi.fn(),
 }));
 
 const TestConsumer = ({ onMount }) => {
-  const context = useContext(AuthContext); 
+  const context = useContext(AuthContext);
   onMount(context);
   return <div data-testid="test-consumer">Consumer</div>;
 };
@@ -21,8 +20,8 @@ describe("AuthProvider", () => {
   let context;
 
   beforeEach(() => {
-    vi.clearAllMocks(); 
-    
+    vi.clearAllMocks();
+
     api.login.mockResolvedValue({
       success: true,
       data: {
@@ -60,7 +59,7 @@ describe("AuthProvider", () => {
       role: "USER",
     });
   });
-  
+
   it("autologin success", async () => {
     localStorage.setItem("token", "fake-token");
     api.autoLogin.mockResolvedValue({
@@ -77,13 +76,13 @@ describe("AuthProvider", () => {
     await act(async () => {
       await context.handleAutoLogin();
     });
-    
+
     expect(context.user).toEqual({
       id: 1,
       username: "test",
       role: "USER",
     });
-  })
+  });
 
   it("autologin failure", async () => {
     localStorage.setItem("token", "fake-token");
@@ -101,7 +100,7 @@ describe("AuthProvider", () => {
     await act(async () => {
       await context.handleAutoLogin();
     });
-    
+
     expect(context.user).toBeNull();
-  })
+  });
 });
