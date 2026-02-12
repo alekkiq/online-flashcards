@@ -1,6 +1,7 @@
 package com.example.flashcards.security;
 
 import com.example.flashcards.entity.user.User;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -58,13 +59,17 @@ public class JwtService {
      * @return True if the token is expired, false otherwise
      */
     public boolean isExpiredToken(String token) {
-        Date expirationDate = Jwts.parserBuilder()
-            .setSigningKey(this.getSigningKey())
-            .build()
-            .parseClaimsJws(token)
-            .getBody()
-            .getExpiration();
-        return expirationDate.before(new Date());
+        try {
+            Date expirationDate = Jwts.parserBuilder()
+                .setSigningKey(this.getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getExpiration();
+            return expirationDate.before(new Date());
+        } catch (ExpiredJwtException e) {
+            return true;
+        }
     }
 
     /**
@@ -74,7 +79,11 @@ public class JwtService {
      * @return True if the token is valid, false otherwise
      */
     public boolean isValidToken(String token, UserDetails userDetails) {
-        String username = extractUsername(token);
-        return (username.equals(userDetails.getUsername()) && !isExpiredToken(token));
+        try {
+            String username = extractUsername(token);
+            return (username.equals(userDetails.getUsername()) && !isExpiredToken(token));
+        } catch (ExpiredJwtException e) {
+            return false;
+        }
     }
 }
