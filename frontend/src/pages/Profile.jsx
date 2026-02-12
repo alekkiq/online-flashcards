@@ -3,22 +3,11 @@ import { useAuth } from "/src/hooks/useAuth";
 import { Avatar } from "/src/components/ui/Avatar";
 import { Badge } from "/src/components/ui/Badge";
 import { Button } from "/src/components/ui/Button";
-import { useEffect } from "react";
 
 export default function Profile() {
   const { user } = useAuth();
 
-  useEffect(() => {
-    if (!user) {
-      redirect("/login");
-    }
-  }, [user]);
-
   const roleLabel = user?.role ? String(user.role) : "User";
-
-  if (!user) {
-    return null;
-  }
 
   return (
     <div className="mx-auto max-w-5xl">

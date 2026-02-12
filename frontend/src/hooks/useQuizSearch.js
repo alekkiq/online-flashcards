@@ -40,12 +40,12 @@ const SAMPLE_QUIZZES = [
   },
   {
     id: 5,
-    title: "Persettä",
-    description: "Persettä",
+    title: "Finnish Slang",
+    description: "Finnish Slang",
     tries: 1,
     cardCount: 16,
-    author: { name: "Homo" },
-    authorRole: "Bug",
+    author: { name: "BlendG" },
+    authorRole: "Student",
   },
 ];
 
@@ -77,10 +77,6 @@ export function useQuizSearch(searchParams, setSearchParams) {
       );
   }, [searchQuery]);
 
-  useEffect(() => {
-    // load all
-    
-  }, []);
 
   return {
     searchQuery,

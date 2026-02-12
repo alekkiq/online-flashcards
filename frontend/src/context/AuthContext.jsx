@@ -63,13 +63,14 @@ const AuthProvider = ({ children }) => {
   const handleAutoLogin = async () => {
     const token = localStorage.getItem("token");
     if (!token) {
-      handleLogout();
+      setUser(null);
+      localStorage.removeItem("token");
       return;
     }
     const response = await autoLogin(token);
     if (!response.success) {
-      console.log(response);
-      handleLogout();
+      setUser(null);
+      localStorage.removeItem("token");
       return;
     }
     const data = response.data.data;

@@ -41,7 +41,7 @@ export default function QuizGame() {
   useEffect(() => {
     resetGameState();
     fetchQuiz(id);
-  }, [id]);
+  }, []);
 
   useEffect(() => {
     if (isQuizFinished()) {

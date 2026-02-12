@@ -1,5 +1,3 @@
-import { useState, useEffect } from "react";
-
 export default function FlipCard({ front, back, isFlipped, handleFlip }) {
   return (
     <div className={`flip-card-container ${isFlipped ? "flipped" : ""}`} onClick={handleFlip}>

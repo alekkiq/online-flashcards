@@ -1,21 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "/src/hooks/useAuth";
 
-const SAMPLE_MY_QUIZZES = [
-  {
-    id: 101,
-    title: "Perse",
-    description: "Persettä",
-    cardCount: 12,
-  },
-  {
-    id: 102,
-    title: "Ppppu",
-    description: "Persettä",
-    cardCount: 5,
-  },
-];
-
 export function useMyQuizzes() {
   const [quizzes, setQuizzes] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -27,7 +12,25 @@ export function useMyQuizzes() {
       setIsLoading(true);
       try {
         setTimeout(() => {
-          setQuizzes(SAMPLE_MY_QUIZZES);
+          setQuizzes([
+            {
+              id: 1,
+              title: "Quiz 1",
+              description: "Description 1",
+              flashcards: [
+                {
+                  id: 1,
+                  front: "Front 1",
+                  back: "Back 1",
+                },
+                {
+                  id: 2,
+                  front: "Front 2",
+                  back: "Back 2",
+                },
+              ],
+            },
+          ]);
           setIsLoading(false);
         }, 500);
       } catch (err) {
