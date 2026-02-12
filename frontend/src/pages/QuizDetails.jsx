@@ -17,7 +17,7 @@ export default function QuizDetails() {
   const { fetchQuiz, quizHistory, currentQuiz } = useQuizContext();
   useEffect(() => {
     fetchQuiz(id);
-  }, []);
+  }, );
 
   return (
     <>
