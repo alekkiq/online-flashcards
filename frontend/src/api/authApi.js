@@ -34,3 +34,26 @@ export const autoLogin = async (token) => {
     return response;
 };
 
+export const updateEmail = async (token, email) => {
+    const response = await fetchData(`users/me/email`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({ email }),
+    });
+    return response;
+};
+
+export const updatePassword = async (token, oldPassword, newPassword) => {
+    const response = await fetchData(`users/me/password`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({ oldPassword, newPassword }),
+    });
+    return response;
+};

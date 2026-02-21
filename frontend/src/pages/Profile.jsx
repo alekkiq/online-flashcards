@@ -3,9 +3,16 @@ import { useAuth } from "/src/hooks/useAuth";
 import { Avatar } from "/src/components/ui/Avatar";
 import { Badge } from "/src/components/ui/Badge";
 import { Button } from "/src/components/ui/Button";
+import EditProfileForms from "/src/components/auth/EditProfileForms";
+import { useEffect, useState } from "react";
 
 export default function Profile() {
   const { user } = useAuth();
+  const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    if (!user) redirect("/login");
+  }, [user])
 
   const roleLabel = user?.role ? String(user.role) : "User";
 
@@ -31,10 +38,21 @@ export default function Profile() {
                 <p className="text-lg font-semibold text-main">{user.username}</p>
                 <Badge>{roleLabel}</Badge>
               </div>
-              <p className="text-sm text-secondary">User ID: {user.id}</p>
+              <p className="text-sm text-secondary">{user.email}</p>
             </div>
           </div>
+          <Button
+              className="w-full sm:w-auto"
+              variant={isEditing ? "outline" : undefined}
+              onClick={() => setIsEditing((prev) => !prev)}
+          >
+            {isEditing ? "Cancel" : "Edit profile"}
+          </Button>
         </div>
+
+        {isEditing && (
+            <EditProfileForms user={user} onCancel={() => setIsEditing(false)} />
+        )}
 
         <div className="mt-8">
           <h2 className="text-sm font-semibold text-secondary uppercase tracking-wide">
@@ -42,15 +60,15 @@ export default function Profile() {
           </h2>
 
           <div className="mt-3 flex flex-wrap gap-3">
-            <Link to="/search">
+            <Link to="/search" className="w-full sm:w-auto">
               <Button>Search Quizzes</Button>
             </Link>
 
-            <Link to="/my-quizzes">
+            <Link to="/my-quizzes" className="w-full sm:w-auto">
               <Button variant="outline">My Quizzes</Button>
             </Link>
 
-            <Link to="/my-quizzes/create">
+            <Link to="/my-quizzes/create" className="w-full sm:w-auto">
               <Button variant="secondary">Create New Quiz</Button>
             </Link>
           </div>
