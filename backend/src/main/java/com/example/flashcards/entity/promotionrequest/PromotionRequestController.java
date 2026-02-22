@@ -9,7 +9,6 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,9 +24,9 @@ public class PromotionRequestController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<PromotionRequestResponse>> createRequest(
-            @AuthenticationPrincipal UserDetails userDetails,
+            @AuthenticationPrincipal CustomUserDetails userDetails,
             @Valid @RequestBody PromotionRequestCreationRequest request) {
-        Long userId = Long.parseLong(userDetails.getUsername());
+        Long userId = userDetails.getUserId();
         PromotionRequest createdRequest = this.promotionRequestService.createRequest(userId, request.message());
         PromotionRequestResponse response = PromotionRequestResponse.from(createdRequest);
 
@@ -47,7 +46,7 @@ public class PromotionRequestController {
 
     @GetMapping("/my-requests")
     public ResponseEntity<ApiResponse<List<PromotionRequestResponse>>> getMyRequests(@AuthenticationPrincipal CustomUserDetails userDetails) {
-        Long userId = Long.parseLong(userDetails.getUsername());
+        Long userId = userDetails.getUserId();
         List<PromotionRequest> userRequests = this.promotionRequestService.getRequestsByUser(userId);
         List<PromotionRequestResponse> response = userRequests.stream()
             .map(PromotionRequestResponse::from)

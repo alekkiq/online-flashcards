@@ -10,3 +10,7 @@ export const quizSchema = z.object({
     })
   ).min(1, "At least one card is required"),
 });
+
+export const promotionRequestSchema = z.object({
+    message: z.string().max(500, "Message must be at most 500 characters").optional(),
+});

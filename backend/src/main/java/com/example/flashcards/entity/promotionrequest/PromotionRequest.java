@@ -4,10 +4,12 @@ import com.example.flashcards.entity.user.User;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "promotion_requests")
 public class PromotionRequest {
     private static final PromotionRequestStatus DEFAULT_STATUS = PromotionRequestStatus.PENDING;
