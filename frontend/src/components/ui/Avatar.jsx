@@ -13,6 +13,7 @@ export function Avatar({
   size = "w-6 h-6",
   bgColor = "bg-gray-300",
   textColor = "text-gray-500",
+  textSize = "text-xs",
   className,
 }) {
   const initial = name?.charAt(0)?.toUpperCase() || "?";
@@ -20,10 +21,11 @@ export function Avatar({
   return (
     <div
       className={cn(
-        "rounded-full flex items-center justify-center text-xs",
+        "rounded-full flex items-center justify-center",
         size,
         bgColor,
         textColor,
+        textSize,
         className
       )}
     >

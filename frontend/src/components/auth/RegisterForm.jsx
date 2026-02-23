@@ -63,7 +63,7 @@ export default function RegisterForm() {
 
       {error && <p className="text-sm text-red-600">{error}</p>}
 
-      <Button type="submit" className="w-full h-11" disabled={isLoading}>
+      <Button type="submit" className="w-full! h-11" disabled={isLoading}>
         {isLoading ? "Creating account..." : "Sign Up"}
       </Button>
     </form>
