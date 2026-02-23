@@ -3,10 +3,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { promotionRequestSchema } from "/src/lib/schemas";
 import { Button } from "/src/components/ui/Button";
 import { FormField } from "/src/components/ui/FormField";
-import { usePromotionRequests } from "/src/hooks/usePromotionRequests";
 
-export default function PromotionRequestForm({ isOpen, onClose }) {
-    const { error, submitError, submitSuccess, submitRequest } = usePromotionRequests();
+export default function PromotionRequestForm({ isOpen, onClose, submitRequest, submitError, submitSuccess }) {
 
     const form = useForm({
         resolver: zodResolver(promotionRequestSchema),
@@ -42,9 +40,6 @@ export default function PromotionRequestForm({ isOpen, onClose }) {
             )}
             {submitSuccess && (
                 <p className="text-sm text-green-600">{submitSuccess}</p>
-            )}
-            {error && (
-                <p className="text-sm text-red-500">{error}</p>
             )}
 
             <Button

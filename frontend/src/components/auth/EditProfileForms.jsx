@@ -108,11 +108,10 @@ function EditPasswordForm() {
 
 export default function EditProfileForm({ user, onCancel }) {
     return (
-        <div className="mt-6 border-t border-gray-100 pt-4 space-y-8">
+        <div className="mt-4 space-y-6">
             <EditEmailForm user={user} />
-            <div className="border-t border-gray-100 pt-4">
-                <EditPasswordForm />
-            </div>
+            <hr className="border-secondary/20"/>
+            <EditPasswordForm />
             <Button type="button" variant="outline" onClick={onCancel}>
                 Close
             </Button>
