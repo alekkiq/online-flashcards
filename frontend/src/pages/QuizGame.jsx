@@ -19,6 +19,8 @@ export default function QuizGame() {
     resetGameState,
     loading,
     isQuizFinished,
+    saveQuizAttempt,
+    score,
   } = useQuizContext();
   const { id } = useParams();
   const [isFlipped, setIsFlipped] = useState(false);
@@ -41,10 +43,11 @@ export default function QuizGame() {
   useEffect(() => {
     resetGameState();
     fetchQuiz(id);
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (isQuizFinished()) {
+      saveQuizAttempt(id, score);
       navigate(`/quiz/results`);
     }
   }, [progress]);

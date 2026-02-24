@@ -44,7 +44,9 @@ public class QuizService implements IQuizService {
                 quiz.getTitle(),
                 quiz.getDescription(),
                 quiz.getCreator().getUsername(),
-                quiz.getSubject().getName()
+                quiz.getCreator().getRole().name(),
+                quiz.getSubject().getName(),
+                quiz.getFlashcards().size()
             ))
             .toList();
     }
@@ -106,15 +108,9 @@ public class QuizService implements IQuizService {
     }
 
     @Override
-    public List<QuizSeachResponse> getQuizzesByUser(long userId) {
+    public List<QuizResponse> getQuizzesByUser(long userId) {
         return quizRepository.findByCreator_UserId(userId).stream()
-            .map(quiz -> new QuizSeachResponse(
-                quiz.getQuizId(),
-                quiz.getTitle(),
-                quiz.getDescription(),
-                quiz.getCreator().getUsername(),
-                quiz.getSubject().getName()
-            ))
+            .map(this::mapToQuizResponse)
             .toList();
     }
 
@@ -128,7 +124,9 @@ public class QuizService implements IQuizService {
             quiz.getTitle(),
             quiz.getDescription(),
             quiz.getCreator().getUsername(), 
+            quiz.getCreator().getRole().name(),
             quiz.getSubject().getName(), 
+            quiz.getFlashcards().size(),
             cardResponses
         );
     }

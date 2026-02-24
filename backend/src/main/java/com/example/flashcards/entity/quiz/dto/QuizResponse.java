@@ -8,6 +8,8 @@ public record QuizResponse(
     String title,
     String description,
     String creatorUsername,
+    String creatorRole,
     String subjectName,
+    int cardCount,
     List<FlashcardResponse> flashcards
 ) {}

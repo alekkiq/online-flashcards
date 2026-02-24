@@ -96,10 +96,10 @@ public class QuizController {
      * @return list of quizzes created by the user
      */
     @GetMapping("/me")
-    public ResponseEntity<ApiResponse<List<QuizSeachResponse>>> getQuizzesByUser(
+    public ResponseEntity<ApiResponse<List<QuizResponse>>> getQuizzesByUser(
         @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
-        List<QuizSeachResponse> response = quizService.getQuizzesByUser(userDetails.getUserId());
+        List<QuizResponse> response = quizService.getQuizzesByUser(userDetails.getUserId());
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 }

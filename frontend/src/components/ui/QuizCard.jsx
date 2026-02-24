@@ -9,7 +9,7 @@ import { Avatar } from "./Avatar";
  * @param {string} className any extra classes
  */
 export function QuizCard({ quiz, onClick, className = "" }) {
-  const cardCount = quiz?.cardCount || quiz.flashcards?.length || 0;
+  const cardCount = quiz?.cardCount;
   const creatorRole = quiz?.creatorRole ? String(quiz.creatorRole) : "STUDENT";
 
   return (
@@ -23,7 +23,7 @@ export function QuizCard({ quiz, onClick, className = "" }) {
       <div className="p-4 flex flex-col gap-2 flex-1 justify-center">
         <h3 className="font-inter font-bold text-main text-lg leading-tight">{quiz.title}</h3>
 
-        {quiz.flashcards?.length !== undefined && (
+        {cardCount !== undefined && (
           <Badge textColor="text-primary" bgColor="bg-primary/10">
             {cardCount} cards
           </Badge>

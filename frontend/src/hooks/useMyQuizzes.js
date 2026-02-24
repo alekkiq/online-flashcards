@@ -1,73 +1,59 @@
-import { useEffect, useState } from "react";
+import { useEffect, useCallback } from "react";
 import { useAuth } from "/src/hooks/useAuth";
+import { useQuizContext } from "/src/hooks/useQuizContext";
+import { createQuiz, updateQuiz } from "../api/quizApi";
 
 export function useMyQuizzes() {
-  const [quizzes, setQuizzes] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
   const { user } = useAuth();
+  const {
+    userQuizzes,
+    userQuizzesLoading: isLoading,
+    fetchUserQuizzes,
+    setUserQuizzes,
+    error,
+    setError,
+  } = useQuizContext();
 
   useEffect(() => {
-    const fetchQuizzes = async () => {
-      setIsLoading(true);
-      try {
-        setTimeout(() => {
-          setQuizzes([
-            {
-              id: 1,
-              title: "Quiz 1",
-              description: "Description 1",
-              flashcards: [
-                {
-                  id: 1,
-                  front: "Front 1",
-                  back: "Back 1",
-                },
-                {
-                  id: 2,
-                  front: "Front 2",
-                  back: "Back 2",
-                },
-              ],
-            },
-          ]);
-          setIsLoading(false);
-        }, 500);
-      } catch (err) {
-        setError(err);
-        setIsLoading(false);
-      }
-    };
-
-    fetchQuizzes();
-  }, []);
+    fetchUserQuizzes();
+  }, [fetchUserQuizzes]);
 
   const handleCreateQuiz = async (quizData) => {
-    setIsLoading(true);
     const data = {
       title: quizData.title,
       description: quizData.description,
       flashcards: quizData.cards,
       userId: user.id,
+      subject: "Math", // TODO: Implement subject selection
     };
 
-    // TODO: Implement quiz creation
+    const response = await createQuiz(data);
+    if (!response.success) {
+      setError(response.error);
+      return;
+    }
+    setUserQuizzes([...userQuizzes, response.data.data]);
   };
 
   const handleUpdateQuiz = async (id, quizData) => {
-    setIsLoading(true);
     const data = {
       title: quizData.title,
       description: quizData.description,
       flashcards: quizData.cards,
       userId: user.id,
+      subject: "Math", // TODO: Implement subject selection
     };
 
-    // TODO: Implement quiz update
+    const response = await updateQuiz(id, data);
+    if (!response.success) {
+      setError(response.error);
+      return;
+    }
+    setUserQuizzes(userQuizzes.map((quiz) => (quiz.quizId === id ? response.data.data : quiz)));
   };
 
   return {
-    quizzes,
+    quizzes: userQuizzes,
     isLoading,
     error,
     handleCreateQuiz,

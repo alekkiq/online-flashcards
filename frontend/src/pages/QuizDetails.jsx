@@ -17,7 +17,7 @@ export default function QuizDetails() {
   const { fetchQuiz, quizHistory, currentQuiz } = useQuizContext();
   useEffect(() => {
     fetchQuiz(id);
-  }, []);
+  }, [id, fetchQuiz]);
 
   return (
     <>
@@ -29,15 +29,15 @@ export default function QuizDetails() {
               {currentQuiz.description}
             </p>
             <div className="flex flex-row items-center gap-2">
-              <Avatar name={currentQuiz.author.name} className="w-9 h-9 md:w-11 md:h-11" />
+              <Avatar name={currentQuiz?.creatorUsername} className="w-9 h-9 md:w-11 md:h-11" />
               <div className="flex flex-col items-start">
                 <p className="font-inter font-bold text-sm md:text-lg text-secondary">
                   <span className="text-main font-medium">Created by </span>
-                  {currentQuiz.author.name}
+                  {currentQuiz?.creatorUsername}
                 </p>
-                {currentQuiz.authorRole && (
+                {currentQuiz?.creatorRole && (
                   <Badge textColor="text-white" bgColor="bg-primary">
-                    {currentQuiz.authorRole}
+                    {currentQuiz?.creatorRole}
                   </Badge>
                 )}
               </div>
@@ -50,10 +50,9 @@ export default function QuizDetails() {
                   <p className="font-inter font-bold text-sm md:text-lg text-secondary">History</p>
                 </div>
                 <div className="flex flex-col gap-5">
-                  {/* //TODO: fetch history from backend */}
                   {quizHistory.map((h) => (
-                    <div key={h.id} className="flex flex-col gap-2">
-                      <ScoreBadge percentage={h.score} date={h.date} />
+                    <div key={h.quizResultId} className="flex flex-col gap-2">
+                      <ScoreBadge percentage={h.scorePercentage} date={new Date(h.completedAt).toLocaleDateString("fi-FI")} />
                     </div>
                   ))}
                 </div>
@@ -68,7 +67,7 @@ export default function QuizDetails() {
             <div className="flex flex-row gap-8 md:ml-8">
               <div className="flex flex-col items-center">
                 <p className="font-inter font-bold text-sm md:text-lg text-main">
-                  {currentQuiz.tries}
+                  {quizHistory.length}
                 </p>
                 <p className="font-serif font-bold text-sm md:text-lg text-main">Tries</p>
               </div>
@@ -83,7 +82,7 @@ export default function QuizDetails() {
             <Button
               size="lg"
               className="md:w-1/3 w-full mt-2"
-              onClick={() => navigate(`/quiz/${currentQuiz.id}`)}
+              onClick={() => navigate(`/quiz/${currentQuiz.quizId}`)}
             >
               Play Quiz
             </Button>

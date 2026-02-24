@@ -5,5 +5,7 @@ public record QuizSeachResponse(
     String title,
     String description,
     String creatorUsername,
-    String subjectName
+    String creatorRole,
+    String subjectName,
+    int cardCount
 ) {}

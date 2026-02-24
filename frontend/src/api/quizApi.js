@@ -52,3 +52,25 @@ export async function getMyQuizzes() {
     },
   });
 }
+
+export async function getQuizHistory(quizId) {
+  return fetchData(`quiz-results/me/quiz/${quizId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+}
+
+export async function saveQuizResult(quizId, score) {
+  return fetchData(`quiz-results`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      quizId: quizId,
+      scorePercentage: score,
+    }),
+  });
+}

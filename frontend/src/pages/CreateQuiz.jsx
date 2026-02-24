@@ -40,12 +40,13 @@ export default function CreateQuiz() {
 
   useEffect(() => {
     if (isEditMode && !isQuizzesLoading) {
-      const quizToEdit = quizzes.find((q) => q.id === parseInt(id));
+      const quizToEdit = quizzes.find((q) => q.quizId === parseInt(id));
+      console.log(quizToEdit);
       if (quizToEdit) {
         reset({
           title: quizToEdit.title,
           description: quizToEdit.description || "",
-          cards: quizToEdit.cards || [{ question: "", answer: "" }],
+          cards: quizToEdit.flashcards || [{ question: "", answer: "" }],
         });
       }
     }

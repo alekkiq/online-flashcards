@@ -24,11 +24,11 @@ export default function MyQuizzes() {
         
         {quizzes.map((quiz) => (
           <MyQuizCard
-            key={quiz.id}
+            key={quiz.quizId}
             title={quiz.title}
             cardCount={quiz.cardCount}
-            onClick={() => navigate(`/my-quizzes/details/${quiz.id}`)}
-            onEdit={() => void 0}
+            onClick={() => navigate(`/quiz-details/${quiz.quizId}`)}
+            onEdit={() => navigate(`/my-quizzes/details/${quiz.quizId}`)}
           />
         ))}
       </div>

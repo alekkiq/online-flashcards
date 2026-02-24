@@ -1,10 +1,16 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useEffect, useCallback } from "react";
+import { getQuiz, getQuizHistory, saveQuizResult, getMyQuizzes } from "/src/api";
+import { useAuth } from "../hooks/useAuth";
 
 const QuizContext = createContext(null);
 
 const QuizProvider = ({ children }) => {
+  const { user } = useAuth();
   const [currentQuiz, setCurrentQuiz] = useState(null);
   const [quizHistory, setQuizHistory] = useState([]);
+  const [userQuizzes, setUserQuizzes] = useState([]);
+  const [userQuizzesLoading, setUserQuizzesLoading] = useState(false);
+  const [userQuizzesFetched, setUserQuizzesFetched] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -22,207 +28,21 @@ const QuizProvider = ({ children }) => {
    * fetch a specific quiz by ID
    * @param {number} quizId the ID of the quiz to fetch
    */
-  const fetchQuiz = async (quizId) => {
+  const fetchQuiz = useCallback(async (quizId) => {
     setLoading(true);
     setError(null);
     try {
-      //TODO: fetch from backend
-      const SAMPLE_QUIZZES = [
-        {
-          id: 1,
-          title: "Asia Geography Quiz",
-          description:
-            "This Quiz teaches you about Asia and Geography to learn all the fundamental bs about amazing asia blalbalbalbla",
-          tries: 1,
-          cardCount: 16,
-          author: { name: "Aleksput" },
-          authorRole: "Teacher",
-          history: [
-            { id: 1, date: "2026-01-15", score: 28 },
-            { id: 2, date: "2026-01-20", score: 30 },
-          ],
-          flashcards: [
-            { id: 1, question: "What is the capital of Japan?", answer: "Tokyo" },
-            { id: 2, question: "What is the capital of China?", answer: "Beijing" },
-            { id: 3, question: "What is the capital of South Korea?", answer: "Seoul" },
-            {
-              id: 4,
-              question: "What is the largest country in Asia by area?",
-              answer: "Russia (Asian part) / China",
-            },
-            { id: 5, question: "What is the longest river in Asia?", answer: "Yangtze River" },
-            {
-              id: 6,
-              question: "What is the highest mountain in the world?",
-              answer: "Mount Everest",
-            },
-            { id: 7, question: "What ocean borders Asia to the east?", answer: "Pacific Ocean" },
-            { id: 8, question: "What is the capital of Thailand?", answer: "Bangkok" },
-            { id: 9, question: "What is the capital of Vietnam?", answer: "Hanoi" },
-            { id: 10, question: "What is the capital of India?", answer: "New Delhi" },
-            {
-              id: 11,
-              question: "What sea separates Japan from South Korea?",
-              answer: "Sea of Japan / East Sea",
-            },
-            { id: 12, question: "What is the capital of Indonesia?", answer: "Jakarta" },
-            {
-              id: 13,
-              question: "What desert is located in Mongolia and China?",
-              answer: "Gobi Desert",
-            },
-            { id: 14, question: "What is the capital of the Philippines?", answer: "Manila" },
-            {
-              id: 15,
-              question: "What mountain range separates India from Tibet?",
-              answer: "Himalayas",
-            },
-            { id: 16, question: "What is the capital of Malaysia?", answer: "Kuala Lumpur" },
-          ],
-        },
-        {
-          id: 2,
-          title: "Albania Quiz",
-          description: "This Quiz teaches you about Albania",
-          tries: 1,
-          cardCount: 5,
-          author: { name: "BlendG" },
-          authorRole: "Student",
-          history: [
-            { id: 1, date: "2026-01-15", score: 28 },
-            { id: 2, date: "2026-01-20", score: 55 },
-            { id: 3, date: "2026-01-25", score: 95 },
-          ],
-          flashcards: [
-            { id: 1, question: "What is the capital of Albania?", answer: "Tirana" },
-            { id: 2, question: "What currency is used in Albania?", answer: "Albanian Lek (ALL)" },
-            { id: 3, question: "What sea borders Albania to the west?", answer: "Adriatic Sea" },
-            { id: 4, question: "What is the official language of Albania?", answer: "Albanian" },
-            {
-              id: 5,
-              question: "What is the highest mountain in Albania?",
-              answer: "Mount Korab (2,764m)",
-            },
-          ],
-        },
-        {
-          id: 3,
-          title: "Live Like Teemu",
-          description: "Live Like Teemu",
-          tries: 1,
-          cardCount: 8,
-          author: { name: "TeemuLaasio" },
-          authorRole: "User",
-          history: [],
-          flashcards: [
-            {
-              id: 1,
-              question: "How many hours of sleep does Teemu get?",
-              answer: "8 hours minimum",
-            },
-            { id: 2, question: "What does Teemu drink in the morning?", answer: "Black coffee" },
-            { id: 3, question: "How often does Teemu exercise?", answer: "Every day" },
-            {
-              id: 4,
-              question: "What is Teemu's favorite programming language?",
-              answer: "JavaScript",
-            },
-            { id: 5, question: "What time does Teemu wake up?", answer: "6:00 AM" },
-            { id: 6, question: "What is Teemu's life motto?", answer: "Ship it!" },
-            {
-              id: 7,
-              question: "How does Teemu handle bugs?",
-              answer: "With patience and console.log",
-            },
-            { id: 8, question: "What does Teemu eat for lunch?", answer: "Healthy salad" },
-          ],
-        },
-        {
-          id: 4,
-          title: "Bugs 101",
-          description: "morjens tää quiz opettaa sua vältellä bugeja terveisin abbas",
-          tries: 1,
-          cardCount: 10,
-          author: { name: "AlabbasA" },
-          authorRole: "Bug",
-          history: [],
-          flashcards: [
-            {
-              id: 1,
-              question: "What is a null pointer exception?",
-              answer: "Error when accessing an object that points to nothing",
-            },
-            {
-              id: 2,
-              question: "What is an off-by-one error?",
-              answer: "Loop iterating one too many or too few times",
-            },
-            {
-              id: 3,
-              question: "What is a race condition?",
-              answer: "Bug where outcome depends on timing of events",
-            },
-            {
-              id: 4,
-              question: "What is a memory leak?",
-              answer: "When memory is allocated but never freed",
-            },
-            { id: 5, question: "What is an infinite loop?", answer: "Loop that never terminates" },
-            {
-              id: 6,
-              question: "What is a syntax error?",
-              answer: "Code that doesn't follow language rules",
-            },
-            {
-              id: 7,
-              question: "What is a logic error?",
-              answer: "Code runs but produces wrong results",
-            },
-            {
-              id: 8,
-              question: "What is undefined behavior?",
-              answer: "Code with unpredictable results",
-            },
-            {
-              id: 9,
-              question: "What is a stack overflow?",
-              answer: "Too many function calls exceeding stack memory",
-            },
-            {
-              id: 10,
-              question: "What is a deadlock?",
-              answer: "Two processes waiting for each other forever",
-            },
-          ],
-        },
-        {
-          id: 5,
-          title: "Finnish Slang",
-          description: "Learn some Finnish slang words!",
-          tries: 1,
-          cardCount: 6,
-          author: { name: "Suomalainen" },
-          authorRole: "Native",
-          history: [],
-          flashcards: [
-            { id: 1, question: "What does 'Moi' mean?", answer: "Hi / Hello" },
-            { id: 2, question: "What does 'Kiitos' mean?", answer: "Thank you" },
-            { id: 3, question: "What does 'Hyvää päivää' mean?", answer: "Good day" },
-            { id: 4, question: "What does 'Anteeksi' mean?", answer: "Sorry / Excuse me" },
-            { id: 5, question: "What does 'Kippis' mean?", answer: "Cheers!" },
-            { id: 6, question: "What does 'Näkemiin' mean?", answer: "Goodbye" },
-          ],
-        },
-      ];
+      const [quizData, quizHistoryData] = await Promise.all([
+        getQuiz(quizId),
+        user && getQuizHistory(quizId),
+      ]);
 
-      const quizData = SAMPLE_QUIZZES.find((q) => q.id === Number(quizId));
-
-      if (!quizData) {
-        throw new Error("Quiz not found");
+      if (!quizData.success) {
+        return null;
       }
 
-      setCurrentQuiz(quizData);
-      setQuizHistory(quizData.history || []);
+      setCurrentQuiz(quizData.data.data);
+      setQuizHistory(quizHistoryData?.data?.data || []);
       return quizData;
     } catch (err) {
       setError(err.message);
@@ -231,51 +51,75 @@ const QuizProvider = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
+
+  /**
+   * fetch user's quizzes
+   */
+  const fetchUserQuizzes = useCallback(async () => {
+    if ((userQuizzesFetched || userQuizzesLoading) || !user) return;
+    setUserQuizzesLoading(true);
+    setError(null);
+    try {
+      const response = await getMyQuizzes();
+      if (response.success) {
+        setUserQuizzes(response.data.data);
+        setUserQuizzesFetched(true);
+      } else {
+        setError(response.error);
+      }
+    } catch (err) {
+      setError(err.message);
+      console.error("Error fetching user quizzes:", err);
+    } finally {
+      setUserQuizzesLoading(false);
+    }
+  }, [userQuizzesFetched, userQuizzesLoading, user]);
 
   /**
    * save quiz attempt
    * @param {number} quizId The ID of the quiz to save attempt for
    * @param {number} score The score of the quiz attempt
    */
-  const saveQuizAttempt = async (quizId, score) => {
+  const saveQuizAttempt = useCallback(async (quizId, score) => {
     try {
-      //TODO: fetch from backend
-      const newAttempt = {
-        id: Date.now(),
-        date: new Date().toISOString().split("T")[0],
-        score: score,
-      };
+      const totalCards = currentQuiz?.flashcards?.length || 0;
+      const scorePercentage = totalCards > 0 ? Math.round((score / totalCards) * 100) : 0;
 
-      setQuizHistory((prev) => [...prev, newAttempt]);
+      const response = await saveQuizResult(quizId, scorePercentage);
+      if (!response.success) {
+        return { success: false, error: response.error };
+      }
+
+      setQuizHistory((prev) => [...prev, response.data.data]);
       return { success: true };
     } catch (err) {
       console.error("Error saving quiz attempt:", err);
       return { success: false, error: err.message };
     }
-  };
+  }, [currentQuiz]);
 
   /**
    * get current card
    * @returns {object|null} The current card
    */
-  const getCurrentCard = () => {
+  const getCurrentCard = useCallback(() => {
     if (!currentQuiz) return null;
     return currentQuiz.flashcards[currentCardIndex];
-  };
+  }, [currentQuiz, currentCardIndex]);
 
   /**
    * get next card
    * @returns {object|null} The next card
    */
-  const getNextCard = () => {
+  const getNextCard = useCallback(() => {
     if (!currentQuiz) return null;
     if (currentCardIndex === currentQuiz.flashcards.length - 1) return null;
     const nextIndex = currentCardIndex + 1;
     setCurrentCardIndex(nextIndex);
     setIsAnswered(answeredCards.includes(nextIndex));
     return currentQuiz.flashcards[nextIndex];
-  };
+  }, [currentQuiz, currentCardIndex, answeredCards]);
 
   const isQuizFinished = () => {
     if (!currentQuiz) return false;
@@ -287,42 +131,42 @@ const QuizProvider = ({ children }) => {
    * get previous card
    * @returns {object|null} The previous card
    */
-  const getPreviousCard = () => {
+  const getPreviousCard = useCallback(() => {
     if (!currentQuiz) return null;
     if (currentCardIndex === 0) return null;
     const prevIndex = currentCardIndex - 1;
     setCurrentCardIndex(prevIndex);
     setIsAnswered(answeredCards.includes(prevIndex));
     return currentQuiz.flashcards[prevIndex];
-  };
+  }, [currentQuiz, currentCardIndex, answeredCards]);
 
-  const advanceProgress = (isCorrect) => {
-    if (isAnswered) return; // prevent double answering
+  const advanceProgress = useCallback((isCorrect) => {
+    if (isAnswered) return;
     if (isCorrect) {
       setScore((prev) => prev + 1);
     }
     setAnsweredCards((prev) => [...prev, currentCardIndex]);
     setIsAnswered(true);
-  };
+  }, [isAnswered, currentCardIndex]);
 
   /**
    * clear quiz data
    */
-  const clearQuiz = () => {
+  const clearQuiz = useCallback(() => {
     setCurrentQuiz(null);
     setQuizHistory([]);
     setError(null);
-  };
+  }, []);
 
   /**
    * reset game state (call when leaving quiz page)
    */
-  const resetGameState = () => {
+  const resetGameState = useCallback(() => {
     setCurrentCardIndex(0);
     setScore(0);
     setAnsweredCards([]);
     setIsAnswered(false);
-  };
+  }, []);
 
   return (
     <QuizContext.Provider
@@ -347,6 +191,10 @@ const QuizProvider = ({ children }) => {
         setIsAnswered,
         resetGameState,
         isQuizFinished,
+        userQuizzes,
+        userQuizzesLoading,
+        fetchUserQuizzes,
+        setUserQuizzes,
       }}
     >
       {children}

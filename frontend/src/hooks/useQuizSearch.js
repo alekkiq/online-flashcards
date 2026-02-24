@@ -21,7 +21,6 @@ export function useQuizSearch(searchParams, setSearchParams) {
       if (!response.success) {
         return [];
       }
-      console.log(response.data.data);
       return response.data.data;
   }
 

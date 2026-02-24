@@ -24,7 +24,7 @@ export default function ResultsPage() {
 
     const handlePlayAgain = () => {
         resetGameState();
-        navigate(`/quiz/${currentQuiz.id}`);
+        navigate(`/quiz/${currentQuiz.quizId}`);
     };
 
     return (
@@ -84,7 +84,7 @@ export default function ResultsPage() {
                     variant="outline"
                     size="lg"
                     className="w-full md:w-auto"
-                    onClick={() => { navigate(`/quiz-details/${currentQuiz.id}`); resetGameState(); }}
+                    onClick={() => { navigate(`/quiz-details/${currentQuiz.quizId}`); resetGameState(); }}
                 >
                     <ArrowLeft className="w-4 h-4 mr-2" />
                     Back to Details
