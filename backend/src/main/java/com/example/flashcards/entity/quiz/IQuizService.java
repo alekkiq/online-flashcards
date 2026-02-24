@@ -8,7 +8,7 @@ import com.example.flashcards.entity.quiz.dto.QuizSeachResponse;
 public interface IQuizService {
     QuizResponse getQuizById(long id);
 
-    List<QuizSeachResponse> searchQuizzes(String title);
+    List<QuizSeachResponse> searchQuizzes();
 
     QuizResponse createQuiz(long userId, QuizCreationRequest request);
 

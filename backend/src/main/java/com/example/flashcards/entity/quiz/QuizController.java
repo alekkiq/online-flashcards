@@ -43,10 +43,8 @@ public class QuizController {
      * @return list of matching quizzes
      */
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse<List<QuizSeachResponse>>> searchQuizzes(
-        @RequestParam(required = false) String title
-    ) {
-        List<QuizSeachResponse> response = quizService.searchQuizzes(title);
+    public ResponseEntity<ApiResponse<List<QuizSeachResponse>>> searchQuizzes() {
+        List<QuizSeachResponse> response = quizService.searchQuizzes();
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 

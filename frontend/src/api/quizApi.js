@@ -17,8 +17,12 @@ export async function createQuiz(quiz) {
   });
 }
 
+export async function getQuizzes() {
+  return fetchData("quizzes/search");
+}
+
 export async function searchQuizzes(query) {
-  return fetchData(`quizzes/search?title=${query}`);
+  return fetchData(`quizzes/search`);
 }
 
 export async function updateQuiz(id, quiz) {

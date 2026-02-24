@@ -37,8 +37,8 @@ public class QuizService implements IQuizService {
     }
 
     @Override
-    public List<QuizSeachResponse> searchQuizzes(String title) {
-        return quizRepository.findByTitleStartingWith(title).stream()
+    public List<QuizSeachResponse> searchQuizzes() {
+        return quizRepository.getAllQuizzes().stream()
             .map(quiz -> new QuizSeachResponse(
                 quiz.getQuizId(),
                 quiz.getTitle(),

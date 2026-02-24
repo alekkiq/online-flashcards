@@ -10,7 +10,7 @@ import { Avatar } from "./Avatar";
  */
 export function QuizCard({ quiz, onClick, className = "" }) {
   const cardCount = quiz?.cardCount || quiz.flashcards?.length || 0;
-  const creatorRole = quiz?.creator?.role ? String(quiz.creator.role) : "STUDENT";
+  const creatorRole = quiz?.creatorRole ? String(quiz.creatorRole) : "STUDENT";
 
   return (
     <div
@@ -23,7 +23,7 @@ export function QuizCard({ quiz, onClick, className = "" }) {
       <div className="p-4 flex flex-col gap-2 flex-1 justify-center">
         <h3 className="font-inter font-bold text-main text-lg leading-tight">{quiz.title}</h3>
 
-        {quiz.flashcards.length !== undefined && (
+        {quiz.flashcards?.length !== undefined && (
           <Badge textColor="text-primary" bgColor="bg-primary/10">
             {cardCount} cards
           </Badge>
@@ -33,8 +33,8 @@ export function QuizCard({ quiz, onClick, className = "" }) {
         <hr className="border-secondary/20 mx-4" />
         <div className="px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Avatar name={quiz.creator?.username} />
-            <span className="text-sm text-secondary">{quiz.creator?.username}</span>
+            <Avatar name={quiz?.creatorUsername} />
+            <span className="text-sm text-secondary">{quiz?.creatorUsername}</span>
           </div>
 
           {creatorRole && (
