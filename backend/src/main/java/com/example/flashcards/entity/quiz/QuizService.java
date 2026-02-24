@@ -37,8 +37,8 @@ public class QuizService implements IQuizService {
     }
 
     @Override
-    public List<QuizSeachResponse> searchQuizzes(String title, String username) {
-        return quizRepository.searchQuizzes(title, username).stream()
+    public List<QuizSeachResponse> searchQuizzes(String title) {
+        return quizRepository.findByTitleStartingWith(title).stream()
             .map(quiz -> new QuizSeachResponse(
                 quiz.getQuizId(),
                 quiz.getTitle(),
@@ -62,7 +62,7 @@ public class QuizService implements IQuizService {
 
         if (request.flashcards() != null) {
             request.flashcards().forEach(fc -> {
-                Flashcard flashcard = new Flashcard(fc.front(), fc.back(), quiz);
+                Flashcard flashcard = new Flashcard(fc.question(), fc.answer(), quiz);
                 quiz.addFlashcard(flashcard);
             });
         }
@@ -87,7 +87,7 @@ public class QuizService implements IQuizService {
         quiz.getFlashcards().clear();
         if (request.flashcards() != null) {
             request.flashcards().forEach(fc -> {
-                Flashcard flashcard = new Flashcard(fc.front(), fc.back(), quiz);
+                Flashcard flashcard = new Flashcard(fc.question(), fc.answer(), quiz);
                 quiz.addFlashcard(flashcard);
             });
         }
