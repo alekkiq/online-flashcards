@@ -14,6 +14,7 @@ const QuizDetails = lazy(() => import("/src/pages/QuizDetails"));
 const QuizGame = lazy(() => import("/src/pages/QuizGame"));
 const ResultsPage = lazy(() => import("/src/pages/ResultsPage"));
 const CreateQuiz = lazy(() => import("/src/pages/CreateQuiz"));
+const SearchClassrooms = lazy(() => import("/src/pages/SearchClassrooms"));
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
                 <Route path="quiz-details/:id" element={<QuizDetails />} />
                 <Route path="quiz/:id" element={<QuizGame />} />
                 <Route path="quiz/results" element={<ResultsPage />} />
+                <Route path="classrooms" element={<SearchClassrooms />} />
               </Route>
             </Routes>
           </Suspense>
