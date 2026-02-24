@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.flashcards.common.response.ApiResponse;
 import com.example.flashcards.entity.quiz.dto.QuizCreationRequest;
 import com.example.flashcards.entity.quiz.dto.QuizResponse;
+import com.example.flashcards.entity.quiz.dto.QuizSeachResponse;
 import com.example.flashcards.security.CustomUserDetails;
 
 import jakarta.validation.Valid;
@@ -43,11 +44,11 @@ public class QuizController {
      * @return list of matching quizzes
      */
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse<List<QuizResponse>>> searchQuizzes(
+    public ResponseEntity<ApiResponse<List<QuizSeachResponse>>> searchQuizzes(
         @RequestParam(required = false) String title,
         @RequestParam(required = false) String username
     ) {
-        List<QuizResponse> response = quizService.searchQuizzes(title, username);
+        List<QuizSeachResponse> response = quizService.searchQuizzes(title, username);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
@@ -91,5 +92,18 @@ public class QuizController {
     public ResponseEntity<ApiResponse<Void>> deleteQuiz(@PathVariable long id) {
         quizService.deleteQuiz(id);
         return ResponseEntity.ok(ApiResponse.success(null, "Quiz deleted successfully."));
+    }
+
+    /**
+     * get all quizzes by authenticated user.
+     * @param userDetails the authenticated user
+     * @return list of quizzes created by the user
+     */
+    @GetMapping("/me")
+    public ResponseEntity<ApiResponse<List<QuizSeachResponse>>> getQuizzesByUser(
+        @AuthenticationPrincipal CustomUserDetails userDetails
+    ) {
+        List<QuizSeachResponse> response = quizService.getQuizzesByUser(userDetails.getUserId());
+        return ResponseEntity.ok(ApiResponse.success(response));
     }
 }

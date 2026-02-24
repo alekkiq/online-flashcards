@@ -10,6 +10,7 @@ import com.example.flashcards.entity.flashcard.Flashcard;
 import com.example.flashcards.entity.flashcard.dto.FlashcardResponse;
 import com.example.flashcards.entity.quiz.dto.QuizCreationRequest;
 import com.example.flashcards.entity.quiz.dto.QuizResponse;
+import com.example.flashcards.entity.quiz.dto.QuizSeachResponse;
 import com.example.flashcards.entity.subject.Subject;
 import com.example.flashcards.entity.subject.SubjectRepository;
 import com.example.flashcards.entity.user.User;
@@ -36,9 +37,15 @@ public class QuizService implements IQuizService {
     }
 
     @Override
-    public List<QuizResponse> searchQuizzes(String title, String username) {
+    public List<QuizSeachResponse> searchQuizzes(String title, String username) {
         return quizRepository.searchQuizzes(title, username).stream()
-            .map(this::mapToQuizResponse)
+            .map(quiz -> new QuizSeachResponse(
+                quiz.getQuizId(),
+                quiz.getTitle(),
+                quiz.getDescription(),
+                quiz.getCreator().getUsername(),
+                quiz.getSubject().getName()
+            ))
             .toList();
     }
 
@@ -96,6 +103,19 @@ public class QuizService implements IQuizService {
             throw new ResourceNotFoundException("Quiz", "Quiz with ID " + id + " not found.");
         }
         quizRepository.deleteById(id);
+    }
+
+    @Override
+    public List<QuizSeachResponse> getQuizzesByUser(long userId) {
+        return quizRepository.findByCreator_UserId(userId).stream()
+            .map(quiz -> new QuizSeachResponse(
+                quiz.getQuizId(),
+                quiz.getTitle(),
+                quiz.getDescription(),
+                quiz.getCreator().getUsername(),
+                quiz.getSubject().getName()
+            ))
+            .toList();
     }
 
     private QuizResponse mapToQuizResponse(Quiz quiz) {

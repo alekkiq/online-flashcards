@@ -12,4 +12,6 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
            "(:title IS NULL OR LOWER(q.title) LIKE LOWER(CONCAT('%', :title, '%'))) AND " +
            "(:username IS NULL OR LOWER(q.creator.username) LIKE LOWER(CONCAT('%', :username, '%')))")
     List<Quiz> searchQuizzes(@Param("title") String title, @Param("username") String username);
+
+    List<Quiz> findByCreator_UserId(long userId);
 }
