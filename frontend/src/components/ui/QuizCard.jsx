@@ -4,14 +4,14 @@ import { Avatar } from "./Avatar";
 
 /**
  * quizcard component
- * @param {string} title title
- * @param {number} cardCount count of cards
- * @param {object} author userfield
- * @param {string} authorRole role of the user
+ * @param {object} quiz quiz object containing relevant quiz data
  * @param {function} onClick click handler
  * @param {string} className any extra classes
  */
-export function QuizCard({ title, cardCount, author, authorRole, onClick, className }) {
+export function QuizCard({ quiz, onClick, className = "" }) {
+  const cardCount = quiz?.cardCount || quiz.flashcards?.length || 0;
+  const creatorRole = quiz?.creator?.role ? String(quiz.creator.role) : "STUDENT";
+
   return (
     <div
       onClick={onClick}
@@ -21,9 +21,9 @@ export function QuizCard({ title, cardCount, author, authorRole, onClick, classN
       )}
     >
       <div className="p-4 flex flex-col gap-2 flex-1 justify-center">
-        <h3 className="font-inter font-bold text-main text-lg leading-tight">{title}</h3>
+        <h3 className="font-inter font-bold text-main text-lg leading-tight">{quiz.title}</h3>
 
-        {cardCount !== undefined && (
+        {quiz.flashcards.length !== undefined && (
           <Badge textColor="text-primary" bgColor="bg-primary/10">
             {cardCount} cards
           </Badge>
@@ -33,13 +33,13 @@ export function QuizCard({ title, cardCount, author, authorRole, onClick, classN
         <hr className="border-secondary/20 mx-4" />
         <div className="px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Avatar name={author?.name} />
-            <span className="text-sm text-secondary">{author?.name}</span>
+            <Avatar name={quiz.creator?.username} />
+            <span className="text-sm text-secondary">{quiz.creator?.username}</span>
           </div>
 
-          {authorRole && (
+          {creatorRole && (
             <Badge textColor="text-white" bgColor="bg-primary">
-              {authorRole}
+              {creatorRole}
             </Badge>
           )}
         </div>
