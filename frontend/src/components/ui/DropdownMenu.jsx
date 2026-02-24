@@ -1,5 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect, useRef, forwardRef } from "react";
 import { cn } from "/src/lib/utils";
+import { Button } from "./Button";
 import { EllipsisVertical } from "lucide-react";
 
 /**
@@ -9,13 +10,15 @@ import { EllipsisVertical } from "lucide-react";
  * @param {string} triggerLabel  Accessible aria-label for the trigger button. Defaults to "Options".
  * @param {string} className     Extra classes forwarded to the outer wrapper div.
  */
-export function DropdownMenu({ items = [], triggerLabel = "Options", className }) {
+export const DropdownMenu = forwardRef(({ items = [], triggerLabel = "Options", trigger, className }, ref) => {
+  const internalRef = useRef(null);
+  const resolvedRef = ref || internalRef;
+
   const [open, setOpen] = useState(false);
-  const ref = useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (ref.current && !ref.current.contains(e.target)) {
+      if (resolvedRef.current && !resolvedRef.current.contains(e.target)) {
         setOpen(false);
       }
     };
@@ -28,10 +31,8 @@ export function DropdownMenu({ items = [], triggerLabel = "Options", className }
     destructive: "text-destructive hover:bg-destructive/5",
   };
 
-  return (
-    <div className={cn("relative", className)} ref={ref}>
+  const defaultTrigger = (
       <button
-        onClick={() => setOpen((prev) => !prev)}
         className="flex h-8 w-8 items-center justify-center rounded-md text-secondary hover:bg-secondary/10 hover:text-main transition-colors cursor-pointer"
         aria-label={triggerLabel}
         aria-haspopup="true"
@@ -39,7 +40,13 @@ export function DropdownMenu({ items = [], triggerLabel = "Options", className }
       >
         <EllipsisVertical size={20} />
       </button>
+  );
 
+  return (
+    <div className={cn("relative", className)} ref={resolvedRef}>
+      <div onClick={() => setOpen((prev) => !prev)} className="h-10">
+        {trigger ?? defaultTrigger}
+      </div>
       {open && (
         <div className="absolute right-0 z-10 mt-1 min-w-40 rounded-lg border border-secondary/20 bg-white py-1 shadow-lg">
           {items.map((item, index) => (
@@ -62,5 +69,5 @@ export function DropdownMenu({ items = [], triggerLabel = "Options", className }
       )}
     </div>
   );
-}
-
+});
+DropdownMenu.displayName = "DropdownMenu";
