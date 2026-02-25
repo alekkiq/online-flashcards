@@ -14,10 +14,6 @@ export function useMyQuizzes() {
     setError,
   } = useQuizContext();
 
-  useEffect(() => {
-    fetchUserQuizzes();
-  }, [fetchUserQuizzes]);
-
   const handleCreateQuiz = async (quizData) => {
     const data = {
       title: quizData.title,
@@ -58,5 +54,6 @@ export function useMyQuizzes() {
     error,
     handleCreateQuiz,
     handleUpdateQuiz,
+    fetchUserQuizzes,
   };
 }

@@ -158,6 +158,14 @@ const QuizProvider = ({ children }) => {
     setError(null);
   }, []);
 
+  const clearAllData = useCallback(() => {
+    clearQuiz();
+    resetGameState();
+    setUserQuizzes([]);
+    setUserQuizzesFetched(false);
+    setUserQuizzesLoading(false);
+  }, [user]);
+
   /**
    * reset game state (call when leaving quiz page)
    */
@@ -179,6 +187,7 @@ const QuizProvider = ({ children }) => {
         saveQuizAttempt,
         clearQuiz,
         setCurrentQuiz,
+        clearAllData,
         // game state
         currentCardIndex,
         score,

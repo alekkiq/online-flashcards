@@ -28,7 +28,7 @@ const AuthProvider = ({ children }) => {
       email: data.email,
     });
     localStorage.setItem("token", data.token);
-    navigate("/");
+    window.location.href = "/"; 
     return { success: true };
   };
 
@@ -51,8 +51,7 @@ const AuthProvider = ({ children }) => {
       email: data.email,
     });
     localStorage.setItem("token", data.token);
-
-    navigate("/");
+    window.location.href = "/";
     return { success: true };
   };
 

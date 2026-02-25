@@ -3,10 +3,15 @@ import { MyQuizCard } from "../components/ui/MyQuizCard";
 import { NewQuizCard } from "../components/ui/NewQuizCard";
 import { useMyQuizzes } from "../hooks/useMyQuizzes";
 import { PageLoader } from "../components/ui/PageLoader";
+import { useEffect, useCallback } from "react";
 
 export default function MyQuizzes() {
   const navigate = useNavigate();
-  const { quizzes, isLoading } = useMyQuizzes();
+  const { quizzes, isLoading, fetchUserQuizzes } = useMyQuizzes();
+
+  useEffect(() => {
+    fetchUserQuizzes();
+  }, []);
 
   if (isLoading) {
     return <PageLoader />;
