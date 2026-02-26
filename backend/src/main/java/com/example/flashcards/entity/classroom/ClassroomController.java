@@ -4,6 +4,8 @@ import com.example.flashcards.common.response.ApiResponse;
 import com.example.flashcards.entity.classroom.dto.ClassroomCreateRequest;
 import com.example.flashcards.entity.classroom.dto.ClassroomResponse;
 import com.example.flashcards.entity.classroom.dto.ClassroomUpdateRequest;
+import com.example.flashcards.entity.learningmaterial.dto.LearningMaterialCreationRequest;
+import com.example.flashcards.entity.learningmaterial.dto.LearningMaterialResponse;
 import com.example.flashcards.security.CustomUserDetails;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +34,7 @@ public class ClassroomController {
         Long userId = userDetails.getUserId();
 
         List<ClassroomResponse> response = classroomService.getMyClassrooms(userId).stream()
-                .map(c -> ClassroomResponse.from(c, userId))
+                .map(c -> mapToClassroomResponse(c, userId))
                 .toList();
 
         return ResponseEntity.ok(ApiResponse.success(response));
@@ -46,7 +48,7 @@ public class ClassroomController {
         Long userId = userDetails.getUserId();
         Classroom classroom = classroomService.getClassroomById(classroomId);
 
-        return ResponseEntity.ok(ApiResponse.success(ClassroomResponse.from(classroom, userId)));
+        return ResponseEntity.ok(ApiResponse.success(mapToClassroomResponse(classroom, userId)));
     }
 
     @PostMapping
@@ -59,7 +61,7 @@ public class ClassroomController {
         Classroom created = classroomService.createClassroom(userId, request);
 
         return ResponseEntity.ok(ApiResponse.success(
-                ClassroomResponse.from(created, userId),
+                mapToClassroomResponse(created, userId),
                 "Classroom created successfully."
         ));
     }
@@ -74,7 +76,7 @@ public class ClassroomController {
         Classroom updated = classroomService.updateClassroom(userId, classroomId, request);
 
         return ResponseEntity.ok(ApiResponse.success(
-                ClassroomResponse.from(updated, userId),
+                mapToClassroomResponse(updated, userId),
                 "Classroom updated successfully."
         ));
     }
@@ -88,7 +90,7 @@ public class ClassroomController {
         Classroom classroom = classroomService.joinByCode(userId, code);
 
         return ResponseEntity.ok(ApiResponse.success(
-                ClassroomResponse.from(classroom, userId),
+                mapToClassroomResponse(classroom, userId),
                 "Joined classroom successfully."
         ));
     }
@@ -102,5 +104,63 @@ public class ClassroomController {
         classroomService.leaveClassroom(userId, classroomId);
 
         return ResponseEntity.ok(ApiResponse.success(null, "Left classroom successfully."));
+    }
+
+    @PostMapping("/{classroomId}/learning-materials")
+    public ResponseEntity<ApiResponse<ClassroomResponse>> addLearningMaterial(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @PathVariable Long classroomId,
+            @Valid @RequestBody LearningMaterialCreationRequest request
+    ) {
+        Long userId = userDetails.getUserId();
+        Classroom updated = classroomService.addLearningMaterial(userId, classroomId, request);
+
+        return ResponseEntity.ok(ApiResponse.success(
+                mapToClassroomResponse(updated, userId),
+                "Learning material added successfully."
+        ));
+    }
+
+    @DeleteMapping("/{classroomId}/learning-materials/{learningMaterialId}")
+    public ResponseEntity<ApiResponse<ClassroomResponse>> removeLearningMaterial(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @PathVariable Long classroomId,
+            @PathVariable Long learningMaterialId
+    ) {
+        Long userId = userDetails.getUserId();
+        Classroom updated = classroomService.removeLearningMaterial(userId, classroomId, learningMaterialId);
+
+        return ResponseEntity.ok(ApiResponse.success(
+                mapToClassroomResponse(updated, userId),
+                "Learning material removed successfully."
+        ));
+    }
+
+    private ClassroomResponse mapToClassroomResponse(Classroom classroom, Long currentUserId) {
+        boolean isOwner = currentUserId != null
+                && classroom.getOwner() != null
+                && classroom.getOwner().getUserId() == currentUserId;
+
+        List<LearningMaterialResponse> materials = classroom.getLearningMaterials().stream()
+                .map(material -> new LearningMaterialResponse(
+                        material.getLearningMaterialId(),
+                        material.getTitle(),
+                        material.getContent(),
+                        material.getCreator().getUsername()
+                ))
+                .toList();
+
+        return new ClassroomResponse(
+                classroom.getClassroomId(),
+                classroom.getTitle(),
+                classroom.getDescription(),
+                classroom.getNote(),
+                classroom.getJoinCode(),
+                classroom.getSubject().getName(),
+                classroom.getOwner().getUsername(),
+                isOwner,
+                classroom.getUsers().size(),
+                materials
+        );
     }
 }

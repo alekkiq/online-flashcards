@@ -3,6 +3,8 @@ package com.example.flashcards.entity.classroom;
 import com.example.flashcards.common.exception.ResourceNotFoundException;
 import com.example.flashcards.entity.classroom.dto.ClassroomCreateRequest;
 import com.example.flashcards.entity.classroom.dto.ClassroomUpdateRequest;
+import com.example.flashcards.entity.learningmaterial.LearningMaterial;
+import com.example.flashcards.entity.learningmaterial.dto.LearningMaterialCreationRequest;
 import com.example.flashcards.entity.subject.Subject;
 import com.example.flashcards.entity.subject.SubjectRepository;
 import com.example.flashcards.entity.user.User;
@@ -159,5 +161,39 @@ public class ClassroomService implements IClassroomService {
 
         classroom.getUsers().removeIf(u -> u.getUserId() == userId);
         this.classroomRepository.save(classroom);
+    }
+
+    @Override
+    @Transactional
+    public Classroom addLearningMaterial(Long userId, Long classroomId, LearningMaterialCreationRequest request) {
+        User creator = getUserById(userId);
+        Classroom classroom = getClassroomById(classroomId);
+
+        if (classroom.getOwner() == null || classroom.getOwner().getUserId() != userId) {
+            throw new IllegalArgumentException("You are not allowed to add learning material to this classroom.");
+        }
+
+        LearningMaterial learningMaterial = new LearningMaterial(
+                request.title(),
+                request.content(),
+                classroom,
+                creator
+        );
+
+        classroom.addLearningMaterial(learningMaterial);
+        return this.classroomRepository.save(classroom);
+    }
+
+    @Override
+    @Transactional
+    public Classroom removeLearningMaterial(Long userId, Long classroomId, Long learningMaterialId) {
+        Classroom classroom = getClassroomById(classroomId);
+
+        if (classroom.getOwner() == null || classroom.getOwner().getUserId() != userId) {
+            throw new IllegalArgumentException("You are not allowed to remove learning material from this classroom.");
+        }
+
+        classroom.getLearningMaterials().removeIf(lm -> lm.getLearningMaterialId() == learningMaterialId);
+        return this.classroomRepository.save(classroom);
     }
 }
