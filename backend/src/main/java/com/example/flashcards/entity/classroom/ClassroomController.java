@@ -7,6 +7,7 @@ import com.example.flashcards.entity.classroom.dto.ClassroomUpdateRequest;
 import com.example.flashcards.security.CustomUserDetails;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,7 @@ public class ClassroomController {
         this.classroomService = classroomService;
     }
 
-    @GetMapping("/my")
+    @GetMapping("/me")
     public ResponseEntity<ApiResponse<List<ClassroomResponse>>> getMyClassrooms(
             @AuthenticationPrincipal CustomUserDetails userDetails
     ) {
@@ -49,6 +50,7 @@ public class ClassroomController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<ApiResponse<ClassroomResponse>> createClassroom(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @Valid @RequestBody ClassroomCreateRequest request

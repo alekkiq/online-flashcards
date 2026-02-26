@@ -21,7 +21,7 @@ public class ClassroomService implements IClassroomService {
     private final SubjectRepository subjectRepository;
 
     private final SecureRandom random = new SecureRandom();
-    private static final String CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; // ei 0/O/1/I
+    private static final String CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; 
 
     public ClassroomService(
             ClassroomRepository classroomRepository,
@@ -44,7 +44,6 @@ public class ClassroomService implements IClassroomService {
                 ));
     }
 
-    // omat helperit
 
     private User getUserById(Long userId) {
         return this.userRepository.findById(userId)
@@ -83,7 +82,6 @@ public class ClassroomService implements IClassroomService {
         throw new IllegalStateException("Could not generate unique join code.");
     }
 
-    // IClassroomService metodit
 
     @Override
     public List<Classroom> getMyClassrooms(Long userId) {
@@ -117,7 +115,6 @@ public class ClassroomService implements IClassroomService {
     public Classroom updateClassroom(Long userId, Long classroomId, ClassroomUpdateRequest request) {
         Classroom classroom = getClassroomById(classroomId);
 
-        // vain owner saa muokata
         if (classroom.getOwner() == null || classroom.getOwner().getUserId() != userId) {
             throw new IllegalArgumentException("You are not allowed to update this classroom.");
         }
@@ -134,7 +131,6 @@ public class ClassroomService implements IClassroomService {
     public Classroom joinByCode(Long userId, String joinCode) {
         User user = getUserById(userId);
 
-        // vaatii ClassroomRepoon findByJoinCode(String)
         Classroom classroom = this.classroomRepository.findByJoinCode(joinCode)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Classroom",
@@ -157,7 +153,6 @@ public class ClassroomService implements IClassroomService {
     public void leaveClassroom(Long userId, Long classroomId) {
         Classroom classroom = getClassroomById(classroomId);
 
-        // owner ei voi poistua
         if (classroom.getOwner() != null && classroom.getOwner().getUserId() == userId) {
             throw new IllegalArgumentException("Owner cannot leave their own classroom.");
         }
