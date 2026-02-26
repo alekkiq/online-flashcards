@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "@/lib/utils";
+import { cn } from "/src/lib/utils";
 
 /**
  * Input component for forms
@@ -21,7 +21,7 @@ export const Input = React.forwardRef(
         <input
           type={type}
           className={cn(
-            "flex h-10 w-full rounded-xl border border-secondary/30 bg-white py-1 text-sm text-main shadow-sm transition-colors placeholder:text-secondary/60 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50",
+            "flex h-10 w-full rounded-xl border border-secondary/30 bg-white py-1 text-sm text-main transition-colors placeholder:text-secondary/60 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50",
             hasError && "border-destructive focus-visible:ring-destructive",
             startIcon ? "pl-10 pr-3" : "px-3",
             endIcon ? "pr-10" : "",

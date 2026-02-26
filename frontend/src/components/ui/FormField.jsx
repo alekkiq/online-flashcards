@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Label } from "@/components/ui/Label";
-import { cn } from "@/lib/utils";
+import { Label } from "./Label";
+import { cn } from "/src/lib/utils";
 
 /**
  * this is a form field component that can be used to create forms

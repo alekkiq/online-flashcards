@@ -8,9 +8,7 @@ export function NavButton({ to, children, className, ...props }) {
       className={({ isActive }) =>
         cn(
           "px-4 py-2 text-lg font-bold transition-colors",
-          isActive
-            ? "text-primary hover:bg-secondary/5"
-            : "text-main hover:bg-secondary/5",
+          isActive ? "text-primary hover:bg-secondary/5" : "text-main hover:bg-secondary/5",
           className
         )
       }

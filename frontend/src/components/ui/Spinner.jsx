@@ -4,11 +4,7 @@
  * @param {string} ringColor the color of the ring
  * @param {string} spinColor the color of the spinnaaja
  */
-export function Spinner({
-  size = 24,
-  ringColor = "rgba(0, 0, 0, 0.1)",
-  spinColor = "#3b82f6",
-}) {
+export function Spinner({ size = 24, ringColor = "rgba(0, 0, 0, 0.1)", spinColor = "#3b82f6" }) {
   return (
     <div
       className="animate-spin"

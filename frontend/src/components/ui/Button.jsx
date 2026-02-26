@@ -25,7 +25,7 @@ export const Button = React.forwardRef(
     ref
   ) => {
     const baseStyles =
-      "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-1 cursor-pointer focus-visible:ring-primary disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0";
+      "w-full sm:w-auto inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-semibold transition-colors focus-visible:outline-none focus-visible:ring-1 cursor-pointer focus-visible:ring-primary disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0";
 
     const variants = {
       default:
@@ -38,6 +38,7 @@ export const Button = React.forwardRef(
         "bg-secondary text-white hover:bg-secondary/80 active:bg-secondary/70 active:scale-[0.98]",
       ghost: "hover:bg-secondary/10 hover:text-main active:bg-secondary/20 active:scale-[0.98]",
       link: "text-primary underline-offset-4 hover:underline active:text-primary/80",
+      success: "bg-green-500 text-white hover:bg-green-600 active:bg-green-700 active:scale-[0.98]",
     };
 
     const sizes = {
@@ -56,6 +57,7 @@ export const Button = React.forwardRef(
       secondary: { spin: "#ffffff", ring: "rgba(255,255,255,0.3)" },
       ghost: { spin: "#1A1918", ring: "rgba(0,0,0,0.1)" },
       link: { spin: "#5700FE", ring: "rgba(87,0,254,0.2)" },
+      success: { spin: "#ffffff", ring: "rgba(255,255,255,0.3)" },
     };
 
     const compiledClassName = cn(baseStyles, variants[variant], sizes[size], className);
