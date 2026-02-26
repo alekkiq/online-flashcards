@@ -15,6 +15,9 @@ public record ClassroomCreateRequest(
         @Size(max = 255, message = "Note must be at most 255 characters.")
         String note,
 
+        @Size(min = 4, max = 12, message = "Join code must be 4-12 characters.")
+        String joinCode,
+
         @NotNull(message = "SubjectId is required.")
         Long subjectId
 ) {

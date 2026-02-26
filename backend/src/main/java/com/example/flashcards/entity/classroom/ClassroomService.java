@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 @Service
 public class ClassroomService implements IClassroomService {
@@ -23,7 +25,7 @@ public class ClassroomService implements IClassroomService {
     private final SubjectRepository subjectRepository;
 
     private final SecureRandom random = new SecureRandom();
-    private static final String CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"; 
+    private static final String CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
 
     public ClassroomService(
             ClassroomRepository classroomRepository,
@@ -35,7 +37,6 @@ public class ClassroomService implements IClassroomService {
         this.subjectRepository = subjectRepository;
     }
 
-
     @Override
     public Classroom getClassroomById(Long classroomId) {
         return this.classroomRepository.findById(classroomId)
@@ -45,7 +46,6 @@ public class ClassroomService implements IClassroomService {
                         "Classroom with ID " + classroomId + " not found"
                 ));
     }
-
 
     private User getUserById(Long userId) {
         return this.userRepository.findById(userId)
@@ -76,7 +76,6 @@ public class ClassroomService implements IClassroomService {
     private String generateUniqueJoinCode(int length) {
         for (int attempt = 0; attempt < 10; attempt++) {
             String code = randomCode(length);
-
             if (!classroomRepository.existsByJoinCode(code)) {
                 return code;
             }
@@ -84,6 +83,21 @@ public class ClassroomService implements IClassroomService {
         throw new IllegalStateException("Could not generate unique join code.");
     }
 
+    private String normalizeJoinCode(String input) {
+        if (input == null) return null;
+        String trimmed = input.trim();
+        if (trimmed.isEmpty()) return null;
+        return trimmed.toUpperCase(Locale.ROOT);
+    }
+
+    private boolean isValidJoinCodeChars(String code) {
+        for (int i = 0; i < code.length(); i++) {
+            if (CODE_CHARS.indexOf(code.charAt(i)) < 0) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     @Override
     public List<Classroom> getMyClassrooms(Long userId) {
@@ -96,7 +110,23 @@ public class ClassroomService implements IClassroomService {
         User owner = getUserById(userId);
         Subject subject = getSubjectById(request.subjectId());
 
-        String joinCode = generateUniqueJoinCode(6);
+        String requestedCode = normalizeJoinCode(request.joinCode());
+        String joinCode;
+
+        if (requestedCode == null) {
+            joinCode = generateUniqueJoinCode(6);
+        } else {
+            if (requestedCode.length() < 4 || requestedCode.length() > 12) {
+                throw new IllegalArgumentException("Join code must be 4-12 characters.");
+            }
+            if (!isValidJoinCodeChars(requestedCode)) {
+                throw new IllegalArgumentException("Join code contains invalid characters.");
+            }
+            if (classroomRepository.existsByJoinCode(requestedCode)) {
+                throw new IllegalArgumentException("Join code is already in use.");
+            }
+            joinCode = requestedCode;
+        }
 
         Classroom classroom = new Classroom(
                 request.title(),
@@ -108,7 +138,6 @@ public class ClassroomService implements IClassroomService {
         );
 
         classroom.addUser(owner);
-
         return this.classroomRepository.save(classroom);
     }
 
@@ -117,7 +146,7 @@ public class ClassroomService implements IClassroomService {
     public Classroom updateClassroom(Long userId, Long classroomId, ClassroomUpdateRequest request) {
         Classroom classroom = getClassroomById(classroomId);
 
-        if (classroom.getOwner() == null || classroom.getOwner().getUserId() != userId) {
+        if (classroom.getOwner() == null || !Objects.equals(classroom.getOwner().getUserId(), userId)) {
             throw new IllegalArgumentException("You are not allowed to update this classroom.");
         }
 
@@ -140,7 +169,7 @@ public class ClassroomService implements IClassroomService {
                 ));
 
         boolean alreadyMember = classroom.getUsers().stream()
-                .anyMatch(u -> u.getUserId() == userId);
+                .anyMatch(u -> Objects.equals(u.getUserId(), userId));
 
         if (!alreadyMember) {
             classroom.addUser(user);
@@ -155,11 +184,11 @@ public class ClassroomService implements IClassroomService {
     public void leaveClassroom(Long userId, Long classroomId) {
         Classroom classroom = getClassroomById(classroomId);
 
-        if (classroom.getOwner() != null && classroom.getOwner().getUserId() == userId) {
+        if (classroom.getOwner() != null && Objects.equals(classroom.getOwner().getUserId(), userId)) {
             throw new IllegalArgumentException("Owner cannot leave their own classroom.");
         }
 
-        classroom.getUsers().removeIf(u -> u.getUserId() == userId);
+        classroom.getUsers().removeIf(u -> Objects.equals(u.getUserId(), userId));
         this.classroomRepository.save(classroom);
     }
 
@@ -169,7 +198,7 @@ public class ClassroomService implements IClassroomService {
         User creator = getUserById(userId);
         Classroom classroom = getClassroomById(classroomId);
 
-        if (classroom.getOwner() == null || classroom.getOwner().getUserId() != userId) {
+        if (classroom.getOwner() == null || !Objects.equals(classroom.getOwner().getUserId(), userId)) {
             throw new IllegalArgumentException("You are not allowed to add learning material to this classroom.");
         }
 
@@ -189,11 +218,11 @@ public class ClassroomService implements IClassroomService {
     public Classroom removeLearningMaterial(Long userId, Long classroomId, Long learningMaterialId) {
         Classroom classroom = getClassroomById(classroomId);
 
-        if (classroom.getOwner() == null || classroom.getOwner().getUserId() != userId) {
+        if (classroom.getOwner() == null || !Objects.equals(classroom.getOwner().getUserId(), userId)) {
             throw new IllegalArgumentException("You are not allowed to remove learning material from this classroom.");
         }
 
-        classroom.getLearningMaterials().removeIf(lm -> lm.getLearningMaterialId() == learningMaterialId);
+        classroom.getLearningMaterials().removeIf(lm -> Objects.equals(lm.getLearningMaterialId(), learningMaterialId));
         return this.classroomRepository.save(classroom);
     }
 }
