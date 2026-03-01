@@ -2,17 +2,8 @@ import { Link } from "react-router";
 import { Badge } from "/src/components/ui/Badge";
 import { DropdownMenu } from "/src/components/ui/DropdownMenu";
 import { LogOut, Users } from "lucide-react";
-
-// TODO:
-// - fetch classrooms from API
-// - implement "Leave classroom" action in API and wire up to UI
-
-const MOCK_CLASSROOMS = [
-	{ id: 1, title: "Spring 2026 Biology", subject: "Biology", isOwner: true },
-	{ id: 2, title: "Advanced Mathematics", subject: "Mathematics", isOwner: false },
-	{ id: 3, title: "World History 101", subject: "History", isOwner: false },
-	{ id: 4, title: "Introduction to Programming", subject: "Computer Science", isOwner: true },
-];
+import { useEffect } from "react";
+import { useClassroomContext } from "/src/hooks/useClassroomContext";
 
 function ClassroomRow({ classroom }) {
 	const handleLeave = () => { // TODO
@@ -41,7 +32,7 @@ function ClassroomRow({ classroom }) {
 						<Badge bgColor="bg-green-100" textColor="text-green-700">Owner</Badge>
 					)}
 				</div>
-				<p className="text-xs text-secondary">{classroom.subject}</p>
+				<p className="text-xs text-secondary">{classroom.subjectName}</p>
 			</div>
 
 			{!classroom.isOwner && (
@@ -52,7 +43,11 @@ function ClassroomRow({ classroom }) {
 }
 
 export default function ClassroomList() {
-	const classrooms = MOCK_CLASSROOMS;
+	const { classrooms, fetchClassrooms } = useClassroomContext();
+
+	useEffect(() => {
+		fetchClassrooms();
+	}, [fetchClassrooms]);
 
 	return (
 		<div>
