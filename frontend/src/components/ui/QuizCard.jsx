@@ -42,7 +42,7 @@ export function QuizCard({ quiz, onClick, onEdit, className = "" }) {
           {cardCount !== undefined && (
             <Badge textColor="text-primary" bgColor="bg-primary/10">
               <BookCopy size={12} className="inline mr-1" />
-              {cardCount} cardsASDASDDASDSA
+              {cardCount} cards
             </Badge>
           )}
         </div>

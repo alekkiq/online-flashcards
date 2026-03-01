@@ -41,7 +41,7 @@ export default function ClassroomView() {
 
   if (error || !classroom) {
     return (
-      <div className="max-w-7xl mx-auto py-8 px-4 md:px-0 text-center">
+      <div className="max-w-7xl mx-auto py-8 md:px-0 text-center">
         <p className="text-destructive">{error || "Classroom not found."}</p>
         <Button variant="outline" className="mt-4" onClick={() => navigate("/classrooms")}>
           Back to Classrooms
@@ -53,7 +53,7 @@ export default function ClassroomView() {
   const isOwner = classroom.isOwner;
 
   return (
-    <div className="max-w-7xl mx-auto py-8 px-4 md:px-0">
+    <div className="max-w-7xl mx-auto py-8 md:px-0">
       <ClassroomHeader
         classroom={classroom}
         isOwner={isOwner}
@@ -61,16 +61,16 @@ export default function ClassroomView() {
         onLeave={handleLeave}
       />
 
+      <MaterialsSection
+        materials={classroom.learningMaterials}
+        isOwner={isOwner}
+      />
+
       <QuizzesSection
         quizzes={classroom.quizzes}
         isOwner={isOwner}
         onAddQuiz={() => navigate(`/my-quizzes/create?classroomId=${classroom.id}`)}
         onQuizClick={(quizId) => navigate(`/quiz-details/${quizId}`)}
-      />
-
-      <MaterialsSection
-        materials={classroom.learningMaterials}
-        isOwner={isOwner}
       />
 
       {(isOwner || isAdmin) && (

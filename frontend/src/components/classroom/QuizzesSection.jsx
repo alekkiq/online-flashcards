@@ -12,7 +12,7 @@ import { QuizCard } from "/src/components/ui/QuizCard";
  */
 export default function QuizzesSection({ quizzes = [], isOwner, onAddQuiz, onQuizClick }) {
   return (
-    <div className="mt-6 rounded-2xl bg-white p-6 md:p-8">
+    <div className="mt-6 rounded-xl bg-white p-5 md:p-8">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <BookOpen size={20} className="text-secondary" />
@@ -20,7 +20,7 @@ export default function QuizzesSection({ quizzes = [], isOwner, onAddQuiz, onQui
           <span className="text-sm text-secondary">({quizzes.length})</span>
         </div>
         {isOwner && (
-          <Button size="sm" onClick={onAddQuiz}>+ Add Quiz</Button>
+          <Button size="sm" onClick={onAddQuiz} className="hidden sm:inline-flex">+ Add Quiz</Button>
         )}
       </div>
       {quizzes.length > 0 ? (
@@ -36,6 +36,9 @@ export default function QuizzesSection({ quizzes = [], isOwner, onAddQuiz, onQui
       ) : (
         <p className="text-sm text-secondary">No quizzes added yet.</p>
       )}
+        {isOwner && (
+            <Button size="sm" onClick={onAddQuiz} className="inline-flex sm:hidden mt-4">+ Add Quiz</Button>
+        )}
     </div>
   );
 }

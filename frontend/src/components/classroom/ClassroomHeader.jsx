@@ -20,7 +20,7 @@ export default function ClassroomHeader({ classroom, isOwner, onManage, onLeave 
   };
 
   return (
-    <div className="rounded-2xl bg-white p-6 md:p-8 space-y-5">
+    <div className="rounded-xl bg-white p-5 md:p-8 space-y-5">
       <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
         <div className="space-y-3">
           <div className="flex items-center gap-3 flex-wrap">
@@ -43,7 +43,7 @@ export default function ClassroomHeader({ classroom, isOwner, onManage, onLeave 
 
         <div className="flex gap-2 shrink-0">
           {isOwner ? (
-            <Button variant="outline" size="sm" onClick={onManage}>
+            <Button variant="outline" size="sm" onClick={onManage} className="hidden sm:inline-flex">
               <Settings size={16} />
               Manage
             </Button>
@@ -84,6 +84,13 @@ export default function ClassroomHeader({ classroom, isOwner, onManage, onLeave 
             </div>
           </div>
         </>
+      )}
+
+      {isOwner && (
+        <Button variant="outline" size="sm" onClick={onManage} className="inline-flex sm:hidden">
+          <Settings size={16} />
+          Manage
+        </Button>
       )}
     </div>
   );

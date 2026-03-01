@@ -10,7 +10,7 @@ import { Button } from "/src/components/ui/Button";
  */
 export default function MaterialsSection({ materials = [], isOwner, onAddMaterial }) {
   return (
-    <div className="mt-6 rounded-2xl bg-white p-6 md:p-8">
+    <div className="mt-6 rounded-xl bg-white p-5 md:p-8">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <FileText size={20} className="text-secondary" />
@@ -18,7 +18,7 @@ export default function MaterialsSection({ materials = [], isOwner, onAddMateria
           <span className="text-sm text-secondary">({materials.length})</span>
         </div>
         {isOwner && (
-          <Button size="sm" onClick={onAddMaterial}>+ Add Material</Button>
+          <Button size="sm" onClick={onAddMaterial} className="hidden sm:inline-flex">+ Add Material</Button>
         )}
       </div>
       {materials.length > 0 ? (
@@ -42,6 +42,9 @@ export default function MaterialsSection({ materials = [], isOwner, onAddMateria
       ) : (
         <p className="text-sm text-secondary">No learning materials added yet.</p>
       )}
+        {isOwner && (
+            <Button size="sm" onClick={onAddMaterial} className="inline-flex sm:hidden mt-4">+ Add Material</Button>
+        )}
     </div>
   );
 }

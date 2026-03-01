@@ -13,7 +13,7 @@ export default function MembersSection({ ownerUsername, users, userCount, isOwne
   const nonOwnerUsers = users?.filter((u) => u.username !== ownerUsername) || [];
 
   return (
-    <div className="mt-6 rounded-2xl bg-white p-6 md:p-8">
+    <div className="mt-6 rounded-xl bg-white p-5 md:p-8">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <Users size={20} className="text-secondary" />
