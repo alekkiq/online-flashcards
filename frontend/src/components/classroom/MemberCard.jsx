@@ -21,17 +21,11 @@ export default function MemberCard({ username, role, badge, menuItems }) {
             {badge}
           </Badge>
         )}
-        {!badge && role && (
-          <p className="text-xs text-secondary">{role}</p>
-        )}
+        {!badge && role && <p className="text-xs text-secondary">{role}</p>}
       </div>
       {menuItems && menuItems.length > 0 && (
-        <DropdownMenu
-          items={menuItems}
-          triggerLabel={`Options for ${username}`}
-        />
+        <DropdownMenu items={menuItems} triggerLabel={`Options for ${username}`} />
       )}
     </div>
   );
 }
-

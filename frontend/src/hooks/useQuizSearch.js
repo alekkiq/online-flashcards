@@ -1,10 +1,9 @@
 import { useEffect, useState, useMemo } from "react";
 import { useSearch } from "./useSearch";
-import { searchQuizzes } from "/src/api"
+import { searchQuizzes } from "/src/api";
 
 const quizFilterFn = (quiz, query) =>
-    quiz.title.toLowerCase().includes(query) ||
-    quiz?.creatorUsername?.toLowerCase().includes(query);
+  quiz.title.toLowerCase().includes(query) || quiz?.creatorUsername?.toLowerCase().includes(query);
 
 export function useQuizSearch(searchParams, setSearchParams, selectedSubject) {
   const [items, setItems] = useState([]);
@@ -16,12 +15,12 @@ export function useQuizSearch(searchParams, setSearchParams, selectedSubject) {
   );
 
   const fetchQuizzesByQuery = async () => {
-      const response = await searchQuizzes();
-      if (!response.success) {
-        return [];
-      }
-      return response.data.data;
-  }
+    const response = await searchQuizzes();
+    if (!response.success) {
+      return [];
+    }
+    return response.data.data;
+  };
 
   useEffect(() => {
     const fetchQuizzes = async () => {
@@ -31,10 +30,11 @@ export function useQuizSearch(searchParams, setSearchParams, selectedSubject) {
     fetchQuizzes();
   }, []);
 
-  const filteredQuizzes = useMemo(() =>
-    selectedSubject
-      ? filteredItems.filter((quiz) => quiz.subjectName === selectedSubject)
-      : filteredItems,
+  const filteredQuizzes = useMemo(
+    () =>
+      selectedSubject
+        ? filteredItems.filter((quiz) => quiz.subjectName === selectedSubject)
+        : filteredItems,
     [filteredItems, selectedSubject]
   );
 

@@ -22,24 +22,27 @@ const ClassroomProvider = ({ children }) => {
    * Fetch the user's classrooms. Skips if already fetched or currently loading.
    * @param {boolean} [force=false] - force a re-fetch even if already fetched
    */
-  const fetchClassrooms = useCallback(async (force = false) => {
-    if ((!force && (hasFetched || isLoading)) || !user) return;
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await getMyClassrooms();
-      if (response.success) {
-        setClassrooms(response.data.data);
-        setHasFetched(true);
-      } else {
-        setError(response.error);
+  const fetchClassrooms = useCallback(
+    async (force = false) => {
+      if ((!force && (hasFetched || isLoading)) || !user) return;
+      setIsLoading(true);
+      setError(null);
+      try {
+        const response = await getMyClassrooms();
+        if (response.success) {
+          setClassrooms(response.data.data);
+          setHasFetched(true);
+        } else {
+          setError(response.error);
+        }
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [hasFetched, isLoading, user]);
+    },
+    [hasFetched, isLoading, user]
+  );
 
   /**
    * Clear all classroom data (e.g. on logout).
@@ -68,4 +71,3 @@ const ClassroomProvider = ({ children }) => {
 };
 
 export { ClassroomProvider, ClassroomContext };
-

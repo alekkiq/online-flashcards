@@ -30,7 +30,13 @@ export default function MembersSection({ ownerUsername, users, userCount, isOwne
             role={user.role}
             menuItems={
               isOwner
-                ? [{ label: "Remove", variant: "destructive", onClick: () => onRemoveUser?.(user.userId) }]
+                ? [
+                    {
+                      label: "Remove",
+                      variant: "destructive",
+                      onClick: () => onRemoveUser?.(user.userId),
+                    },
+                  ]
                 : undefined
             }
           />
@@ -39,4 +45,3 @@ export default function MembersSection({ ownerUsername, users, userCount, isOwne
     </div>
   );
 }
-

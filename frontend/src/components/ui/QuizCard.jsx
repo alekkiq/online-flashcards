@@ -27,17 +27,19 @@ export function QuizCard({ quiz, onClick, onEdit, className = "" }) {
       )}
     >
       <div className="p-4 flex flex-col gap-2 flex-1 justify-center">
-        <h3 className="font-inter font-bold text-main text-lg sm:text-2xl leading-tight">{quiz.title}</h3>
+        <h3 className="font-inter font-bold text-main text-lg sm:text-2xl leading-tight">
+          {quiz.title}
+        </h3>
 
         {quiz.description && (
-            <p className="text-sm text-secondary line-clamp-3 mb-2">{quiz.description}</p>
+          <p className="text-sm text-secondary line-clamp-3 mb-2">{quiz.description}</p>
         )}
 
         <div className="flex items-center gap-2 flex-wrap">
           {quiz.subjectName && (
-              <Badge textColor="text-primary" bgColor="bg-primary/10">
-                {quiz.subjectName}
-              </Badge>
+            <Badge textColor="text-primary" bgColor="bg-primary/10">
+              {quiz.subjectName}
+            </Badge>
           )}
           {cardCount !== undefined && (
             <Badge textColor="text-primary" bgColor="bg-primary/10">

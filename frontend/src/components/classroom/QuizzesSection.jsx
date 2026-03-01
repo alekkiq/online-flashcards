@@ -20,26 +20,25 @@ export default function QuizzesSection({ quizzes = [], isOwner, onAddQuiz, onQui
           <span className="text-sm text-secondary">({quizzes.length})</span>
         </div>
         {isOwner && (
-          <Button size="sm" onClick={onAddQuiz} className="hidden sm:inline-flex">+ Add Quiz</Button>
+          <Button size="sm" onClick={onAddQuiz} className="hidden sm:inline-flex">
+            + Add Quiz
+          </Button>
         )}
       </div>
       {quizzes.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {quizzes.map((quiz) => (
-            <QuizCard
-              key={quiz.quizId}
-              quiz={quiz}
-              onClick={() => onQuizClick(quiz.quizId)}
-            />
+            <QuizCard key={quiz.quizId} quiz={quiz} onClick={() => onQuizClick(quiz.quizId)} />
           ))}
         </div>
       ) : (
         <p className="text-sm text-secondary">No quizzes added yet.</p>
       )}
-        {isOwner && (
-            <Button size="sm" onClick={onAddQuiz} className="inline-flex sm:hidden mt-4">+ Add Quiz</Button>
-        )}
+      {isOwner && (
+        <Button size="sm" onClick={onAddQuiz} className="inline-flex sm:hidden mt-4">
+          + Add Quiz
+        </Button>
+      )}
     </div>
   );
 }
-

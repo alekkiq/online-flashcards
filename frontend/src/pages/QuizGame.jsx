@@ -39,24 +39,27 @@ export default function QuizGame() {
     if (!isNavigating) setIsFlipped((prev) => !prev);
   };
 
-  const navigateCard = useCallback((direction) => {
-    if (isNavigating) return;
+  const navigateCard = useCallback(
+    (direction) => {
+      if (isNavigating) return;
 
-    const goTo = direction === "next" ? getNextCard : getPreviousCard;
+      const goTo = direction === "next" ? getNextCard : getPreviousCard;
 
-    if (isFlipped) {
-      setIsNavigating(true);
-      setIsFlipped(false);
-      setTimeout(() => {
+      if (isFlipped) {
+        setIsNavigating(true);
+        setIsFlipped(false);
+        setTimeout(() => {
+          setSlideDirection(direction);
+          goTo();
+          setIsNavigating(false);
+        }, 350);
+      } else {
         setSlideDirection(direction);
         goTo();
-        setIsNavigating(false);
-      }, 350);
-    } else {
-      setSlideDirection(direction);
-      goTo();
-    }
-  }, [isFlipped, isNavigating, getNextCard, getPreviousCard]);
+      }
+    },
+    [isFlipped, isNavigating, getNextCard, getPreviousCard]
+  );
 
   useEffect(() => {
     resetGameState();
@@ -85,11 +88,12 @@ export default function QuizGame() {
     return <PageLoader />;
   }
 
-  const slideClass = slideDirection === "next"
-    ? "animate-slide-in-right"
-    : slideDirection === "prev"
-      ? "animate-slide-in-left"
-      : "";
+  const slideClass =
+    slideDirection === "next"
+      ? "animate-slide-in-right"
+      : slideDirection === "prev"
+        ? "animate-slide-in-left"
+        : "";
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -154,14 +158,21 @@ export default function QuizGame() {
           </div>
           <div className="flex justify-between w-full">
             <div className="flex items-center gap-2">
-              <Button variant="outline" onClick={() => navigateCard("prev")} disabled={isNavigating || currentCardIndex === 0}>
+              <Button
+                variant="outline"
+                onClick={() => navigateCard("prev")}
+                disabled={isNavigating || currentCardIndex === 0}
+              >
                 <ArrowLeft />
               </Button>
               <p className="font-inter font-bold text-sm md:text-base text-secondary">PREVIOUS</p>
             </div>
             <div className="flex items-center gap-2">
               <p className="font-inter font-bold text-sm md:text-base text-secondary">NEXT</p>
-              <Button onClick={() => navigateCard("next")} disabled={isNavigating || currentCardIndex === totalCards - 1}>
+              <Button
+                onClick={() => navigateCard("next")}
+                disabled={isNavigating || currentCardIndex === totalCards - 1}
+              >
                 <ArrowRight />
               </Button>
             </div>

@@ -23,8 +23,6 @@ export function FlashcardInput({ index, register, errors, onRemove }) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1">
-
-
         <FormField label="Question *" error={questionError}>
           <textarea
             id={`card-${index}-question`}

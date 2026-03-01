@@ -90,18 +90,17 @@ export default function ClassroomHeader({ classroom, isOwner, onManage, onLeave 
 
       <div className="gap-2 shrink-0 flex sm:hidden">
         {isOwner ? (
-            <Button variant="outline" size="sm" onClick={onManage}>
-              <Settings size={16} />
-              Manage
-            </Button>
+          <Button variant="outline" size="sm" onClick={onManage}>
+            <Settings size={16} />
+            Manage
+          </Button>
         ) : (
-            <Button variant="outline" size="sm" onClick={onLeave}>
-              <LogOut size={16} />
-              Leave
-            </Button>
+          <Button variant="outline" size="sm" onClick={onLeave}>
+            <LogOut size={16} />
+            Leave
+          </Button>
         )}
       </div>
     </div>
   );
 }
-

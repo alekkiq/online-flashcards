@@ -9,7 +9,7 @@ import { useNavigate } from "react-router";
 import { useQuizContext } from "../hooks/useQuizContext";
 import { ScoreBadge } from "../components/ui/ScoreBadge";
 import { BackLink } from "../components/ui/BackLink";
-import { History } from 'lucide-react';
+import { History } from "lucide-react";
 
 export default function QuizDetails() {
   const { id } = useParams();
@@ -27,9 +27,7 @@ export default function QuizDetails() {
           <BackLink label="Back to quiz search" />
           <div className="flex flex-col gap-4 p-8 bg-white rounded-lg">
             <h1 className="font-serif text-2xl md:text-4xl font-bold">{currentQuiz.title}</h1>
-            <Badge>
-                {currentQuiz.subjectName || "No Subject"}
-            </Badge>
+            <Badge>{currentQuiz.subjectName || "No Subject"}</Badge>
             <p className="font-serif font-semibold text-sm md:text-lg text-secondary max-w-[50vw]">
               {currentQuiz.description}
             </p>

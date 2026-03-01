@@ -24,10 +24,7 @@ export function Modal({ open, onClose, title, className, children }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div
-        className="fixed inset-0 bg-black/40 transition-opacity"
-        onClick={onClose}
-      />
+      <div className="fixed inset-0 bg-black/40 transition-opacity" onClick={onClose} />
       <div
         className={cn(
           "relative z-50 w-full max-w-md rounded-2xl bg-white p-6 shadow-xl",
@@ -53,4 +50,3 @@ export function Modal({ open, onClose, title, className, children }) {
     </div>
   );
 }
-

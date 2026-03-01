@@ -46,4 +46,3 @@ const SubjectProvider = ({ children }) => {
 };
 
 export { SubjectProvider, SubjectContext };
-

@@ -10,7 +10,11 @@ export default function SearchQuizzes() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedSubject, setSelectedSubject] = useState(null);
   const { subjects } = useSubjects();
-  const { searchQuery, setSearchQuery, filteredQuizzes } = useQuizSearch(searchParams, setSearchParams, selectedSubject);
+  const { searchQuery, setSearchQuery, filteredQuizzes } = useQuizSearch(
+    searchParams,
+    setSearchParams,
+    selectedSubject
+  );
 
   const subjectFilters = [
     { label: "All", onClick: () => setSelectedSubject(null), active: !selectedSubject },

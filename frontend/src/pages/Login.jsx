@@ -28,19 +28,16 @@ export default function Login() {
             In vulputate cursus sem ac consectetur. Nam nec ex scelerisque, blandit neque sit amet.
           </p>
           <p className="text-gray-500">
-            Morbi efficitur augue in odio posuere, vel lacinia purus auctor. Donec finibus non odio sed pellentesque.
+            Morbi efficitur augue in odio posuere, vel lacinia purus auctor. Donec finibus non odio
+            sed pellentesque.
           </p>
         </div>
       </div>
 
       <div className="md:min-h-screen bg-white flex flex-col items-center px-8 md:px-12 lg:px-20 md:mt-0 mt-10 md:pt-[20vh] pt-10 rounded-3xl md:rounded-none">
         <div className="md:hidden text-center mb-8">
-          <h1 className="font-serif text-3xl font-bold text-main">
-            Login to start learning
-          </h1>
-          <p className="mt-2 text-gray-500">
-            Learn faster and smarter with online flashcards
-          </p>
+          <h1 className="font-serif text-3xl font-bold text-main">Login to start learning</h1>
+          <p className="mt-2 text-gray-500">Learn faster and smarter with online flashcards</p>
         </div>
 
         <div className="flex mb-8 w-full max-w-md">

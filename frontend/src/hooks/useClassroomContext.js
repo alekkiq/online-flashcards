@@ -12,4 +12,3 @@ export const useClassroomContext = () => {
   }
   return context;
 };
-

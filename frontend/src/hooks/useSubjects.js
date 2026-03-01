@@ -15,4 +15,3 @@ export function useSubjects() {
 
   return { subjects, isLoading, error };
 }
-

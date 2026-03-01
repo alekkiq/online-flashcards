@@ -18,7 +18,9 @@ export default function MaterialsSection({ materials = [], isOwner, onAddMateria
           <span className="text-sm text-secondary">({materials.length})</span>
         </div>
         {isOwner && (
-          <Button size="sm" onClick={onAddMaterial} className="hidden sm:inline-flex">+ Add Material</Button>
+          <Button size="sm" onClick={onAddMaterial} className="hidden sm:inline-flex">
+            + Add Material
+          </Button>
         )}
       </div>
       {materials.length > 0 ? (
@@ -32,9 +34,7 @@ export default function MaterialsSection({ materials = [], isOwner, onAddMateria
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold text-main">{material.title}</p>
                 <p className="text-sm text-secondary line-clamp-2 mt-1">{material.content}</p>
-                <p className="text-xs text-muted mt-2">
-                  Added by {material.creatorUsername}
-                </p>
+                <p className="text-xs text-muted mt-2">Added by {material.creatorUsername}</p>
               </div>
             </div>
           ))}
@@ -42,10 +42,11 @@ export default function MaterialsSection({ materials = [], isOwner, onAddMateria
       ) : (
         <p className="text-sm text-secondary">No learning materials added yet.</p>
       )}
-        {isOwner && (
-            <Button size="sm" onClick={onAddMaterial} className="inline-flex sm:hidden mt-4">+ Add Material</Button>
-        )}
+      {isOwner && (
+        <Button size="sm" onClick={onAddMaterial} className="inline-flex sm:hidden mt-4">
+          + Add Material
+        </Button>
+      )}
     </div>
   );
 }
-

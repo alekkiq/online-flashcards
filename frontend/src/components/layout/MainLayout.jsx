@@ -13,20 +13,18 @@ export default function MainLayout() {
     handleAutoLogin();
   }, []);
 
-
-
   return (
     <SubjectProvider>
-    <QuizProvider>
-      <ClassroomProvider>
-      <div className="min-h-screen">
-        <NavBar />
-        <main className="w-full mx-auto px-4 mb-[10vh] md:mb-0">
-          <Outlet />
-        </main>
-      </div>
-      </ClassroomProvider>
-    </QuizProvider>
+      <QuizProvider>
+        <ClassroomProvider>
+          <div className="min-h-screen">
+            <NavBar />
+            <main className="w-full mx-auto px-4 mb-[10vh] md:mb-0">
+              <Outlet />
+            </main>
+          </div>
+        </ClassroomProvider>
+      </QuizProvider>
     </SubjectProvider>
   );
 }

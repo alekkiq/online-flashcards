@@ -15,7 +15,7 @@ export default function NavBar() {
       <div>
         <Link to="/">
           <div className="flex items-center gap-1">
-              {/* <Spade className="text-primary"> */}
+            {/* <Spade className="text-primary"> */}
             <BookCopy className="text-primary" strokeWidth={2.25} />
             <p className="font-serif text-xl md:text-2xl font-black">OnlyCards</p>
           </div>

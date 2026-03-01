@@ -23,4 +23,3 @@ export function BackLink({ label = "Back", className }) {
     </button>
   );
 }
-

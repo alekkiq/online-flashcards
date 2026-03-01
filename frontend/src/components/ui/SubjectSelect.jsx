@@ -47,4 +47,3 @@ export const SubjectSelect = React.forwardRef(
   }
 );
 SubjectSelect.displayName = "SubjectSelect";
-

@@ -28,7 +28,7 @@ const AuthProvider = ({ children }) => {
       email: data.email,
     });
     localStorage.setItem("token", data.token);
-    window.location.href = "/"; 
+    window.location.href = "/";
     return { success: true };
   };
 
@@ -94,13 +94,14 @@ const AuthProvider = ({ children }) => {
     setIsLoading(false);
 
     if (!response.success) {
-        setError(response.error);
-        return response;
+      setError(response.error);
+      return response;
     }
 
     const data = response.data.data;
     setUser((prev) => ({
-      ...prev, email: data.email ?? prev.email
+      ...prev,
+      email: data.email ?? prev.email,
     }));
 
     return { success: true };
@@ -116,12 +117,12 @@ const AuthProvider = ({ children }) => {
     setIsLoading(false);
 
     if (!response.success) {
-        setError(response.error);
-        return response;
+      setError(response.error);
+      return response;
     }
 
     return { success: true };
-  }
+  };
 
   const isTeacher = user?.role === "TEACHER" || user?.role === "ADMIN";
   const isAdmin = user?.role === "ADMIN";
