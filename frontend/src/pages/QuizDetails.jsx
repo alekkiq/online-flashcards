@@ -24,7 +24,7 @@ export default function QuizDetails() {
     <>
       {currentQuiz ? (
         <div className="max-w-7xl mx-auto flex flex-col mt-8 mb-[10vh]">
-          <BackLink />
+          <BackLink label="Back to quiz search" />
           <div className="flex flex-col gap-4 p-8 bg-white rounded-lg">
             <h1 className="font-serif text-2xl md:text-4xl font-bold">{currentQuiz.title}</h1>
             <Badge>

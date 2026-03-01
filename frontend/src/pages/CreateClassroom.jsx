@@ -101,7 +101,7 @@ export default function CreateClassroom() {
 
   return (
     <div className="max-w-5xl mx-auto py-8 px-4 md:px-0">
-      <BackLink />
+      <BackLink label="Back to classrooms" />
       <div className="mb-8 text-center md:text-left">
         <h1 className="font-serif text-4xl md:text-5xl font-bold text-main mb-2">
           {isEditMode ? "Edit Classroom" : "Create New Classroom"}

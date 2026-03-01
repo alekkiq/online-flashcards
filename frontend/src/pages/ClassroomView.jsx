@@ -55,7 +55,7 @@ export default function ClassroomView() {
 
   return (
     <div className="max-w-7xl mx-auto py-8 md:px-0">
-      <BackLink />
+      <BackLink label="Back to classrooms" />
       <ClassroomHeader
         classroom={classroom}
         isOwner={isOwner}
