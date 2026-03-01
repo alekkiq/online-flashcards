@@ -8,6 +8,7 @@ import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router";
 import { useQuizContext } from "../hooks/useQuizContext";
 import { ScoreBadge } from "../components/ui/ScoreBadge";
+import { BackLink } from "../components/ui/BackLink";
 import { History } from 'lucide-react';
 
 export default function QuizDetails() {
@@ -22,7 +23,8 @@ export default function QuizDetails() {
   return (
     <>
       {currentQuiz ? (
-        <div className="max-w-7xl mx-auto flex flex-col gap-8 mt-[10vh]">
+        <div className="max-w-7xl mx-auto flex flex-col mt-8 mb-[10vh]">
+          <BackLink />
           <div className="flex flex-col gap-4 p-8 bg-white rounded-lg">
             <h1 className="font-serif text-2xl md:text-4xl font-bold">{currentQuiz.title}</h1>
             <Badge>
@@ -66,7 +68,7 @@ export default function QuizDetails() {
               </p>
             )}
           </div>
-          <div className="flex flex-col md:flex-row gap-4 justify-center md:justify-between items-center">
+          <div className="flex flex-col md:flex-row gap-4 mt-6 sm:mt-8 justify-center md:justify-between items-center">
             <div className="flex flex-row gap-8 md:ml-8">
               <div className="flex flex-col items-center">
                 <p className="font-inter font-bold text-sm md:text-lg text-main">

@@ -9,6 +9,7 @@ import { classroomSchema, classroomUpdateSchema } from "/src/lib/schemas";
 import { createClassroom, updateClassroom, getClassroomById } from "/src/api";
 import { useState, useEffect } from "react";
 import { PageLoader } from "../components/ui/PageLoader";
+import { BackLink } from "../components/ui/BackLink";
 import { useClassroomContext } from "../hooks/useClassroomContext";
 
 export default function CreateClassroom() {
@@ -100,6 +101,7 @@ export default function CreateClassroom() {
 
   return (
     <div className="max-w-5xl mx-auto py-8 px-4 md:px-0">
+      <BackLink />
       <div className="mb-8 text-center md:text-left">
         <h1 className="font-serif text-4xl md:text-5xl font-bold text-main mb-2">
           {isEditMode ? "Edit Classroom" : "Create New Classroom"}

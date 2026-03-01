@@ -10,6 +10,7 @@ import { SubjectSelect } from "../components/ui/SubjectSelect";
 import { useMyQuizzes } from "../hooks/useMyQuizzes";
 import { useState, useEffect } from "react";
 import { PageLoader } from "../components/ui/PageLoader";
+import { BackLink } from "../components/ui/BackLink";
 import { quizSchema } from "/src/lib/schemas";
 import { addQuizToClassroom } from "/src/api";
 
@@ -87,6 +88,7 @@ export default function CreateQuiz() {
 
   return (
     <div className="max-w-5xl mx-auto py-8 px-4 md:px-0">
+        <BackLink />
         <div className="mb-8 text-center md:text-left">
             <h1 className="font-serif text-4xl md:text-5xl font-bold text-main mb-2">
             {isEditMode ? "Edit Quiz" : classroomId ? "Add Quiz to Classroom" : "Create New Quiz"}

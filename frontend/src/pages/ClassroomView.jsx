@@ -5,6 +5,7 @@ import ClassroomHeader from "../components/classroom/ClassroomHeader";
 import QuizzesSection from "../components/classroom/QuizzesSection";
 import MaterialsSection from "../components/classroom/MaterialsSection";
 import MembersSection from "../components/classroom/MembersSection";
+import { BackLink } from "../components/ui/BackLink";
 import { useEffect } from "react";
 import { useClassroom } from "../hooks/useClassroom";
 import { useAuth } from "../hooks/useAuth";
@@ -54,6 +55,7 @@ export default function ClassroomView() {
 
   return (
     <div className="max-w-7xl mx-auto py-8 md:px-0">
+      <BackLink />
       <ClassroomHeader
         classroom={classroom}
         isOwner={isOwner}
