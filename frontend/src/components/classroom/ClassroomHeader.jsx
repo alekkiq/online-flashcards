@@ -27,7 +27,7 @@ export default function ClassroomHeader({ classroom, isOwner, onManage, onLeave 
             <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-main">
               {classroom.title}
             </h1>
-            <Badge>{classroom.subjectName}</Badge>
+            <Badge size="md">{classroom.subjectName}</Badge>
           </div>
           {classroom.description && (
             <p className="text-secondary max-w-2xl">{classroom.description}</p>
