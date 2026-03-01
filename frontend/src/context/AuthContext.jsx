@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useMemo } from "react";
 import { useNavigate, useLocation } from "react-router";
 import { login, autoLogin, register, updateEmail, updatePassword } from "../api";
 
@@ -123,11 +123,16 @@ const AuthProvider = ({ children }) => {
     return { success: true };
   }
 
+  const isTeacher = user?.role === "TEACHER" || user?.role === "ADMIN";
+  const isAdmin = user?.role === "ADMIN";
+
   return (
     <AuthContext.Provider
       value={{
         user,
         setUser,
+        isTeacher,
+        isAdmin,
         handleLogin,
         handleLogout,
         handleAutoLogin,
