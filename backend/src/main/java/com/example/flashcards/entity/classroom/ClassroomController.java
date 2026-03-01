@@ -4,8 +4,10 @@ import com.example.flashcards.common.response.ApiResponse;
 import com.example.flashcards.entity.classroom.dto.ClassroomCreateRequest;
 import com.example.flashcards.entity.classroom.dto.ClassroomResponse;
 import com.example.flashcards.entity.classroom.dto.ClassroomUpdateRequest;
+import com.example.flashcards.entity.classroom.dto.ClassroomUserResponse;
 import com.example.flashcards.entity.learningmaterial.dto.LearningMaterialCreationRequest;
 import com.example.flashcards.entity.learningmaterial.dto.LearningMaterialResponse;
+import com.example.flashcards.entity.quiz.dto.QuizSeachResponse;
 import com.example.flashcards.security.CustomUserDetails;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -106,6 +108,21 @@ public class ClassroomController {
         return ResponseEntity.ok(ApiResponse.success(null, "Left classroom successfully."));
     }
 
+    @DeleteMapping("/{classroomId}/users/{userId}")
+    public ResponseEntity<ApiResponse<ClassroomResponse>> removeUserFromClassroom(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @PathVariable Long classroomId,
+            @PathVariable Long userId
+    ) {
+        Long ownerId = userDetails.getUserId();
+        Classroom updated = classroomService.removeUserFromClassroom(ownerId, classroomId, userId);
+
+        return ResponseEntity.ok(ApiResponse.success(
+                mapToClassroomResponse(updated, ownerId),
+                "User removed from classroom successfully."
+        ));
+    }
+
     @PostMapping("/{classroomId}/learning-materials")
     public ResponseEntity<ApiResponse<ClassroomResponse>> addLearningMaterial(
             @AuthenticationPrincipal CustomUserDetails userDetails,
@@ -136,10 +153,60 @@ public class ClassroomController {
         ));
     }
 
+    @PostMapping("/{classroomId}/quizzes/{quizId}")
+    public ResponseEntity<ApiResponse<ClassroomResponse>> addQuizToClassroom(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @PathVariable Long classroomId,
+            @PathVariable Long quizId
+    ) {
+        Long userId = userDetails.getUserId();
+        Classroom updated = classroomService.addQuizToClassroom(userId, classroomId, quizId);
+
+        return ResponseEntity.ok(ApiResponse.success(
+                mapToClassroomResponse(updated, userId),
+                "Quiz added to classroom successfully."
+        ));
+    }
+
+    @DeleteMapping("/{classroomId}/quizzes/{quizId}")
+    public ResponseEntity<ApiResponse<ClassroomResponse>> removeQuizFromClassroom(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @PathVariable Long classroomId,
+            @PathVariable Long quizId
+    ) {
+        Long userId = userDetails.getUserId();
+        Classroom updated = classroomService.removeQuizFromClassroom(userId, classroomId, quizId);
+
+        return ResponseEntity.ok(ApiResponse.success(
+                mapToClassroomResponse(updated, userId),
+                "Quiz removed from classroom successfully."
+        ));
+    }
+
     private ClassroomResponse mapToClassroomResponse(Classroom classroom, Long currentUserId) {
         boolean isOwner = currentUserId != null
                 && classroom.getOwner() != null
                 && classroom.getOwner().getUserId() == currentUserId;
+
+        List<ClassroomUserResponse> users = classroom.getUsers().stream()
+                .map(user -> new ClassroomUserResponse(
+                        user.getUserId(),
+                        user.getUsername(),
+                        user.getRole().name()
+                ))
+                .toList();
+
+        List<QuizSeachResponse> quizzes = classroom.getQuizzes().stream()
+                .map(quiz -> new QuizSeachResponse(
+                        quiz.getQuizId(),
+                        quiz.getTitle(),
+                        quiz.getDescription(),
+                        quiz.getCreator().getUsername(),
+                        quiz.getCreator().getRole().name(),
+                        quiz.getSubject().getName(),
+                        quiz.getFlashcards().size()
+                ))
+                .toList();
 
         List<LearningMaterialResponse> materials = classroom.getLearningMaterials().stream()
                 .map(material -> new LearningMaterialResponse(
@@ -160,6 +227,8 @@ public class ClassroomController {
                 classroom.getOwner().getUsername(),
                 isOwner,
                 classroom.getUsers().size(),
+                users,
+                quizzes,
                 materials
         );
     }

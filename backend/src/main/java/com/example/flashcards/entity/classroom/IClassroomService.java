@@ -19,7 +19,13 @@ public interface IClassroomService {
 
     void leaveClassroom(Long userId, Long classroomId);
 
+    Classroom removeUserFromClassroom(Long ownerId, Long classroomId, Long targetUserId);
+
     Classroom addLearningMaterial(Long userId, Long classroomId, LearningMaterialCreationRequest request);
 
     Classroom removeLearningMaterial(Long userId, Long classroomId, Long learningMaterialId);
+
+    Classroom addQuizToClassroom(Long userId, Long classroomId, Long quizId);
+
+    Classroom removeQuizFromClassroom(Long userId, Long classroomId, Long quizId);
 }

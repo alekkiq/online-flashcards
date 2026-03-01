@@ -5,6 +5,8 @@ import com.example.flashcards.entity.classroom.dto.ClassroomCreateRequest;
 import com.example.flashcards.entity.classroom.dto.ClassroomUpdateRequest;
 import com.example.flashcards.entity.learningmaterial.LearningMaterial;
 import com.example.flashcards.entity.learningmaterial.dto.LearningMaterialCreationRequest;
+import com.example.flashcards.entity.quiz.Quiz;
+import com.example.flashcards.entity.quiz.QuizRepository;
 import com.example.flashcards.entity.subject.Subject;
 import com.example.flashcards.entity.subject.SubjectRepository;
 import com.example.flashcards.entity.user.User;
@@ -23,21 +25,25 @@ public class ClassroomService implements IClassroomService {
     private final ClassroomRepository classroomRepository;
     private final UserRepository userRepository;
     private final SubjectRepository subjectRepository;
+    private final QuizRepository quizRepository;
 
     private final SecureRandom random = new SecureRandom();
-    private static final String CODE_CHARS = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    private static final String CODE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
     public ClassroomService(
             ClassroomRepository classroomRepository,
             UserRepository userRepository,
-            SubjectRepository subjectRepository
+            SubjectRepository subjectRepository,
+            QuizRepository quizRepository
     ) {
         this.classroomRepository = classroomRepository;
         this.userRepository = userRepository;
         this.subjectRepository = subjectRepository;
+        this.quizRepository = quizRepository;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Classroom getClassroomById(Long classroomId) {
         return this.classroomRepository.findById(classroomId)
                 .orElseThrow(() -> new ResourceNotFoundException(
@@ -90,16 +96,8 @@ public class ClassroomService implements IClassroomService {
         return trimmed.toUpperCase(Locale.ROOT);
     }
 
-    private boolean isValidJoinCodeChars(String code) {
-        for (int i = 0; i < code.length(); i++) {
-            if (CODE_CHARS.indexOf(code.charAt(i)) < 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
     @Override
+    @Transactional(readOnly = true)
     public List<Classroom> getMyClassrooms(Long userId) {
         return this.classroomRepository.findByUsers_UserId(userId);
     }
@@ -116,11 +114,8 @@ public class ClassroomService implements IClassroomService {
         if (requestedCode == null) {
             joinCode = generateUniqueJoinCode(6);
         } else {
-            if (requestedCode.length() < 4 || requestedCode.length() > 12) {
-                throw new IllegalArgumentException("Join code must be 4-12 characters.");
-            }
-            if (!isValidJoinCodeChars(requestedCode)) {
-                throw new IllegalArgumentException("Join code contains invalid characters.");
+            if (requestedCode.length() < 6) {
+                throw new IllegalArgumentException("Join code must be at least 6 characters.");
             }
             if (classroomRepository.existsByJoinCode(requestedCode)) {
                 throw new IllegalArgumentException("Join code is already in use.");
@@ -194,6 +189,23 @@ public class ClassroomService implements IClassroomService {
 
     @Override
     @Transactional
+    public Classroom removeUserFromClassroom(Long ownerId, Long classroomId, Long targetUserId) {
+        Classroom classroom = getClassroomById(classroomId);
+
+        if (classroom.getOwner() == null || !Objects.equals(classroom.getOwner().getUserId(), ownerId)) {
+            throw new IllegalArgumentException("Only the owner can remove users from this classroom.");
+        }
+
+        if (Objects.equals(ownerId, targetUserId)) {
+            throw new IllegalArgumentException("Owner cannot remove themselves from the classroom.");
+        }
+
+        classroom.getUsers().removeIf(u -> Objects.equals(u.getUserId(), targetUserId));
+        return this.classroomRepository.save(classroom);
+    }
+
+    @Override
+    @Transactional
     public Classroom addLearningMaterial(Long userId, Long classroomId, LearningMaterialCreationRequest request) {
         User creator = getUserById(userId);
         Classroom classroom = getClassroomById(classroomId);
@@ -223,6 +235,46 @@ public class ClassroomService implements IClassroomService {
         }
 
         classroom.getLearningMaterials().removeIf(lm -> Objects.equals(lm.getLearningMaterialId(), learningMaterialId));
+        return this.classroomRepository.save(classroom);
+    }
+
+    @Override
+    @Transactional
+    public Classroom addQuizToClassroom(Long userId, Long classroomId, Long quizId) {
+        Classroom classroom = getClassroomById(classroomId);
+
+        if (classroom.getOwner() == null || !Objects.equals(classroom.getOwner().getUserId(), userId)) {
+            throw new IllegalArgumentException("You are not allowed to add quizzes to this classroom.");
+        }
+
+        boolean alreadyAdded = classroom.getQuizzes().stream()
+                .anyMatch(q -> q.getQuizId() == quizId);
+
+        if (alreadyAdded) {
+            return classroom;
+        }
+
+        Quiz quiz = quizRepository.findById(quizId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Quiz",
+                        quizId,
+                        "Quiz with ID " + quizId + " not found"
+                ));
+
+        classroom.addQuiz(quiz);
+        return this.classroomRepository.save(classroom);
+    }
+
+    @Override
+    @Transactional
+    public Classroom removeQuizFromClassroom(Long userId, Long classroomId, Long quizId) {
+        Classroom classroom = getClassroomById(classroomId);
+
+        if (classroom.getOwner() == null || !Objects.equals(classroom.getOwner().getUserId(), userId)) {
+            throw new IllegalArgumentException("You are not allowed to remove quizzes from this classroom.");
+        }
+
+        classroom.getQuizzes().removeIf(q -> q.getQuizId() == quizId);
         return this.classroomRepository.save(classroom);
     }
 }
