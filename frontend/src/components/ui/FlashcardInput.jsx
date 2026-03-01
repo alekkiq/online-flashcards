@@ -15,15 +15,17 @@ export function FlashcardInput({ index, register, errors, onRemove }) {
   const answerError = errors?.cards?.[index]?.answer?.message;
 
   return (
-    <div className="flex flex-col gap-4 py-6 border-b border-gray-100 last:border-0">
-      <div className="flex items-center gap-3">
-        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-purple-100 text-purple-600 font-bold text-sm">
+    <div className="flex gap-4 py-6 border-b border-gray-100 last:border-0">
+      <div className="flex items-start">
+        <div className="flex items-center justify-center w-8 h-8 shrink-0 rounded-full bg-purple-100 text-purple-600 font-bold text-sm">
           {cardNumber}
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ml-11">
-        <FormField label="Front" error={questionError}>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1">
+
+
+        <FormField label="Question *" error={questionError}>
           <textarea
             id={`card-${index}-question`}
             {...register(`cards.${index}.question`)}
@@ -34,7 +36,7 @@ export function FlashcardInput({ index, register, errors, onRemove }) {
           />
         </FormField>
 
-        <FormField label="Back" error={answerError}>
+        <FormField label="Answer *" error={answerError}>
           <textarea
             id={`card-${index}-answer`}
             {...register(`cards.${index}.answer`)}

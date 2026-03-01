@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useMemo } from "react";
 
 /**
  * Generalized search hook that can be extended to any list of items and filtering logic.
@@ -9,7 +9,6 @@ import { useState, useEffect } from "react";
  */
 export function useSearch(items, filterFn, searchParams, setSearchParams) {
     const searchQuery = searchParams.get("q") || "";
-    const [filteredItems, setFilteredItems] = useState(items);
 
     const setSearchQuery = (query) => {
         setSearchParams((prev) => {
@@ -23,10 +22,10 @@ export function useSearch(items, filterFn, searchParams, setSearchParams) {
         })
     };
 
-    useEffect(() => {
+    const filteredItems = useMemo(() => {
         const query = searchQuery.toLowerCase();
-        setFilteredItems(items.filter((item) => filterFn(item, query)));
-    }, [searchQuery, items]);
+        return items.filter((item) => filterFn(item, query));
+    }, [searchQuery, items, filterFn]);
 
     return {
         searchQuery,

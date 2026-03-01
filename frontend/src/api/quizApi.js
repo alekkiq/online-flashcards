@@ -1,6 +1,8 @@
 import { fetchData } from "/src/lib/fetchData";
 
-const token = localStorage.getItem("token");
+function getToken() {
+  return localStorage.getItem("token");
+}
 
 export async function getQuiz(id) {
   return fetchData(`quizzes/${id}`);
@@ -11,7 +13,7 @@ export async function createQuiz(quiz) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(quiz),
   });
@@ -30,7 +32,7 @@ export async function updateQuiz(id, quiz) {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify(quiz),
   });
@@ -40,7 +42,7 @@ export async function deleteQuiz(id) {
   return fetchData(`quizzes/${id}`, {
     method: "DELETE",
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${getToken()}`,
     },
   });
 }
@@ -48,7 +50,7 @@ export async function deleteQuiz(id) {
 export async function getMyQuizzes() {
   return fetchData("quizzes/me", {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${getToken()}`,
     },
   });
 }
@@ -56,7 +58,7 @@ export async function getMyQuizzes() {
 export async function getQuizHistory(quizId) {
   return fetchData(`quiz-results/me/quiz/${quizId}`, {
     headers: {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${getToken()}`,
     },
   });
 }
@@ -66,7 +68,7 @@ export async function saveQuizResult(quizId, score) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${getToken()}`,
     },
     body: JSON.stringify({
       quizId: quizId,

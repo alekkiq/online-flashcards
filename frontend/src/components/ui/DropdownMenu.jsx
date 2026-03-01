@@ -5,7 +5,7 @@ import { EllipsisVertical } from "lucide-react";
 
 /**
  * A generic 3-dot dropdown menu.
- * @param {Array<{ label: string, onClick: () => void, icon?: ReactNode, variant?: "default" | "destructive" }>} items
+ * @param {Array<{ label: string, onClick: () => void, icon?: ReactNode, variant?: "default" | "destructive", active?: boolean }>} items
  *   The list of actions to show in the dropdown.
  * @param {string} triggerLabel  Accessible aria-label for the trigger button. Defaults to "Options".
  * @param {string} className     Extra classes forwarded to the outer wrapper div.
@@ -44,7 +44,7 @@ export const DropdownMenu = forwardRef(({ items = [], triggerLabel = "Options", 
 
   return (
     <div className={cn("relative", className)} ref={resolvedRef}>
-      <div onClick={() => setOpen((prev) => !prev)} className="h-10">
+      <div onClick={() => setOpen((prev) => !prev)}>
         {trigger ?? defaultTrigger}
       </div>
       {open && (
@@ -58,7 +58,8 @@ export const DropdownMenu = forwardRef(({ items = [], triggerLabel = "Options", 
               }}
               className={cn(
                 "flex w-full items-center gap-2 px-3 py-2 text-sm transition-colors",
-                itemVariants[item.variant ?? "default"]
+                itemVariants[item.variant ?? "default"],
+                item.active && "bg-primary/10 text-primary font-semibold"
               )}
             >
               {item.icon && <span className="shrink-0" aria-hidden="true">{item.icon}</span>}

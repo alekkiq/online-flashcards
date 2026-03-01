@@ -25,6 +25,9 @@ export default function QuizDetails() {
         <div className="max-w-7xl mx-auto flex flex-col gap-8 mt-[10vh]">
           <div className="flex flex-col gap-4 p-8 bg-white rounded-lg">
             <h1 className="font-serif text-2xl md:text-4xl font-bold">{currentQuiz.title}</h1>
+            <Badge>
+                {currentQuiz.subjectName || "No Subject"}
+            </Badge>
             <p className="font-serif font-semibold text-sm md:text-lg text-secondary max-w-[50vw]">
               {currentQuiz.description}
             </p>
@@ -52,7 +55,7 @@ export default function QuizDetails() {
                 <div className="flex flex-col gap-5">
                   {quizHistory.map((h) => (
                     <div key={h.quizResultId} className="flex flex-col gap-2">
-                      <ScoreBadge percentage={h.scorePercentage} date={new Date(h.completedAt).toLocaleDateString("fi-FI")} />
+                      <ScoreBadge percentage={h.scorePercentage} date={h.completedAt} />
                     </div>
                   ))}
                 </div>

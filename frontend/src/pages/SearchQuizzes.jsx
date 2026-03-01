@@ -1,25 +1,25 @@
 import { useState } from "react";
-import { Search } from "lucide-react";
-import { useSearchParams } from "react-router";
-import { Input } from "../components/ui/Input";
-import { Button } from "../components/ui/Button";
+import { useSearchParams, useNavigate } from "react-router";
 import { Searchbar } from "../components/ui/Searchbar";
 import { QuizCard } from "../components/ui/QuizCard";
 import { useQuizSearch } from "../hooks/useQuizSearch";
-import { useNavigate } from "react-router";
+import { useSubjects } from "../hooks/useSubjects";
 
 export default function SearchQuizzes() {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [selectedSubject, setSelectedSubject] = useState(null);
-  const { searchQuery, setSearchQuery, filteredQuizzes } = useQuizSearch(searchParams, setSearchParams);
+  const { subjects } = useSubjects();
+  const { searchQuery, setSearchQuery, filteredQuizzes } = useQuizSearch(searchParams, setSearchParams, selectedSubject);
 
-    const subjectFilters = [
-        { label: "All", onClick: () => setSelectedSubject(null) },
-        { label: "Math", onClick: () => setSelectedSubject("math") },
-        { label: "Science", onClick: () => setSelectedSubject("science") },
-        // add more subjects as needed
-    ];
+  const subjectFilters = [
+    { label: "All", onClick: () => setSelectedSubject(null), active: !selectedSubject },
+    ...subjects.map((subject) => ({
+      label: subject.name,
+      onClick: () => setSelectedSubject(subject.name),
+      active: selectedSubject === subject.name,
+    })),
+  ];
 
   return (
     <div className="max-w-7xl mx-auto py-8">
@@ -32,6 +32,8 @@ export default function SearchQuizzes() {
         onChange={setSearchQuery}
         placeholder="Search for quizzes..."
         filters={subjectFilters}
+        filterTriggerLabel="Subject"
+        activeFilterLabel={selectedSubject}
       />
       {searchQuery && (
         <p className="text-main font-bold mb-6">Search results for "{searchQuery}":</p>

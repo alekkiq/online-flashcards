@@ -1,19 +1,23 @@
-import { useNavigate, useParams } from "react-router";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useNavigate, useParams, useSearchParams } from "react-router";
+import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "../components/ui/Button";
 import { Input } from "../components/ui/Input";
 import { FormField } from "../components/ui/FormField";
 import { FlashcardInput } from "../components/ui/FlashcardInput";
+import { SubjectSelect } from "../components/ui/SubjectSelect";
 import { useMyQuizzes } from "../hooks/useMyQuizzes";
 import { useState, useEffect } from "react";
 import { PageLoader } from "../components/ui/PageLoader";
 import { quizSchema } from "/src/lib/schemas";
+import { addQuizToClassroom } from "/src/api";
 
 export default function CreateQuiz() {
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
+  const classroomId = searchParams.get("classroomId");
   const { handleCreateQuiz, handleUpdateQuiz, quizzes, isLoading: isQuizzesLoading } = useMyQuizzes();
   const isEditMode = !!id;
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -29,6 +33,7 @@ export default function CreateQuiz() {
     defaultValues: {
       title: "",
       description: "",
+      subject: "",
       cards: [{ question: "", answer: "" }, { question: "", answer: "" }],
     },
   });
@@ -46,6 +51,7 @@ export default function CreateQuiz() {
         reset({
           title: quizToEdit.title,
           description: quizToEdit.description || "",
+          subject: quizToEdit.subjectName || "",
           cards: quizToEdit.flashcards || [{ question: "", answer: "" }],
         });
       }
@@ -58,10 +64,16 @@ export default function CreateQuiz() {
     try {
       if (isEditMode) {
         await handleUpdateQuiz(id, data);
+        navigate("/my-quizzes");
       } else {
-        await handleCreateQuiz(data);
+        const created = await handleCreateQuiz(data);
+        if (classroomId && created?.quizId) {
+          await addQuizToClassroom(classroomId, created.quizId);
+          navigate(`/classrooms/${classroomId}`);
+        } else {
+          navigate("/my-quizzes");
+        }
       }
-      navigate("/my-quizzes");
     } catch (error) {
       console.error("Failed to save quiz:", error);
     } finally {
@@ -77,7 +89,7 @@ export default function CreateQuiz() {
     <div className="max-w-5xl mx-auto py-8 px-4 md:px-0">
         <div className="mb-8 text-center md:text-left">
             <h1 className="font-serif text-4xl md:text-5xl font-bold text-main mb-2">
-            {isEditMode ? "Edit Quiz" : "Create New Quiz"}
+            {isEditMode ? "Edit Quiz" : classroomId ? "Add Quiz to Classroom" : "Create New Quiz"}
             </h1>
             <p className="text-secondary text-lg">Build a custom flashcard set</p>
         </div>
@@ -104,10 +116,24 @@ export default function CreateQuiz() {
                         placeholder="Enter description (optional)"
                         />
                     </FormField>
+
+                    <FormField label="Subject" error={errors.subject?.message}>
+                        <Controller
+                          name="subject"
+                          control={control}
+                          render={({ field }) => (
+                            <SubjectSelect
+                              value={field.value}
+                              onChange={field.onChange}
+                              hasError={!!errors.subject}
+                            />
+                          )}
+                        />
+                    </FormField>
                 </div>
 
                 <div className="p-6 md:p-8 flex flex-col gap-6">
-                    <h2 className="font-bold text-lg text-primary">Cards</h2>
+                    <h2 className="font-bold text-lg text-main">Cards</h2>
                     
                     <div className="flex flex-col">
                         {fields.map((field, index) => (
@@ -136,7 +162,7 @@ export default function CreateQuiz() {
                         type="button"
                         variant="outline"
                         className="flex-1"
-                        onClick={() => navigate("/my-quizzes")}
+                        onClick={() => navigate(classroomId ? `/classrooms/${classroomId}` : "/my-quizzes")}
                     >
                         Cancel
                     </Button>
