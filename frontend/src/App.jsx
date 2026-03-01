@@ -14,7 +14,9 @@ const QuizDetails = lazy(() => import("/src/pages/QuizDetails"));
 const QuizGame = lazy(() => import("/src/pages/QuizGame"));
 const ResultsPage = lazy(() => import("/src/pages/ResultsPage"));
 const CreateQuiz = lazy(() => import("/src/pages/CreateQuiz"));
-const SearchClassrooms = lazy(() => import("/src/pages/SearchClassrooms"));
+const Classrooms = lazy(() => import("/src/pages/Classrooms"));
+const CreateClassroom = lazy(() => import("/src/pages/CreateClassroom"));
+const ClassroomView = lazy(() => import("/src/pages/ClassroomView"));
 
 function App() {
   return (
@@ -34,7 +36,10 @@ function App() {
                 <Route path="quiz-details/:id" element={<QuizDetails />} />
                 <Route path="quiz/:id" element={<QuizGame />} />
                 <Route path="quiz/results" element={<ResultsPage />} />
-                <Route path="classrooms" element={<SearchClassrooms />} />
+                <Route path="classrooms" element={<ProtectedRoute><Classrooms /></ProtectedRoute>} />
+                <Route path="classrooms/create" element={<ProtectedRoute roles={["TEACHER", "ADMIN"]}><CreateClassroom /></ProtectedRoute>} />
+                <Route path="classrooms/:id/edit" element={<ProtectedRoute roles={["TEACHER", "ADMIN"]}><CreateClassroom /></ProtectedRoute>} />
+                <Route path="classrooms/:id" element={<ProtectedRoute><ClassroomView /></ProtectedRoute>} />
               </Route>
             </Routes>
           </Suspense>
