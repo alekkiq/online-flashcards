@@ -41,9 +41,9 @@ export default function ClassroomHeader({ classroom, isOwner, onManage, onLeave 
           </div>
         </div>
 
-        <div className="flex gap-2 shrink-0">
+        <div className="gap-2 shrink-0 hidden sm:flex">
           {isOwner ? (
-            <Button variant="outline" size="sm" onClick={onManage} className="hidden sm:inline-flex">
+            <Button variant="outline" size="sm" onClick={onManage}>
               <Settings size={16} />
               Manage
             </Button>
@@ -59,16 +59,18 @@ export default function ClassroomHeader({ classroom, isOwner, onManage, onLeave 
       {isOwner && classroom.joinCode && (
         <>
           <hr className="border-secondary/20" />
-          <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between sm:justify-start gap-3">
             <span className="text-sm font-semibold text-secondary uppercase tracking-wide">
               Join Code
             </span>
-            <code className="px-3 py-1.5 rounded-lg bg-secondary/5 border border-secondary/20 text-sm font-mono font-semibold text-main">
-              {classroom.joinCode}
-            </code>
-            <Button variant="ghost" size="sm" onClick={handleCopyCode}>
-              {copiedCode ? <Check size={16} className="text-green-500" /> : <Copy size={16} />}
-            </Button>
+            <div className="flex items-center gap-2">
+              <code className="px-3 py-1.5 rounded-lg bg-secondary/5 border border-secondary/20 text-sm font-mono font-semibold text-main">
+                {classroom.joinCode}
+              </code>
+              <Button variant="ghost" size="sm" onClick={handleCopyCode}>
+                {copiedCode ? <Check size={16} className="text-green-500" /> : <Copy size={16} />}
+              </Button>
+            </div>
           </div>
         </>
       )}
@@ -86,12 +88,19 @@ export default function ClassroomHeader({ classroom, isOwner, onManage, onLeave 
         </>
       )}
 
-      {isOwner && (
-        <Button variant="outline" size="sm" onClick={onManage} className="inline-flex sm:hidden">
-          <Settings size={16} />
-          Manage
-        </Button>
-      )}
+      <div className="gap-2 shrink-0 flex sm:hidden">
+        {isOwner ? (
+            <Button variant="outline" size="sm" onClick={onManage}>
+              <Settings size={16} />
+              Manage
+            </Button>
+        ) : (
+            <Button variant="outline" size="sm" onClick={onLeave}>
+              <LogOut size={16} />
+              Leave
+            </Button>
+        )}
+      </div>
     </div>
   );
 }
