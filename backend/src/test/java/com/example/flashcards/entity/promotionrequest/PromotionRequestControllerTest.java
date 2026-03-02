@@ -61,10 +61,11 @@ class PromotionRequestControllerTest {
     @Test
     @DisplayName("createRequest(): successfully creates promotion request")
     void createRequest() throws Exception {
-        User user = new User("tester", "student@test.com", "password");
-        user.setUserId(1L);
+        User testUser = new User("tester", "student@test.com", "password");
+        testUser.setUserId(1L);
+        CustomUserDetails userDetails = new CustomUserDetails(testUser);
 
-        PromotionRequest request = new PromotionRequest("I want to teach", user);
+        PromotionRequest request = new PromotionRequest("I want to teach", testUser);
         request.setPromotionRequestId(1L);
         request.setStatus(PromotionRequestStatus.PENDING);
         request.setRequestedAt(LocalDateTime.now());
@@ -74,7 +75,7 @@ class PromotionRequestControllerTest {
         when(this.promotionRequestService.createRequest(eq(1L), anyString())).thenReturn(request);
 
         this.mockMvc.perform(post("/api/v1/promotion-requests")
-                .with(user("1").roles("STUDENT"))
+                .with(user(userDetails))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(creationRequest)))
             .andExpect(status().isOk())
@@ -89,10 +90,14 @@ class PromotionRequestControllerTest {
     @Test
     @DisplayName("createRequest(): fails with blank message")
     void createRequest_blankMessage_badRequest() throws Exception {
+        User testUser = new User("tester", "student@test.com", "password");
+        testUser.setUserId(1L);
+        CustomUserDetails userDetails = new CustomUserDetails(testUser);
+
         PromotionRequestCreationRequest creationRequest = new PromotionRequestCreationRequest("");
 
         this.mockMvc.perform(post("/api/v1/promotion-requests")
-                .with(user("1").roles("STUDENT"))
+                .with(user(userDetails))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(creationRequest)))
             .andExpect(status().isBadRequest());
@@ -144,21 +149,22 @@ class PromotionRequestControllerTest {
     @Test
     @DisplayName("getMyRequests(): returns user's promotion requests")
     void getMyRequests() throws Exception {
-        User user = new User("tester", "student@test.com", "password");
-        user.setUserId(1L);
+        User testUser = new User("tester", "student@test.com", "password");
+        testUser.setUserId(1L);
+        CustomUserDetails userDetails = new CustomUserDetails(testUser);
 
-        PromotionRequest request1 = new PromotionRequest("Request 1", user);
+        PromotionRequest request1 = new PromotionRequest("Request 1", testUser);
         request1.setPromotionRequestId(1L);
         request1.setStatus(PromotionRequestStatus.PENDING);
 
-        PromotionRequest request2 = new PromotionRequest("Request 2", user);
+        PromotionRequest request2 = new PromotionRequest("Request 2", testUser);
         request2.setPromotionRequestId(2L);
         request2.setStatus(PromotionRequestStatus.APPROVED);
 
         when(this.promotionRequestService.getRequestsByUser(1L)).thenReturn(List.of(request1, request2));
 
         this.mockMvc.perform(get("/api/v1/promotion-requests/my-requests")
-                        .with(user("1").roles("STUDENT")))
+                        .with(user(userDetails)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data").isArray())
