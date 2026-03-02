@@ -7,7 +7,7 @@ import EditProfileForms from "/src/components/auth/EditProfileForms";
 import PromotionRequestForm from "/src/components/profile/PromotionRequestForm";
 import ClassroomList from "/src/components/profile/ClassroomList";
 import { usePromotionRequests } from "/src/hooks/usePromotionRequests";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Profile() {
   const { user } = useAuth();
@@ -99,28 +99,31 @@ export default function Profile() {
 
         <ClassroomList />
 
-        <hr className="border-secondary/20" />
-
-        <div className="flex items-center justify-between flex-wrap gap-y-2">
-          <h2 className="text-sm font-semibold text-secondary uppercase tracking-wide">
-            Request Promotion to Teacher
-          </h2>
-          {user?.role !== "ADMIN" &&
-            !isLoadingRequests &&
-            (hasPending ? (
-              <Badge bgColor="bg-green-100" textColor="text-green-700">
-                Request pending
-              </Badge>
-            ) : (
-              <Button
-                className="w-full sm:w-auto"
-                variant={isRequestingPromotion ? "outline" : "secondary"}
-                onClick={handleRequestPromotion}
-              >
-                {isRequestingPromotion ? "Cancel" : "Request Promotion"}
-              </Button>
-            ))}
-        </div>
+        {user?.role !== "ADMIN" || user?.role !== "TEACHER" && (
+          <>
+            <hr className="border-secondary/20" />
+            <div className="flex items-center justify-between flex-wrap gap-y-2">
+              <h2 className="text-sm font-semibold text-secondary uppercase tracking-wide">
+                Request Promotion to Teacher
+              </h2>
+              {user?.role !== "ADMIN" &&
+                !isLoadingRequests &&
+                (hasPending ? (
+                  <Badge bgColor="bg-green-100" textColor="text-green-700">
+                    Request pending
+                  </Badge>
+                ) : (
+                  <Button
+                    className="w-full sm:w-auto"
+                    variant={isRequestingPromotion ? "outline" : "secondary"}
+                    onClick={handleRequestPromotion}
+                  >
+                    {isRequestingPromotion ? "Cancel" : "Request Promotion"}
+                  </Button>
+                ))}
+            </div>
+          </>
+        )}
 
         <PromotionRequestForm
           isOpen={isRequestingPromotion}

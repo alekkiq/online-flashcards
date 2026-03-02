@@ -1,16 +1,25 @@
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 import LoginForm from "/src/components/auth/LoginForm";
 import RegisterForm from "/src/components/auth/RegisterForm";
 import { useSearchParams } from "react-router";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Login() {
   const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState("login");
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
   useEffect(() => {
     setActiveTab(searchParams.get("signup") ? "register" : "login");
   }, [searchParams]);
+
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, [user]);
 
   return (
     <div className="min-h-screen grid md:grid-cols-2">
