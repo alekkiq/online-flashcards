@@ -26,12 +26,16 @@ export default function QuizDetails() {
         <div className="max-w-7xl mx-auto flex flex-col mt-8 mb-[10vh]">
           <BackLink label="Back to quiz search" />
           <div className="flex flex-col gap-4 p-8 bg-white rounded-lg">
-            <h1 className="font-serif text-2xl md:text-4xl font-bold">{currentQuiz.title}</h1>
-            <Badge>{currentQuiz.subjectName || "No Subject"}</Badge>
-            <p className="font-serif font-semibold text-sm md:text-lg text-secondary max-w-[50vw]">
+            <div className="flex items-center gap-3 flex-wrap">
+              <h1 className="font-serif text-2xl md:text-4xl font-bold text-main">
+                {currentQuiz.title}
+              </h1>
+              <Badge size="md">{currentQuiz.subjectName}</Badge>
+            </div>
+            <p className="font-inter font-medium text-sm md:text-lg text-secondary max-w-[50vw]">
               {currentQuiz.description}
             </p>
-            <div className="flex flex-row items-center gap-2">
+            <div className="flex flex-row items-center gap-2 mt-1">
               <Avatar name={currentQuiz?.creatorUsername} className="w-9 h-9 md:w-11 md:h-11" />
               <div className="flex flex-col items-start">
                 <p className="font-inter font-bold text-sm md:text-lg text-secondary">
