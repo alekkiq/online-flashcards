@@ -135,7 +135,7 @@ export default function QuizGame() {
             handleFlip={handleFlip}
           />
         </div>
-        <div className="flex flex-col items-center md:max-w-[90vh] w-full mt-8 gap-8 md:gap-0">
+        <div className="flex flex-col items-center md:max-w-[90vh] w-full mt-8 gap-8 md:gap-4">
           <div className="flex items-center gap-2">
             <Button
               size="lg"

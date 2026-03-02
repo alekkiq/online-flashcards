@@ -68,7 +68,7 @@ export default function Home() {
             <Button
               onClick={() => navigate("/login?signup=true")}
               className="py-5 px-10 text-lg md:py-6 md:px-12 md:text-2xl"
-              disabled={user == null}
+              disabled={user !== null}
             >
               Register Now
             </Button>
