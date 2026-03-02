@@ -27,12 +27,12 @@ export default function QuizDetails() {
           <BackLink label="Back to quiz search" />
           <div className="flex flex-col gap-4 p-8 bg-white rounded-lg">
             <div className="flex items-center gap-3 flex-wrap">
-              <h1 className="font-serif text-2xl md:text-4xl font-bold text-main">
+              <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-main">
                 {currentQuiz.title}
               </h1>
               <Badge size="md">{currentQuiz.subjectName}</Badge>
             </div>
-            <p className="font-inter font-medium text-sm md:text-lg text-secondary max-w-[50vw]">
+            <p className="font-inter text-sm md:text-lg text-secondary max-w-2xl">
               {currentQuiz.description}
             </p>
             <div className="flex flex-row items-center gap-2 mt-1">

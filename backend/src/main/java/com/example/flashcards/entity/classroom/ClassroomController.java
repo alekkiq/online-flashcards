@@ -232,4 +232,20 @@ public class ClassroomController {
                 materials
         );
     }
+
+    @PutMapping("/{classroomId}/learning-materials/{learningMaterialId}")
+    public ResponseEntity<ApiResponse<ClassroomResponse>> editLearningMaterial(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @PathVariable Long classroomId,
+            @PathVariable Long learningMaterialId,
+            @Valid @RequestBody LearningMaterialCreationRequest request
+    ) {
+        Long userId = userDetails.getUserId();
+        Classroom updated = classroomService.editLearningMaterial(userId, classroomId, learningMaterialId, request);
+
+        return ResponseEntity.ok(ApiResponse.success(
+                mapToClassroomResponse(updated, userId),
+                "Learning material edited successfully."
+        ));
+    }
 }

@@ -25,6 +25,8 @@ public interface IClassroomService {
 
     Classroom removeLearningMaterial(Long userId, Long classroomId, Long learningMaterialId);
 
+    Classroom editLearningMaterial(Long userId, Long classroomId, Long learningMaterialId, LearningMaterialCreationRequest request);
+
     Classroom addQuizToClassroom(Long userId, Long classroomId, Long quizId);
 
     Classroom removeQuizFromClassroom(Long userId, Long classroomId, Long quizId);

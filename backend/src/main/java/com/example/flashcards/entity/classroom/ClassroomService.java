@@ -277,4 +277,28 @@ public class ClassroomService implements IClassroomService {
         classroom.getQuizzes().removeIf(q -> q.getQuizId() == quizId);
         return this.classroomRepository.save(classroom);
     }
+
+    @Override
+    @Transactional
+    public Classroom editLearningMaterial(Long userId, Long classroomId, Long learningMaterialId, LearningMaterialCreationRequest request) {
+        Classroom classroom = getClassroomById(classroomId);
+
+        if (classroom.getOwner() == null || !Objects.equals(classroom.getOwner().getUserId(), userId)) {
+            throw new IllegalArgumentException("You are not allowed to edit learning material in this classroom.");
+        }
+
+        LearningMaterial learningMaterial = classroom.getLearningMaterials().stream()
+                .filter(lm -> Objects.equals(lm.getLearningMaterialId(), learningMaterialId))
+                .findFirst()
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "LearningMaterial",
+                        learningMaterialId,
+                        "Learning material with ID " + learningMaterialId + " not found in this classroom."
+                ));
+
+        learningMaterial.setTitle(request.title());
+        learningMaterial.setContent(request.content());
+
+        return this.classroomRepository.save(classroom);
+    }
 }
