@@ -15,7 +15,7 @@ export default function AuthLinks() {
         <Link
           to="/profile"
           aria-label="Profile"
-          className="w-9 h-9 rounded-full bg-primary/10 flex flex-shrink-0 items-center justify-center hover:bg-primary/20 transition-colors overflow-hidden"
+          className="w-9 h-9 rounded-full bg-primary/10 flex shrink-0 items-center justify-center hover:bg-primary/20 transition-colors overflow-hidden"
         >
           <User className="w-5 h-5 text-primary" />
         </Link>

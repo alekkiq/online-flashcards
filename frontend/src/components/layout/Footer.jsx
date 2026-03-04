@@ -1,0 +1,96 @@
+import { Link } from "react-router";
+import { BookCopy } from "lucide-react";
+import { navLinks } from "/src/config";
+import { useAuth } from "/src/hooks/useAuth";
+
+export default function Footer() {
+  const { user, handleLogout } = useAuth();
+  const links = navLinks(user);
+
+  return (
+    <footer className="bg-main text-white/80 mt-10 ">
+      <div className="max-w-6xl mx-auto px-6 pt-14 pb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
+          <div className="md:col-span-1">
+            <Link to="/" className="inline-flex items-center gap-2 group">
+              <BookCopy
+                className="text-primary transition-transform duration-300 group-hover:scale-110"
+                strokeWidth={2.25}
+                size={24}
+              />
+              <span className="font-serif text-2xl font-black text-white">
+                OnlyCards
+              </span>
+            </Link>
+            <p className="mt-4 text-sm text-white/50 leading-relaxed max-w-xs">
+              Create, share, and master flashcards with ease. Study smarter, not
+              harder.
+            </p>
+          </div>
+          <div>
+            <h4 className="font-inter text-xs font-semibold uppercase tracking-widest text-white/30 mb-4">
+              Navigate
+            </h4>
+            <ul className="space-y-3">
+              {links.map((link) => (
+                <li key={link.to}>
+                  <Link
+                    to={link.to}
+                    className="text-sm text-white/50 hover:text-primary transition-colors duration-200"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h4 className="font-inter text-xs font-semibold uppercase tracking-widest text-white/30 mb-4">
+              Actions
+            </h4>
+            {!user ? (
+                <ul className="space-y-3">
+                <li>
+                    <Link to="/login" className="text-sm text-white/50 hover:text-primary transition-colors duration-200">
+                    Login
+                    </Link>
+                </li>
+                <li>
+                    <Link to="login?signup=true" className="text-sm text-white/50 hover:text-primary transition-colors duration-200">
+                    Sign Up
+                    </Link>
+                </li>
+                </ul>
+            ) : (
+                <ul className="space-y-3">
+                    <li>
+                        <Link to="/profile" className="text-sm text-white/50 hover:text-primary transition-colors duration-200">
+                            Profile
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/my-quizzes/create" className="text-sm text-white/50 hover:text-primary transition-colors duration-200">
+                            Create Quiz
+                        </Link>
+                    </li>
+                    <li>
+                        <button onClick={handleLogout} className="text-sm text-white/50 hover:text-primary transition-colors duration-200">
+                            Logout
+                        </button>
+                    </li>
+                </ul>
+            )}
+          </div>
+        </div>
+        <div className="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-xs text-white/30">
+            &copy; {new Date().getFullYear()} OnlyCards.
+          </p>
+          <p className="text-xs text-white/30">
+            Made with ❤️ by Ryhmä A-Ryhmä
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+}
