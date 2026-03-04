@@ -99,7 +99,7 @@ export default function Profile() {
 
         <ClassroomList />
 
-        {user?.role !== "ADMIN" || user?.role !== "TEACHER" && (
+        {user?.role !== "ADMIN" && user?.role !== "TEACHER" && (
           <>
             <hr className="border-secondary/20" />
             <div className="flex items-center justify-between flex-wrap gap-y-2">
