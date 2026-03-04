@@ -4,10 +4,14 @@ This is the second year Software Engineering project. The application is a quiz 
 
 ## TECHSTACK
 
+The following technologies were used to create the application:
+
 - Java Springboot
 - JaCoCo
-- React
-- Jakarta Persistence Application
+- React 16
+- Jakarta Persistence (JPA)
+
+
 
 
 
