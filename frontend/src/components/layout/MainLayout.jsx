@@ -5,6 +5,7 @@ import { ClassroomProvider } from "/src/context/ClassroomContext";
 import { SubjectProvider } from "/src/context/SubjectContext";
 import { useAuth } from "/src/hooks/useAuth";
 import { useEffect } from "react";
+import Footer from "./Footer";
 
 export default function MainLayout() {
   const { user, handleAutoLogin } = useAuth();
@@ -22,6 +23,7 @@ export default function MainLayout() {
             <main className="w-full mx-auto px-4 mb-[10vh] md:mb-0">
               <Outlet />
             </main>
+            <Footer />
           </div>
         </ClassroomProvider>
       </QuizProvider>
