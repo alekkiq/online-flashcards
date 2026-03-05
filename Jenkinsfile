@@ -23,19 +23,20 @@ pipeline {
                     string(credentialsId: 'flashcards-jwt-expiration',   variable: 'JWT_EXPIRATION'),
                     string(credentialsId: 'flashcards-api-port',         variable: 'API_PORT')
                 ]) {
-                    sh '''
-                        cat > .env <<EOF
-MYSQL_HOST=localhost
-MYSQL_PORT=3306
-MYSQL_DATABASE=${MYSQL_DATABASE}
-MYSQL_USER=${MYSQL_USER}
-MYSQL_PASSWORD=${MYSQL_PASSWORD}
-MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-API_PORT=${API_PORT}
-JWT_SECRET=${JWT_SECRET}
-JWT_EXPIRATION=${JWT_EXPIRATION}
-EOF
-                    '''
+                    bat """
+                        @echo off
+                        (
+                            echo MYSQL_HOST=localhost
+                            echo MYSQL_PORT=3306
+                            echo MYSQL_DATABASE=%MYSQL_DATABASE%
+                            echo MYSQL_USER=%MYSQL_USER%
+                            echo MYSQL_PASSWORD=%MYSQL_PASSWORD%
+                            echo MYSQL_ROOT_PASSWORD=%MYSQL_ROOT_PASSWORD%
+                            echo API_PORT=%API_PORT%
+                            echo JWT_SECRET=%JWT_SECRET%
+                            echo JWT_EXPIRATION=%JWT_EXPIRATION%
+                        ) > .env
+                    """
                 }
             }
         }
@@ -44,15 +45,18 @@ EOF
             stages {
                 stage('Start Database') {
                     steps {
-                        sh 'docker compose up -d db'
-                        sh 'docker compose exec db mariadb -u root -p$(grep MYSQL_ROOT_PASSWORD .env | cut -d= -f2) -e "SELECT 1" --wait'
+                        bat 'docker compose up -d db'
+                        bat 'docker compose exec db mariadb -u root -p%MYSQL_ROOT_PASSWORD% -e "SELECT 1" --wait'
                     }
                 }
                 stage('Build & Test Backend') {
                     steps {
                         dir('backend') {
-                            sh 'chmod +x mvnw'
-                            sh 'set -a && . ../.env && set +a && ./mvnw clean package'
+                            bat '''
+                                @echo off
+                                for /f "usebackq tokens=1,2 delims==" %%a in ("..\\.env") do set "%%a=%%b"
+                                mvnw.cmd clean package
+                            '''
                         }
                     }
                     post {
@@ -70,14 +74,14 @@ EOF
                 stage('Install Dependencies') {
                     steps {
                         dir('frontend') {
-                            sh 'npm ci'
+                            bat 'npm ci'
                         }
                     }
                 }
                 stage('Test & Coverage Frontend') {
                     steps {
                         dir('frontend') {
-                            sh 'npm run test:coverage'
+                            bat 'npm run test:coverage'
                         }
                     }
                     post {
@@ -94,7 +98,7 @@ EOF
                 stage('Build Frontend') {
                     steps {
                         dir('frontend') {
-                            sh 'npm run build'
+                            bat 'npm run build'
                         }
                     }
                 }
@@ -103,15 +107,15 @@ EOF
 
         stage('Build Docker Images') {
             steps {
-                sh 'docker compose build'
+                bat 'docker compose build'
             }
         }
     }
 
     post {
         always {
-            sh 'docker compose down -v || true'
-            sh 'rm -f .env'
+            bat 'docker compose down -v || exit 0'
+            bat 'del /f /q .env 2>nul || exit 0'
             cleanWs()
         }
         success {
