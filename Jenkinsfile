@@ -3,7 +3,6 @@ pipeline {
 
     tools {
         jdk 'jdk-21'
-        nodejs 'node-20'
     }
 
     stages {
@@ -15,28 +14,8 @@ pipeline {
 
         stage('Generate .env') {
             steps {
-                withCredentials([
-                    string(credentialsId: 'flashcards-db-name',          variable: 'MYSQL_DATABASE'),
-                    string(credentialsId: 'flashcards-db-user',          variable: 'MYSQL_USER'),
-                    string(credentialsId: 'flashcards-db-password',      variable: 'MYSQL_PASSWORD'),
-                    string(credentialsId: 'flashcards-db-root-password', variable: 'MYSQL_ROOT_PASSWORD'),
-                    string(credentialsId: 'flashcards-jwt-secret',       variable: 'JWT_SECRET'),
-                    string(credentialsId: 'flashcards-jwt-expiration',   variable: 'JWT_EXPIRATION'),
-                    string(credentialsId: 'flashcards-api-port',         variable: 'API_PORT')
-                ]) {
-                    sh '''
-                        cat > .env <<EOF
-                        MYSQL_HOST=localhost
-                        MYSQL_PORT=3306
-                        MYSQL_DATABASE=${MYSQL_DATABASE}
-                        MYSQL_USER=${MYSQL_USER}
-                        MYSQL_PASSWORD=${MYSQL_PASSWORD}
-                        MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-                        API_PORT=${API_PORT}
-                        JWT_SECRET=${JWT_SECRET}
-                        JWT_EXPIRATION=${JWT_EXPIRATION}
-                        EOF
-                    '''
+                withCredentials([file(credentialsId: 'flashcards-env', variable: 'ENV_FILE')]) {
+                    sh 'cp "$ENV_FILE" .env'
                 }
             }
         }
@@ -67,6 +46,12 @@ pipeline {
         }
 
         stage('Frontend') {
+            agent {
+                docker {
+                    image 'node:20'
+                    reuseNode true
+                }
+            }
             stages {
                 stage('Install Dependencies') {
                     steps {
