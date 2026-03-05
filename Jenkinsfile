@@ -78,7 +78,7 @@ pipeline {
 
         stage('Build & Push Docker Images') {
             steps {
-                withCredentials([usernamePassword(credentialsId: parameters.DOCKER_CREDENTIAL_ID, usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                withCredentials([usernamePassword(credentialsId: params.DOCKER_CREDENTIAL_ID, usernameVariable: 'USER', passwordVariable: 'PASS')]) {
                     bat """
                     @echo Logging in to Docker Hub...
                     docker login -u %USER% -p %PASS%
