@@ -5,57 +5,43 @@ pipeline {
         nodejs 'node-20'
     }
 
+    environment {
+        MYSQL_HOST          = 'localhost'
+        MYSQL_PORT          = '3306'
+        MYSQL_DATABASE      = credentials('flashcards-db-name')
+        MYSQL_USER          = credentials('flashcards-db-user')
+        MYSQL_PASSWORD      = credentials('flashcards-db-password')
+        MYSQL_ROOT_PASSWORD = credentials('flashcards-db-root-password')
+        JWT_SECRET          = credentials('flashcards-jwt-secret')
+        JWT_EXPIRATION      = credentials('flashcards-jwt-expiration')
+        API_PORT            = credentials('flashcards-api-port')
+    }
+
     stages {
-        stage('Checkout') {
+        stage('Setup & Checkout') {
             steps {
                 checkout scm
+                writeFile file: '.env', text: """
+                    MYSQL_HOST=${MYSQL_HOST}
+                    MYSQL_PORT=${MYSQL_PORT}
+                    MYSQL_DATABASE=${MYSQL_DATABASE}
+                    MYSQL_USER=${MYSQL_USER}
+                    MYSQL_PASSWORD=${MYSQL_PASSWORD}
+                    MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+                    API_PORT=${API_PORT}
+                    JWT_SECRET=${JWT_SECRET}
+                    JWT_EXPIRATION=${JWT_EXPIRATION}
+                """.stripIndent()
             }
         }
 
-        stage('Generate .env') {
-            steps {
-                withCredentials([
-                    string(credentialsId: 'flashcards-db-name',          variable: 'MYSQL_DATABASE'),
-                    string(credentialsId: 'flashcards-db-user',          variable: 'MYSQL_USER'),
-                    string(credentialsId: 'flashcards-db-password',      variable: 'MYSQL_PASSWORD'),
-                    string(credentialsId: 'flashcards-db-root-password', variable: 'MYSQL_ROOT_PASSWORD'),
-                    string(credentialsId: 'flashcards-jwt-secret',       variable: 'JWT_SECRET'),
-                    string(credentialsId: 'flashcards-jwt-expiration',   variable: 'JWT_EXPIRATION'),
-                    string(credentialsId: 'flashcards-api-port',         variable: 'API_PORT')
-                ]) {
-                    bat """
-                        @echo off
-                        (
-                            echo MYSQL_HOST=localhost
-                            echo MYSQL_PORT=3306
-                            echo MYSQL_DATABASE=%MYSQL_DATABASE%
-                            echo MYSQL_USER=%MYSQL_USER%
-                            echo MYSQL_PASSWORD=%MYSQL_PASSWORD%
-                            echo MYSQL_ROOT_PASSWORD=%MYSQL_ROOT_PASSWORD%
-                            echo API_PORT=%API_PORT%
-                            echo JWT_SECRET=%JWT_SECRET%
-                            echo JWT_EXPIRATION=%JWT_EXPIRATION%
-                        ) > .env
-                    """
-                }
-            }
-        }
-
-        stage('Backend') {
-            stages {
-                stage('Start Database') {
+        stage('Build & Test') {
+            parallel {
+                stage('Backend') {
                     steps {
                         bat 'docker compose up -d --wait db'
-                    }
-                }
-                stage('Build & Test Backend') {
-                    steps {
                         dir('backend') {
-                            bat '''
-                                @echo off
-                                for /f "usebackq tokens=1,2 delims==" %%a in ("..\\.env") do set "%%a=%%b"
-                                mvnw.cmd clean package
-                            '''
+                            bat 'mvnw.cmd clean package'
                         }
                     }
                     post {
@@ -65,22 +51,13 @@ pipeline {
                         }
                     }
                 }
-            }
-        }
-
-        stage('Frontend') {
-            stages {
-                stage('Install Dependencies') {
+                
+                stage('Frontend') {
                     steps {
                         dir('frontend') {
                             bat 'npm ci'
-                        }
-                    }
-                }
-                stage('Test & Coverage Frontend') {
-                    steps {
-                        dir('frontend') {
                             bat 'npm run test:coverage'
+                            bat 'npm run build'
                         }
                     }
                     post {
@@ -92,13 +69,6 @@ pipeline {
                                 keepAll:      true,
                                 allowMissing: true
                             ])
-                        }
-                    }
-                }
-                stage('Build Frontend') {
-                    steps {
-                        dir('frontend') {
-                            bat 'npm run build'
                         }
                     }
                 }
@@ -115,8 +85,7 @@ pipeline {
     post {
         always {
             bat 'docker compose down -v || exit 0'
-            bat 'del /f /q .env 2>nul || exit 0'
-            cleanWs()
+            cleanWs() 
         }
         success {
             echo 'Pipeline completed successfully!'
