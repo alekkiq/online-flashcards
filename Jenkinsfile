@@ -73,10 +73,19 @@ pipeline {
                     bat """
                         docker login -u %USER% -p %PASS%
                         docker compose build
-                        docker tag ${DOCKER_REPO}-backend %USER%/${DOCKER_REPO}-backend:%IMAGE_TAG%
-                        docker tag ${DOCKER_REPO}-frontend %USER%/${DOCKER_REPO}-frontend:%IMAGE_TAG%
-                        docker push %USER%/${DOCKER_REPO}-backend:%IMAGE_TAG%
-                        docker push %USER%/${DOCKER_REPO}-frontend:%IMAGE_TAG%
+
+                        @echo Tagging and Pushing...
+                        
+                        // Use underscore to match the folder name in your Jenkins workspace
+                        docker tag online_flashcards-backend %USER%/%DOCKER_REPO%-backend:%IMAGE_TAG%
+                        docker tag online_flashcards-frontend %USER%/%DOCKER_REPO%-frontend:%IMAGE_TAG%
+                        docker tag online_flashcards-backend %USER%/%DOCKER_REPO%-backend:latest
+                        docker tag online_flashcards-frontend %USER%/%DOCKER_REPO%-frontend:latest
+                        
+                        docker push %USER%/%DOCKER_REPO%-backend:%IMAGE_TAG%
+                        docker push %USER%/%DOCKER_REPO%-frontend:%IMAGE_TAG%
+                        docker push %USER%/%DOCKER_REPO%-backend:latest
+                        docker push %USER%/%DOCKER_REPO%-frontend:latest
                     """
                 }
             }
