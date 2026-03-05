@@ -3,35 +3,16 @@ pipeline {
 
     tools {
         nodejs 'node-20'
-    }
-
-    environment {
-        MYSQL_HOST          = 'localhost'
-        MYSQL_PORT          = '3306'
-        MYSQL_DATABASE      = credentials('flashcards-db-name')
-        MYSQL_USER          = credentials('flashcards-db-user')
-        MYSQL_PASSWORD      = credentials('flashcards-db-password')
-        MYSQL_ROOT_PASSWORD = credentials('flashcards-db-root-password')
-        JWT_SECRET          = credentials('flashcards-jwt-secret')
-        JWT_EXPIRATION      = credentials('flashcards-jwt-expiration')
-        API_PORT            = credentials('flashcards-api-port')
+        jdk 'jdk-21'
     }
 
     stages {
         stage('Setup & Checkout') {
             steps {
                 checkout scm
-                writeFile file: '.env', text: """
-                    MYSQL_HOST=${MYSQL_HOST}
-                    MYSQL_PORT=${MYSQL_PORT}
-                    MYSQL_DATABASE=${MYSQL_DATABASE}
-                    MYSQL_USER=${MYSQL_USER}
-                    MYSQL_PASSWORD=${MYSQL_PASSWORD}
-                    MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-                    API_PORT=${API_PORT}
-                    JWT_SECRET=${JWT_SECRET}
-                    JWT_EXPIRATION=${JWT_EXPIRATION}
-                """.stripIndent()
+                withCredentials([file(credentialsId: 'flashcards-env', variable: 'ENV_FILE')]) {
+                    bat 'copy "%ENV_FILE%" .env'
+                }
             }
         }
 
