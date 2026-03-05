@@ -15,7 +15,7 @@ pipeline {
         stage('Generate .env') {
             steps {
                 withCredentials([file(credentialsId: 'flashcards-env', variable: 'ENV_FILE')]) {
-                    sh 'cp "$ENV_FILE" .env'
+                    bat 'copy "%ENV_FILE%" .env'
                 }
             }
         }
@@ -24,15 +24,14 @@ pipeline {
             stages {
                 stage('Start Database') {
                     steps {
-                        sh 'docker compose up -d db'
-                        sh 'docker compose exec db mariadb -u root -p$(grep MYSQL_ROOT_PASSWORD .env | cut -d= -f2) -e "SELECT 1" --wait'
+                        bat 'docker compose up -d db'
+                        bat 'docker compose exec db mariadb -u root -p%MYSQL_ROOT_PASSWORD% -e "SELECT 1" --wait'
                     }
                 }
                 stage('Build & Test Backend') {
                     steps {
                         dir('backend') {
-                            sh 'chmod +x mvnw'
-                            sh 'set -a && . ../.env && set +a && ./mvnw clean package'
+                            bat 'mvnw.cmd clean package'
                         }
                     }
                     post {
@@ -46,24 +45,18 @@ pipeline {
         }
 
         stage('Frontend') {
-            agent {
-                docker {
-                    image 'node:20'
-                    reuseNode true
-                }
-            }
             stages {
                 stage('Install Dependencies') {
                     steps {
                         dir('frontend') {
-                            sh 'npm ci'
+                            bat 'npm ci'
                         }
                     }
                 }
                 stage('Test & Coverage Frontend') {
                     steps {
                         dir('frontend') {
-                            sh 'npm run test:coverage'
+                            bat 'npm run test:coverage'
                         }
                     }
                     post {
@@ -80,7 +73,7 @@ pipeline {
                 stage('Build Frontend') {
                     steps {
                         dir('frontend') {
-                            sh 'npm run build'
+                            bat 'npm run build'
                         }
                     }
                 }
@@ -89,15 +82,15 @@ pipeline {
 
         stage('Build Docker Images') {
             steps {
-                sh 'docker compose build'
+                bat 'docker compose build'
             }
         }
     }
 
     post {
         always {
-            sh 'docker compose down -v || true'
-            sh 'rm -f .env'
+            bat 'docker compose down -v || exit 0'
+            bat 'del .env 2>nul || exit 0'
             cleanWs()
         }
         success {
