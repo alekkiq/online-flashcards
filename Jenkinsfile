@@ -18,9 +18,13 @@ pipeline {
 
         stage('Build & Test') {
             parallel {
-                stage('Backend') {
+                stage('Database') {
                     steps {
                         bat 'docker compose up -d --wait db'
+                    }
+                }
+                stage('Backend') {
+                    steps {
                         dir('backend') {
                             bat 'mvnw.cmd clean package'
                         }
