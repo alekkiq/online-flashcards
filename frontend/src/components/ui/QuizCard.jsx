@@ -32,7 +32,7 @@ export function QuizCard({ quiz, onClick, onEdit, className = "" }) {
         </h3>
 
         {quiz.description && (
-          <p className="text-sm text-secondary line-clamp-3 mb-2">{quiz.description}</p>
+          <p className="text-sm text-secondary line-clamp-2 mb-2">{quiz.description}</p>
         )}
 
         <div className="flex items-center gap-2 flex-wrap">

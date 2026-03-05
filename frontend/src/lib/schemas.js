@@ -1,14 +1,14 @@
 import * as z from "zod";
 
 export const quizSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  description: z.string().optional(),
+  title: z.string().min(1, "Title is required").max(40, "Title must be at most 40 characters"),
+  description: z.string().max(255, "Description must be at most 255 characters").optional(),
   subject: z.string().min(1, "Subject is required"),
   cards: z
     .array(
       z.object({
-        question: z.string().min(1, "Question is required"),
-        answer: z.string().min(1, "Answer is required"),
+        question: z.string().min(1, "Question is required").max(255, "Question must be at most 255 characters"),
+        answer: z.string().min(1, "Answer is required").max(255, "Answer must be at most 255 characters"),
       })
     )
     .min(1, "At least one card is required"),
