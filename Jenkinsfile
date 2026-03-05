@@ -4,6 +4,7 @@ pipeline {
     tools {
         nodejs 'node-20'
         jdk 'jdk-21'
+        maven 'Maven3'
     }
 
     stages {
@@ -27,7 +28,7 @@ pipeline {
                     }
                     post {
                         always {
-                            junit 'backend/target/surefire-reports/*.xml'
+                            junit allowEmptyResults: true, testResults: 'backend/target/surefire-reports/*.xml'
                             jacoco execPattern: 'backend/target/jacoco.exec'
                         }
                     }
