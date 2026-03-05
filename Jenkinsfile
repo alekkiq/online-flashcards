@@ -2,10 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_USER = "${env.DOCKER_USER}" // LAITA TÄHÄ OMA NIMI SIT ET VOI TESTAA TYYLII OMAA BRANCHII TAI JOTAI
-        /*
-        MENE JENKINSSIIN JA TEE TUNNILLA OPETETUN TAVAN MUKAAN DOCKER HUB KÄYTTÄJÄ JA SALASANA TOKENILLA. SITTEN LAITA TOHON DOCKER_USER NIMI ja voit runaa sitten build.
-        */
+        DOCKER_USER = "${env.DOCKER_USER}"
         DOCKER_REPO = 'online-flashcards'
         IMAGE_TAG   = "${env.BUILD_NUMBER}"
         DOCKER_HUB_CREDENTIAL_ID = "${env.DOCKER_HUB_CREDENTIAL_ID}"
