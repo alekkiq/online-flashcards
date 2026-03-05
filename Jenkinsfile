@@ -2,7 +2,10 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_USER = 'blendigr'
+        DOCKER_USER = 'YOURDOCKER_USERNAME' // LAITA TÄHÄ OMA NIMI SIT ET VOI TESTAA TYYLII OMAA BRANCHII TAI JOTAI
+        /*
+        MENE JENKINSSIIN JA TEE TUNNILLA OPETETUN TAVAN MUKAAN DOCKER HUB KÄYTTÄJÄ JA SALASANA TOKENILLA. SITTEN LAITA TOHON DOCKER_USER NIMI ja voit runaa sitten build.
+        */
         DOCKER_REPO = 'online-flashcards'
         IMAGE_TAG   = "${env.BUILD_NUMBER}"
     }
@@ -76,7 +79,6 @@ pipeline {
 
                         @echo Tagging and Pushing...
                         
-                        // Use underscore to match the folder name in your Jenkins workspace
                         docker tag online_flashcards-backend %USER%/%DOCKER_REPO%-backend:%IMAGE_TAG%
                         docker tag online_flashcards-frontend %USER%/%DOCKER_REPO%-frontend:%IMAGE_TAG%
                         docker tag online_flashcards-backend %USER%/%DOCKER_REPO%-backend:latest
@@ -94,7 +96,7 @@ pipeline {
         stage('Deploy Local') {
             steps {
                 bat 'docker compose up -d'
-                echo "App is live at http://localhost:5173"
+                echo "App is live at http://localhost:3000"
             }
         }
     }
