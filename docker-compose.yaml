@@ -11,9 +11,9 @@ services:
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "mariadb", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}", "-e", "SELECT 1" ]
-      interval: 10s
-      timeout: 30s
-      retries: 20
+      interval: 5s
+      timeout: 45s
+      retries: 30
       start_period: 60s
   backend:
     build: ./backend
