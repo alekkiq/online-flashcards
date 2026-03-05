@@ -1,6 +1,12 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_USER = 'addyourusername here please'
+        DOCKER_REPO = 'online-flashcards'
+        IMAGE_TAG   = "${env.BUILD_NUMBER}"
+    }
+
     tools {
         nodejs 'node-20'
         jdk 'jdk-21'
@@ -61,23 +67,37 @@ pipeline {
             }
         }
 
-        stage('Build Docker Images') {
+        stage('Build & Push Docker Images') {
             steps {
-                bat 'docker compose build'
+                withCredentials([usernamePassword(credentialsId: 'docker_hub', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                    bat """
+                        docker login -u %USER% -p %PASS%
+                        docker compose build
+                        docker tag ${DOCKER_REPO}-backend %USER%/${DOCKER_REPO}-backend:%IMAGE_TAG%
+                        docker tag ${DOCKER_REPO}-frontend %USER%/${DOCKER_REPO}-frontend:%IMAGE_TAG%
+                        docker push %USER%/${DOCKER_REPO}-backend:%IMAGE_TAG%
+                        docker push %USER%/${DOCKER_REPO}-frontend:%IMAGE_TAG%
+                    """
+                }
+            }
+        }
+
+        stage('Deploy Local') {
+            steps {
+                bat 'docker compose up -d'
+                echo "App is live at http://localhost:5173"
             }
         }
     }
 
     post {
-        always {
-            bat 'docker compose down -v || exit 0'
-            cleanWs() 
-        }
         success {
-            echo 'Pipeline completed successfully!'
+            echo 'Pipeline completed successfully! Containers are running.'
         }
         failure {
-            echo 'Pipeline failed.'
+            echo 'Pipeline failed. Cleaning up...'
+            bat 'docker compose down -v || exit 0'
+            cleanWs()
         }
     }
 }
