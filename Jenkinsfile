@@ -86,10 +86,11 @@ pipeline {
                     post {
                         always {
                             publishHTML(target: [
-                                reportName:  'Frontend Coverage',
-                                reportDir:   'frontend/coverage',
-                                reportFiles: 'index.html',
-                                keepAll:     true
+                                reportName:   'Frontend Coverage',
+                                reportDir:    'frontend/coverage',
+                                reportFiles:  'index.html',
+                                keepAll:      true,
+                                allowMissing: true
                             ])
                         }
                     }
