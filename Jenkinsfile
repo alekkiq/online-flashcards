@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_USER = 'addyourusername here please'
+        DOCKER_USER = 'blendigr'
         DOCKER_REPO = 'online-flashcards'
         IMAGE_TAG   = "${env.BUILD_NUMBER}"
     }
