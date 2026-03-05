@@ -1,6 +1,6 @@
 services:
   db:
-    image: mariadb:12
+    image: mariadb:11
     container_name: flashcards-db
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}

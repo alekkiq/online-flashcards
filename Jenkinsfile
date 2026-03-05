@@ -2,7 +2,6 @@ pipeline {
     agent any
 
     tools {
-        jdk 'jdk-21'
         nodejs 'node-20'
     }
 
@@ -26,16 +25,16 @@ pipeline {
                 ]) {
                     sh '''
                         cat > .env <<EOF
-                        MYSQL_HOST=localhost
-                        MYSQL_PORT=3306
-                        MYSQL_DATABASE=${MYSQL_DATABASE}
-                        MYSQL_USER=${MYSQL_USER}
-                        MYSQL_PASSWORD=${MYSQL_PASSWORD}
-                        MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-                        API_PORT=${API_PORT}
-                        JWT_SECRET=${JWT_SECRET}
-                        JWT_EXPIRATION=${JWT_EXPIRATION}
-                        EOF
+MYSQL_HOST=localhost
+MYSQL_PORT=3306
+MYSQL_DATABASE=${MYSQL_DATABASE}
+MYSQL_USER=${MYSQL_USER}
+MYSQL_PASSWORD=${MYSQL_PASSWORD}
+MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+API_PORT=${API_PORT}
+JWT_SECRET=${JWT_SECRET}
+JWT_EXPIRATION=${JWT_EXPIRATION}
+EOF
                     '''
                 }
             }
