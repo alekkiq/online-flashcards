@@ -45,8 +45,7 @@ pipeline {
             stages {
                 stage('Start Database') {
                     steps {
-                        bat 'docker compose up -d db'
-                        bat 'docker compose exec db mariadb -u root -p%MYSQL_ROOT_PASSWORD% -e "SELECT 1" --wait'
+                        bat 'docker compose up -d --wait db'
                     }
                 }
                 stage('Build & Test Backend') {
