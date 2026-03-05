@@ -40,7 +40,7 @@ export default function MobileNav() {
         </button>
         <div className="mb-8">
           <Link to="/" onClick={() => setIsOpen(false)}>
-            <p className="text-2xl font-bold">Online Flashcards</p>
+            <p className="text-2xl font-bold">OnlyCards</p>
           </Link>
         </div>
         <ul className="flex flex-col gap-4 flex-1">

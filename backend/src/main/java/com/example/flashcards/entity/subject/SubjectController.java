@@ -30,7 +30,7 @@ public class SubjectController {
     public ResponseEntity<ApiResponse<List<SubjectResponse>>> getAllSubjects() {
         List<Subject> subjects = this.subjectService.getAllSubjects();
         List<SubjectResponse> response = subjects.stream()
-                .map(subject -> SubjectResponse.from(subject.getName()))
+                .map(subject -> SubjectResponse.from(subject.getSubjectId(), subject.getName()))
                 .toList();
 
         return ResponseEntity.ok(ApiResponse.success(response));
@@ -44,7 +44,7 @@ public class SubjectController {
     @GetMapping("/{subjectId}")
     public ResponseEntity<ApiResponse<SubjectResponse>> getSubjectById(@PathVariable Long subjectId) {
         Subject subject = this.subjectService.getSubjectById(subjectId);
-        SubjectResponse response = SubjectResponse.from(subject.getName());
+        SubjectResponse response = SubjectResponse.from(subject.getSubjectId(), subject.getName());
 
         return ResponseEntity.ok(ApiResponse.success(response));
     }
@@ -57,7 +57,7 @@ public class SubjectController {
     @GetMapping("/name/{name}")
     public ResponseEntity<ApiResponse<SubjectResponse>> getSubjectByName(@Valid @PathVariable String name) {
         Subject subject = this.subjectService.getSubjectByName(name);
-        SubjectResponse response = SubjectResponse.from(subject.getName());
+        SubjectResponse response = SubjectResponse.from(subject.getSubjectId(), subject.getName());
 
         return ResponseEntity.ok(ApiResponse.success(response));
     }
@@ -72,7 +72,7 @@ public class SubjectController {
     public ResponseEntity<ApiResponse<SubjectResponse>> createSubject(@Valid @RequestBody SubjectCreationRequest request) {
         Subject subject = new Subject(request.name());
         Subject createdSubject = this.subjectService.createSubject(subject);
-        SubjectResponse response = SubjectResponse.from(createdSubject.getName());
+        SubjectResponse response = SubjectResponse.from(createdSubject.getSubjectId(), createdSubject.getName());
 
         return ResponseEntity.ok(ApiResponse.success(response, "Subject created successfully."));
     }
@@ -90,7 +90,7 @@ public class SubjectController {
     ) {
         Subject subject = new Subject(request.name());
         Subject updatedSubject = this.subjectService.updateSubject(subjectId, subject);
-        SubjectResponse response = SubjectResponse.from(updatedSubject.getName());
+        SubjectResponse response = SubjectResponse.from(updatedSubject.getSubjectId(), updatedSubject.getName());
 
         return ResponseEntity.ok(ApiResponse.success(response, "Subject updated successfully."));
     }

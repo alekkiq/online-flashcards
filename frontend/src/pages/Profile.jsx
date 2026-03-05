@@ -7,13 +7,19 @@ import EditProfileForms from "/src/components/auth/EditProfileForms";
 import PromotionRequestForm from "/src/components/profile/PromotionRequestForm";
 import ClassroomList from "/src/components/profile/ClassroomList";
 import { usePromotionRequests } from "/src/hooks/usePromotionRequests";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Profile() {
   const { user } = useAuth();
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [isRequestingPromotion, setIsRequestingPromotion] = useState(false);
-  const { requests, isLoading: isLoadingRequests, submitRequest, submitError, submitSuccess } = usePromotionRequests();
+  const {
+    requests,
+    isLoading: isLoadingRequests,
+    submitRequest,
+    submitError,
+    submitSuccess,
+  } = usePromotionRequests();
 
   const roleLabel = user?.role ? String(user.role) : "User";
   const hasPending = requests.some((r) => r.status === "PENDING");
@@ -55,19 +61,19 @@ export default function Profile() {
             </div>
           </div>
           <Button
-              className="w-full sm:w-auto"
-              variant={isEditingProfile ? "outline" : undefined}
-              onClick={handleEditProfile}
+            className="w-full sm:w-auto"
+            variant={isEditingProfile ? "outline" : undefined}
+            onClick={handleEditProfile}
           >
             {isEditingProfile ? "Cancel" : "Edit profile"}
           </Button>
         </div>
 
         {isEditingProfile && (
-            <EditProfileForms user={user} onCancel={() => setIsEditingProfile(false)} />
+          <EditProfileForms user={user} onCancel={() => setIsEditingProfile(false)} />
         )}
 
-        <hr className="border-secondary/20"/>
+        <hr className="border-secondary/20" />
 
         <div>
           <h2 className="text-sm font-semibold text-secondary uppercase tracking-wide">
@@ -89,37 +95,42 @@ export default function Profile() {
           </div>
         </div>
 
-        <hr className="border-secondary/20"/>
+        <hr className="border-secondary/20" />
 
         <ClassroomList />
 
-        <hr className="border-secondary/20"/>
-
-        <div className="flex items-center justify-between flex-wrap gap-y-2">
-          <h2 className="text-sm font-semibold text-secondary uppercase tracking-wide">
-            Request Promotion to Teacher
-          </h2>
-          {user?.role !== "ADMIN" && !isLoadingRequests && (
-              hasPending ? (
-                  <Badge bgColor="bg-green-100" textColor="text-green-700">Request pending</Badge>
-              ) : (
+        {user?.role !== "ADMIN" && user?.role !== "TEACHER" && (
+          <>
+            <hr className="border-secondary/20" />
+            <div className="flex items-center justify-between flex-wrap gap-y-2">
+              <h2 className="text-sm font-semibold text-secondary uppercase tracking-wide">
+                Request Promotion to Teacher
+              </h2>
+              {user?.role !== "ADMIN" &&
+                !isLoadingRequests &&
+                (hasPending ? (
+                  <Badge bgColor="bg-green-100" textColor="text-green-700">
+                    Request pending
+                  </Badge>
+                ) : (
                   <Button
-                      className="w-full sm:w-auto"
-                      variant={isRequestingPromotion ? "outline" : "secondary"}
-                      onClick={handleRequestPromotion}
+                    className="w-full sm:w-auto"
+                    variant={isRequestingPromotion ? "outline" : "secondary"}
+                    onClick={handleRequestPromotion}
                   >
                     {isRequestingPromotion ? "Cancel" : "Request Promotion"}
                   </Button>
-              )
-          )}
-        </div>
+                ))}
+            </div>
+          </>
+        )}
 
         <PromotionRequestForm
-            isOpen={isRequestingPromotion}
-            onClose={() => setIsRequestingPromotion(false)}
-            submitRequest={submitRequest}
-            submitError={submitError}
-            submitSuccess={submitSuccess}
+          isOpen={isRequestingPromotion}
+          onClose={() => setIsRequestingPromotion(false)}
+          submitRequest={submitRequest}
+          submitError={submitError}
+          submitSuccess={submitSuccess}
         />
       </div>
     </div>

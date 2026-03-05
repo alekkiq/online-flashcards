@@ -18,10 +18,10 @@ export async function fetchData(endpoint, options = {}) {
     });
     const data = await response.json();
     if (!response.ok || !data.success) {
-      return { 
-        success: false, 
-        error: data.error?.message || "Request failed", 
-        status: response.status 
+      return {
+        success: false,
+        error: data.error?.message || "Request failed",
+        status: response.status,
       };
     }
     return { success: true, data };

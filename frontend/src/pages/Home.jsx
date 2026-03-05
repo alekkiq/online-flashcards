@@ -1,16 +1,16 @@
 import { Button } from "../components/ui/Button";
 import { useNavigate } from "react-router";
-import { Label } from "../components/ui/Label";
-import { Input } from "../components/ui/Input";
-
+import { useAuth } from "../hooks/useAuth";
 import hero_section_1 from "/src/assets/images/hero_section_1.png";
 import hero_section_2 from "/src/assets/images/hero_section_2.png";
 
 export default function Home() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+
   return (
     <div className="max-w-7xl mx-auto">
-      <section className="relative flex flex-col items-center md:items-start gap-4 md:gap-6 px-4 md:px-0 py-12 mt-[10vh] h-[70vh]">
+      <section className="relative flex flex-col items-center md:items-start gap-4 md:gap-6 px-4 md:px-0 py-12 mt-[10vh] min-h-[70vh]">
         <h1 className="font-serif text-center md:text-left font-bold text-5xl md:text-6xl lg:text-7xl text-main">
           Flashcard learning
           <br />
@@ -68,6 +68,7 @@ export default function Home() {
             <Button
               onClick={() => navigate("/login?signup=true")}
               className="py-5 px-10 text-lg md:py-6 md:px-12 md:text-2xl"
+              disabled={user !== null}
             >
               Register Now
             </Button>

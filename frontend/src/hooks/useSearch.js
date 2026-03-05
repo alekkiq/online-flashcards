@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useMemo } from "react";
 
 /**
  * Generalized search hook that can be extended to any list of items and filtering logic.
@@ -8,29 +8,28 @@ import { useState, useEffect } from "react";
  * @param setSearchParams - The function to update the URLSearchParams object
  */
 export function useSearch(items, filterFn, searchParams, setSearchParams) {
-    const searchQuery = searchParams.get("q") || "";
-    const [filteredItems, setFilteredItems] = useState(items);
+  const searchQuery = searchParams.get("q") || "";
 
-    const setSearchQuery = (query) => {
-        setSearchParams((prev) => {
-            const newParams = new URLSearchParams(prev);
-            if (query) {
-                newParams.set("q", query);
-            } else {
-                newParams.delete("q");
-            }
-            return newParams;
-        })
-    };
+  const setSearchQuery = (query) => {
+    setSearchParams((prev) => {
+      const newParams = new URLSearchParams(prev);
+      if (query) {
+        newParams.set("q", query);
+      } else {
+        newParams.delete("q");
+      }
+      return newParams;
+    });
+  };
 
-    useEffect(() => {
-        const query = searchQuery.toLowerCase();
-        setFilteredItems(items.filter((item) => filterFn(item, query)));
-    }, [searchQuery, items]);
+  const filteredItems = useMemo(() => {
+    const query = searchQuery.toLowerCase();
+    return items.filter((item) => filterFn(item, query));
+  }, [searchQuery, items, filterFn]);
 
-    return {
-        searchQuery,
-        setSearchQuery,
-        filteredItems,
-    }
+  return {
+    searchQuery,
+    setSearchQuery,
+    filteredItems,
+  };
 }

@@ -1,5 +1,6 @@
-import { Badge } from "./Badge";
 import { FormField } from "./FormField";
+import { X } from "lucide-react";
+import { Button } from "./Button";
 
 /**
  * FlashcardInput component for a single card in the quiz creation form
@@ -15,15 +16,15 @@ export function FlashcardInput({ index, register, errors, onRemove }) {
   const answerError = errors?.cards?.[index]?.answer?.message;
 
   return (
-    <div className="flex flex-col gap-4 py-6 border-b border-gray-100 last:border-0">
-      <div className="flex items-center gap-3">
-        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-purple-100 text-purple-600 font-bold text-sm">
+    <div className="flex gap-4 py-6 border-b border-primary/20 last:border-0">
+      <div className="flex flex-col items-start justify-start gap-2">
+        <div className="flex items-center justify-center w-8 h-8 shrink-0 rounded-full bg-purple-100 text-purple-600 font-bold text-sm">
           {cardNumber}
-        </div>
+        </div>  
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ml-11">
-        <FormField label="Front" error={questionError}>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1">
+        <FormField label="Question *" error={questionError}>
           <textarea
             id={`card-${index}-question`}
             {...register(`cards.${index}.question`)}
@@ -34,7 +35,7 @@ export function FlashcardInput({ index, register, errors, onRemove }) {
           />
         </FormField>
 
-        <FormField label="Back" error={answerError}>
+        <FormField label="Answer *" error={answerError}>
           <textarea
             id={`card-${index}-answer`}
             {...register(`cards.${index}.answer`)}
@@ -44,6 +45,17 @@ export function FlashcardInput({ index, register, errors, onRemove }) {
             placeholder="Type the answer..."
           />
         </FormField>
+      </div>
+      <div className="flex items-start justify-center">
+        <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={onRemove}
+            className="p-4 text-secondary hover:text-destructive hover:bg-destructive/10"
+          >
+            <X className="w-4 h-4" />
+          </Button>
       </div>
     </div>
   );

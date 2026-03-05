@@ -6,10 +6,11 @@ import { cn } from "/src/lib/utils";
  * this is a form field component that can be used to create forms
  * @param {string} label the label of the form field
  * @param {string} error the error message of the form field
+ * @param {string} hint optional helper text shown below the input
  * @param {string} className change classnames if needed like paddings etc...
  */
 export const FormField = React.forwardRef(
-  ({ label, error, className, children, ...props }, ref) => {
+  ({ label, error, hint, className, children, ...props }, ref) => {
     const id = React.useId();
 
     const childrenWithId = React.isValidElement(children)
@@ -20,6 +21,7 @@ export const FormField = React.forwardRef(
       <div ref={ref} className={cn("space-y-2", className)} {...props}>
         {label && <Label htmlFor={id}>{label}</Label>}
         {childrenWithId}
+        {hint && !error && <p className="text-xs text-secondary">{hint}</p>}
         {error && <p className="text-sm font-medium text-destructive">{error}</p>}
       </div>
     );

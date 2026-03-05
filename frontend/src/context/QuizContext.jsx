@@ -20,44 +20,45 @@ const QuizProvider = ({ children }) => {
   const [answeredCards, setAnsweredCards] = useState([]);
   const [isAnswered, setIsAnswered] = useState(false);
 
-  const progress = currentQuiz
-    ? (answeredCards.length / currentQuiz.flashcards.length) * 100
-    : 0;
+  const progress = currentQuiz ? (answeredCards.length / currentQuiz.flashcards.length) * 100 : 0;
 
   /**
    * fetch a specific quiz by ID
    * @param {number} quizId the ID of the quiz to fetch
    */
-  const fetchQuiz = useCallback(async (quizId) => {
-    setLoading(true);
-    setError(null);
-    try {
-      const [quizData, quizHistoryData] = await Promise.all([
-        getQuiz(quizId),
-        user && getQuizHistory(quizId),
-      ]);
+  const fetchQuiz = useCallback(
+    async (quizId) => {
+      setLoading(true);
+      setError(null);
+      try {
+        const [quizData, quizHistoryData] = await Promise.all([
+          getQuiz(quizId),
+          user && getQuizHistory(quizId),
+        ]);
 
-      if (!quizData.success) {
+        if (!quizData.success) {
+          return null;
+        }
+
+        setCurrentQuiz(quizData.data.data);
+        setQuizHistory(quizHistoryData?.data?.data || []);
+        return quizData;
+      } catch (err) {
+        setError(err.message);
+        console.error("Error fetching quiz:", err);
         return null;
+      } finally {
+        setLoading(false);
       }
-
-      setCurrentQuiz(quizData.data.data);
-      setQuizHistory(quizHistoryData?.data?.data || []);
-      return quizData;
-    } catch (err) {
-      setError(err.message);
-      console.error("Error fetching quiz:", err);
-      return null;
-    } finally {
-      setLoading(false);
-    }
-  }, [user]);
+    },
+    [user]
+  );
 
   /**
    * fetch user's quizzes
    */
   const fetchUserQuizzes = useCallback(async () => {
-    if ((userQuizzesFetched || userQuizzesLoading) || !user) return;
+    if (userQuizzesFetched || userQuizzesLoading || !user) return;
     setUserQuizzesLoading(true);
     setError(null);
     try {
@@ -81,23 +82,26 @@ const QuizProvider = ({ children }) => {
    * @param {number} quizId The ID of the quiz to save attempt for
    * @param {number} score The score of the quiz attempt
    */
-  const saveQuizAttempt = useCallback(async (quizId, score) => {
-    try {
-      const totalCards = currentQuiz?.flashcards?.length || 0;
-      const scorePercentage = totalCards > 0 ? Math.round((score / totalCards) * 100) : 0;
+  const saveQuizAttempt = useCallback(
+    async (quizId, score) => {
+      try {
+        const totalCards = currentQuiz?.flashcards?.length || 0;
+        const scorePercentage = totalCards > 0 ? Math.round((score / totalCards) * 100) : 0;
 
-      const response = await saveQuizResult(quizId, scorePercentage);
-      if (!response.success) {
-        return { success: false, error: response.error };
+        const response = await saveQuizResult(quizId, scorePercentage);
+        if (!response.success) {
+          return { success: false, error: response.error };
+        }
+
+        setQuizHistory((prev) => [...prev, response.data.data]);
+        return { success: true };
+      } catch (err) {
+        console.error("Error saving quiz attempt:", err);
+        return { success: false, error: err.message };
       }
-
-      setQuizHistory((prev) => [...prev, response.data.data]);
-      return { success: true };
-    } catch (err) {
-      console.error("Error saving quiz attempt:", err);
-      return { success: false, error: err.message };
-    }
-  }, [currentQuiz]);
+    },
+    [currentQuiz]
+  );
 
   /**
    * get current card
@@ -140,14 +144,17 @@ const QuizProvider = ({ children }) => {
     return currentQuiz.flashcards[prevIndex];
   }, [currentQuiz, currentCardIndex, answeredCards]);
 
-  const advanceProgress = useCallback((isCorrect) => {
-    if (isAnswered) return;
-    if (isCorrect) {
-      setScore((prev) => prev + 1);
-    }
-    setAnsweredCards((prev) => [...prev, currentCardIndex]);
-    setIsAnswered(true);
-  }, [isAnswered, currentCardIndex]);
+  const advanceProgress = useCallback(
+    (isCorrect) => {
+      if (isAnswered) return;
+      if (isCorrect) {
+        setScore((prev) => prev + 1);
+      }
+      setAnsweredCards((prev) => [...prev, currentCardIndex]);
+      setIsAnswered(true);
+    },
+    [isAnswered, currentCardIndex]
+  );
 
   /**
    * clear quiz data

@@ -1,10 +1,8 @@
 import { useEffect, useCallback } from "react";
-import { useAuth } from "/src/hooks/useAuth";
 import { useQuizContext } from "/src/hooks/useQuizContext";
 import { createQuiz, updateQuiz } from "../api/quizApi";
 
 export function useMyQuizzes() {
-  const { user } = useAuth();
   const {
     userQuizzes,
     userQuizzesLoading: isLoading,
@@ -19,16 +17,17 @@ export function useMyQuizzes() {
       title: quizData.title,
       description: quizData.description,
       flashcards: quizData.cards,
-      userId: user.id,
-      subject: "Math", // TODO: Implement subject selection
+      subject: quizData.subject,
     };
 
     const response = await createQuiz(data);
     if (!response.success) {
       setError(response.error);
-      return;
+      return null;
     }
-    setUserQuizzes([...userQuizzes, response.data.data]);
+    const created = response.data.data;
+    setUserQuizzes([...userQuizzes, created]);
+    return created;
   };
 
   const handleUpdateQuiz = async (id, quizData) => {
@@ -36,8 +35,7 @@ export function useMyQuizzes() {
       title: quizData.title,
       description: quizData.description,
       flashcards: quizData.cards,
-      userId: user.id,
-      subject: "Math", // TODO: Implement subject selection
+      subject: quizData.subject,
     };
 
     const response = await updateQuiz(id, data);

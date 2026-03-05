@@ -397,7 +397,7 @@ describe("QuizContext", () => {
       expect(contextValue.quizHistory[contextValue.quizHistory.length - 1].score).toBe(4);
     });
   });
-  
+
   describe("Answered Cards Tracking", () => {
     it("should track answered cards correctly when navigating", async () => {
       let contextValue;

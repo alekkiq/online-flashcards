@@ -1,5 +1,12 @@
 import { cn } from "/src/lib/utils";
 
+const sizes = {
+  sm: "px-2 py-0.5 text-xs",
+  md: "px-3 py-1 text-sm",
+  lg: "px-4 py-2 text-base",
+  xl: "px-5 py-3 text-lg",
+};
+
 /**
  * badge component the small blue blob
  * @param {string} textColor text color class (e.g., 'text-primary', 'text-white')
@@ -10,12 +17,14 @@ export function Badge({
   children,
   textColor = "text-primary",
   bgColor = "bg-primary/10",
+  size = "sm",
   className,
 }) {
   return (
     <span
       className={cn(
-        "inline-flex w-fit items-center px-2 py-0.5 rounded-full text-xs font-medium",
+        "inline-flex w-fit items-center rounded-full font-medium",
+        sizes[size] || sizes["sm"],
         textColor,
         bgColor,
         className

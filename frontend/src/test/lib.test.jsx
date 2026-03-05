@@ -36,7 +36,7 @@ describe("fetchData", () => {
 
     const options = {
       method: "POST",
-      headers: { "Authorization": "Bearer token" },
+      headers: { Authorization: "Bearer token" },
       body: JSON.stringify({ title: "New Quiz" }),
     };
 
@@ -46,7 +46,7 @@ describe("fetchData", () => {
       ...options,
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer token",
+        Authorization: "Bearer token",
       },
     });
   });
