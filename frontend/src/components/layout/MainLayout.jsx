@@ -20,7 +20,7 @@ export default function MainLayout() {
         <ClassroomProvider>
           <div className="min-h-screen">
             <NavBar />
-            <main className="w-full mx-auto px-4 mb-[10vh] md:mb-0">
+            <main className="w-full min-h-[70vh] px-4 mb-[10vh] md:mb-0">
               <Outlet />
             </main>
             <Footer />
