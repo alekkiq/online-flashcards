@@ -25,7 +25,16 @@ pipeline {
                 stage('Start Database') {
                     steps {
                         bat 'docker compose up -d db'
-                        bat 'docker compose exec db mariadb -u root -p%MYSQL_ROOT_PASSWORD% -e "SELECT 1" --wait'
+                        bat '''
+                            echo Waiting for database to be healthy...
+                            :loop
+                            docker inspect --format "{{.State.Health.Status}}" flashcards-db | findstr "healthy" >nul 2>&1
+                            if errorlevel 1 (
+                                timeout /t 5 /nobreak >nul
+                                goto loop
+                            )
+                            echo Database is healthy!
+                        '''
                     }
                 }
                 stage('Build & Test Backend') {
