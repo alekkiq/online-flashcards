@@ -2,43 +2,25 @@ pipeline {
     agent any
 
     tools {
+        nodejs 'node-20'
         jdk 'jdk-21'
     }
 
     stages {
-        stage('Checkout') {
+        stage('Setup & Checkout') {
             steps {
                 checkout scm
-            }
-        }
-
-        stage('Generate .env') {
-            steps {
                 withCredentials([file(credentialsId: 'flashcards-env', variable: 'ENV_FILE')]) {
                     bat 'copy "%ENV_FILE%" .env'
                 }
             }
         }
 
-        stage('Backend') {
-            stages {
-                stage('Start Database') {
+        stage('Build & Test') {
+            parallel {
+                stage('Backend') {
                     steps {
-                        bat 'docker compose up -d db'
-                        bat '''
-                            echo Waiting for database to be healthy...
-                            :loop
-                            docker inspect --format "{{.State.Health.Status}}" flashcards-db | findstr "healthy" >nul 2>&1
-                            if errorlevel 1 (
-                                timeout /t 5 /nobreak >nul
-                                goto loop
-                            )
-                            echo Database is healthy!
-                        '''
-                    }
-                }
-                stage('Build & Test Backend') {
-                    steps {
+                        bat 'docker compose up -d --wait db'
                         dir('backend') {
                             bat 'mvnw.cmd clean package'
                         }
@@ -50,39 +32,24 @@ pipeline {
                         }
                     }
                 }
-            }
-        }
 
-        stage('Frontend') {
-            stages {
-                stage('Install Dependencies') {
+                stage('Frontend') {
                     steps {
                         dir('frontend') {
                             bat 'npm ci'
-                        }
-                    }
-                }
-                stage('Test & Coverage Frontend') {
-                    steps {
-                        dir('frontend') {
                             bat 'npm run test:coverage'
+                            bat 'npm run build'
                         }
                     }
                     post {
                         always {
                             publishHTML(target: [
-                                reportName:  'Frontend Coverage',
-                                reportDir:   'frontend/coverage',
-                                reportFiles: 'index.html',
-                                keepAll:     true
+                                reportName:   'Frontend Coverage',
+                                reportDir:    'frontend/coverage',
+                                reportFiles:  'index.html',
+                                keepAll:      true,
+                                allowMissing: true
                             ])
-                        }
-                    }
-                }
-                stage('Build Frontend') {
-                    steps {
-                        dir('frontend') {
-                            bat 'npm run build'
                         }
                     }
                 }
@@ -99,7 +66,6 @@ pipeline {
     post {
         always {
             bat 'docker compose down -v || exit 0'
-            bat 'del .env 2>nul || exit 0'
             cleanWs()
         }
         success {
