@@ -1,11 +1,19 @@
 pipeline {
     agent any
 
+    parameters {
+        string(name: 'DOCKER_USER', defaultValue: 'dockeruser', description: 'Docker Hub username for pushing images')
+        string(name: 'DOCKER_CREDENTIAL_ID', defaultValue: 'Docker_Hub', description: 'Jenkins credential ID for Docker Hub')
+    }
+
     environment {
-        DOCKER_USER = "${env.DOCKER_USER}"
+        //DOCKER_USER = "${env.DOCKER_USER}" // LAITA TÄHÄ OMA NIMI SIT ET VOI TESTAA TYYLII OMAA BRANCHII TAI JOTAI
+        /*
+        MENE JENKINSSIIN JA TEE TUNNILLA OPETETUN TAVAN MUKAAN DOCKER HUB KÄYTTÄJÄ JA SALASANA TOKENILLA. SITTEN LAITA TOHON DOCKER_USER NIMI ja voit runaa sitten build.
+        */
         DOCKER_REPO = 'online-flashcards'
         IMAGE_TAG   = "${env.BUILD_NUMBER}"
-        DOCKER_HUB_CREDENTIAL_ID = "${env.DOCKER_HUB_CREDENTIAL_ID}"
+        //DOCKER_HUB_CREDENTIAL_ID = "${env.DOCKER_HUB_CREDENTIAL_ID}"
     }
 
     tools {
@@ -70,18 +78,19 @@ pipeline {
 
         stage('Build & Push Docker Images') {
             steps {
-                withCredentials([usernamePassword(credentialsId: DOCKER_HUB_CREDENTIAL_ID, usernameVariable: 'USER', passwordVariable: 'PASS')]) {
+                withCredentials([usernamePassword(credentialsId: parameters.DOCKER_CREDENTIAL_ID, usernameVariable: 'USER', passwordVariable: 'PASS')]) {
                     bat """
-                        docker login -u %USER% -p %PASS%
+                    @echo Logging in to Docker Hub...
+                    docker login -u %USER% -p %PASS%
 
-                        @echo Building Docker images...
-                        docker compose build
+                    @echo Building Docker images...
+                    docker compose build
 
-                        @echo Pushing Docker images...
-                        docker push %DOCKER_USER%/online-flashcards-backend:%IMAGE_TAG%
-                        docker push %DOCKER_USER%/online-flashcards-frontend:%IMAGE_TAG%
-                        docker push %DOCKER_USER%/online-flashcards-backend:latest
-                        docker push %DOCKER_USER%/online-flashcards-frontend:latest
+                    @echo Pushing Docker images...
+                    docker push %DOCKER_USER%/online-flashcards-backend:%IMAGE_TAG%
+                    docker push %DOCKER_USER%/online-flashcards-frontend:%IMAGE_TAG%
+                    docker push %DOCKER_USER%/online-flashcards-backend:latest
+                    docker push %DOCKER_USER%/online-flashcards-frontend:latest
                     """
                 }
             }
