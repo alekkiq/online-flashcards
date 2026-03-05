@@ -20,7 +20,7 @@ export default function ClassroomHeader({ classroom, isOwner, onManage, onLeave 
   };
 
   return (
-    <div className="rounded-xl bg-white p-5 md:p-8 space-y-5">
+    <div className="rounded-xl bg-white p-5 md:p-8 flex flex-col gap-y-4">
       <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
         <div className="space-y-3">
           <div className="flex items-center gap-3 flex-wrap">
