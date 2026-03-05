@@ -8,6 +8,7 @@ pipeline {
         */
         DOCKER_REPO = 'online-flashcards'
         IMAGE_TAG   = "${env.BUILD_NUMBER}"
+        DOCKER_HUB_CREDENTIAL_ID = "${env.DOCKER_HUB_CREDENTIAL_ID}"
     }
 
     tools {
@@ -75,19 +76,15 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'Docker_Hub', usernameVariable: 'USER', passwordVariable: 'PASS')]) {
                     bat """
                         docker login -u %USER% -p %PASS%
+
+                        @echo Building Docker images...
                         docker compose build
 
-                        @echo Tagging and Pushing...
-                        
-                        docker tag online_flashcards-backend %USER%/%DOCKER_REPO%-backend:%IMAGE_TAG%
-                        docker tag online_flashcards-frontend %USER%/%DOCKER_REPO%-frontend:%IMAGE_TAG%
-                        docker tag online_flashcards-backend %USER%/%DOCKER_REPO%-backend:latest
-                        docker tag online_flashcards-frontend %USER%/%DOCKER_REPO%-frontend:latest
-                        
-                        docker push %USER%/%DOCKER_REPO%-backend:%IMAGE_TAG%
-                        docker push %USER%/%DOCKER_REPO%-frontend:%IMAGE_TAG%
-                        docker push %USER%/%DOCKER_REPO%-backend:latest
-                        docker push %USER%/%DOCKER_REPO%-frontend:latest
+                        @echo Pushing Docker images...
+                        docker push %DOCKER_USER%/online-flashcards-backend:%IMAGE_TAG%
+                        docker push %DOCKER_USER%/online-flashcards-frontend:%IMAGE_TAG%
+                        docker push %DOCKER_USER%/online-flashcards-backend:latest
+                        docker push %DOCKER_USER%/online-flashcards-frontend:latest
                     """
                 }
             }
