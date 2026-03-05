@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Setup & Checkout') {
             steps {
-                checkout scmi 
+                checkout scm
                 withCredentials([file(credentialsId: 'flashcards-env', variable: 'ENV_FILE')]) {
                     bat 'copy "%ENV_FILE%" .env'
                 }
@@ -70,7 +70,7 @@ pipeline {
 
     post {
         always {
-            //bat 'docker compose down -v || exit 0'
+            bat 'docker compose down -v || exit 0'
             cleanWs() 
         }
         success {
