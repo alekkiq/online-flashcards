@@ -10,11 +10,11 @@ services:
       - db_data:/var/lib/mysql
     restart: unless-stopped
     healthcheck:
-      test: [ "CMD", "mariadb", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}", "-e", "SELECT 1" ]
+      test: [ "CMD-SHELL", "mysqladmin ping -uroot -p$MYSQL_ROOT_PASSWORD --silent" ]
       interval: 5s
-      timeout: 45s
-      retries: 30
-      start_period: 60s
+      timeout: 20s
+      retries: 20
+      start_period: 40s
   backend:
     build: ./backend
     image: ${DOCKER_USER}/online-flashcards-backend
