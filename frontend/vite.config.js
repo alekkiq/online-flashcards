@@ -17,7 +17,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api/v1": {
-        target: process.env.REACT_APP_API_BASE_URL || "http://localhost:8080",
+        target: import.meta.env.VITE_APP_API_BASE_URL || "http://localhost:8080",
         changeOrigin: true,
         secure: false,
       },
