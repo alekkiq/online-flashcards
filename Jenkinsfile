@@ -92,21 +92,18 @@ pipeline {
             }
         }
 
-        stage('Deploy Local') {
-            steps {
-                bat 'docker compose up -d'
-                echo "App is live at http://localhost:3000"
-            }
-        }
     }
 
     post {
+        always {
+            echo 'Cleaning up Docker resources...'
+            bat 'docker compose down -v || exit 0'
+        }
         success {
-            echo 'Pipeline completed successfully! Containers are running.'
+            echo 'Pipeline completed successfully! Images pushed to Docker Hub.'
         }
         failure {
-            echo 'Pipeline failed. Cleaning up...'
-            bat 'docker compose down -v || exit 0'
+            echo 'Pipeline failed.'
             cleanWs()
         }
     }
