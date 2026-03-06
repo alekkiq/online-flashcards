@@ -8,9 +8,6 @@ RUN npm install
 
 COPY . .
 
-ARG VITE_API_BASE_URL
-ENV VITE_API_BASE_URL=${VITE_API_BASE_URL}
-
 RUN npm run build
 
 FROM nginx:stable-alpine
@@ -20,4 +17,4 @@ EXPOSE 80
 
 ENV BACKEND_URL=""
 
-CMD ["/bin/sh", "-c", "envsubst '${BACKEND_URL}' < /etc/nginx/templates/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
+CMD /bin/sh -c 'envsubst "\$BACKEND_URL" < /etc/nginx/templates/default.conf.template > /etc/nginx/conf.d/default.conf && nginx -g "daemon off;"'
