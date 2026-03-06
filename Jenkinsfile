@@ -79,14 +79,23 @@ pipeline {
                     @echo Logging in to Docker Hub...
                     docker login -u %USER% -p %PASS%
 
-                    @echo Building Docker images...
-                    docker compose build
+                    @echo Building backend image...
+                    docker build -t %DOCKER_USER%/online-flashcards-backend:%IMAGE_TAG% -t %DOCKER_USER%/online-flashcards-backend:latest ./backend
+
+                    @echo Building frontend image...
+                    docker build -t %DOCKER_USER%/online-flashcards-frontend:%IMAGE_TAG% -t %DOCKER_USER%/online-flashcards-frontend:latest ./frontend
 
                     @echo Pushing Docker images...
                     docker push %DOCKER_USER%/online-flashcards-backend:%IMAGE_TAG%
-                    docker push %DOCKER_USER%/online-flashcards-frontend:%IMAGE_TAG%
                     docker push %DOCKER_USER%/online-flashcards-backend:latest
+                    docker push %DOCKER_USER%/online-flashcards-frontend:%IMAGE_TAG%
                     docker push %DOCKER_USER%/online-flashcards-frontend:latest
+
+                    @echo Removing local images to free resources...
+                    docker rmi %DOCKER_USER%/online-flashcards-backend:%IMAGE_TAG% || exit 0
+                    docker rmi %DOCKER_USER%/online-flashcards-backend:latest || exit 0
+                    docker rmi %DOCKER_USER%/online-flashcards-frontend:%IMAGE_TAG% || exit 0
+                    docker rmi %DOCKER_USER%/online-flashcards-frontend:latest || exit 0
                     """
                 }
             }
@@ -98,9 +107,11 @@ pipeline {
         always {
             echo 'Cleaning up Docker resources...'
             bat '''
-            docker compose down -v --rmi local --remove-orphans || exit 0
-            docker image prune -f || exit 0
+            docker compose down -v --rmi all --remove-orphans || exit 0
             docker container prune -f || exit 0
+            docker image prune -af || exit 0
+            docker builder prune -af || exit 0
+            docker system prune -af || exit 0
             '''
         }
         success {
