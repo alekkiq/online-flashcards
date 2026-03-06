@@ -97,7 +97,11 @@ pipeline {
     post {
         always {
             echo 'Cleaning up Docker resources...'
-            bat 'docker compose down -v || exit 0'
+            bat '''
+            docker compose down -v --rmi local --remove-orphans || exit 0
+            docker image prune -f || exit 0
+            docker container prune -f || exit 0
+            '''
         }
         success {
             echo 'Pipeline completed successfully! Images pushed to Docker Hub.'
