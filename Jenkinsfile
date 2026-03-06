@@ -107,11 +107,9 @@ pipeline {
         always {
             echo 'Cleaning up Docker resources...'
             bat '''
-            docker compose down -v --rmi all --remove-orphans || exit 0
-            docker container prune -f || exit 0
-            docker image prune -af || exit 0
-            docker builder prune -af || exit 0
-            docker system prune -af || exit 0
+            docker compose down -v --remove-orphans || exit 0
+            docker image prune -f || exit 0
+            docker builder prune -f || exit 0
             '''
         }
         success {
