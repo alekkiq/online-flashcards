@@ -57,17 +57,17 @@ pipeline {
                             bat 'npm run build'
                         }
                     }
-                    post {
-                        always {
-                            publishHTML(target: [
-                                reportName:   'Frontend Coverage',
-                                reportDir:    'frontend/coverage',
-                                reportFiles:  'index.html',
-                                keepAll:      true,
-                                allowMissing: true
-                            ])
-                        }
-                    }
+                    // post {
+                    //     always {
+                    //         publishHTML(target: [
+                    //             reportName:   'Frontend Coverage',
+                    //             reportDir:    'frontend/coverage',
+                    //             reportFiles:  'index.html',
+                    //             keepAll:      true,
+                    //             allowMissing: true
+                    //         ])
+                    //     }
+                    // }
                 }
             }
         }
