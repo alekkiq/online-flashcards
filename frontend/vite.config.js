@@ -6,12 +6,8 @@ import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, path.resolve(__dirname, "../"), "");
-
   return {
     plugins: [react(), tailwindcss()],
-    define: {
-      "import.meta.env": env,
-    },
     theme: {
       extend: {
         fontFamily: {
@@ -23,7 +19,7 @@ export default defineConfig(({mode}) => {
     server: {
       proxy: {
         "/api/v1": {
-          target: env.VITE_APP_API_BASE_URL || "http://localhost:8080",
+          target: env.BACKEND_URL || "http://localhost:8080",
           changeOrigin: true,
           secure: false,
         },

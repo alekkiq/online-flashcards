@@ -1,4 +1,4 @@
-const API_BASE = import.meta.env.VITE_APP_API_BASE_URL;
+const API_BASE = "/api/v1";
 
 /**
  * use this for fetching data, makes it easier
