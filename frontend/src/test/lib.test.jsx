@@ -66,12 +66,15 @@ describe("fetchData", () => {
   });
 
   it("should return success: false on network error", async () => {
+    const consoleSpy = vi.spyOn(console, "error").mockImplementation(() => {});
     fetch.mockRejectedValueOnce(new Error("Network error"));
 
     const result = await fetchData("quizzes");
 
     expect(result.success).toBe(false);
     expect(result.error).toBe("Network error");
+    expect(consoleSpy).toHaveBeenCalled();
+    consoleSpy.mockRestore();
   });
 
   it("should handle 500 server error", async () => {
