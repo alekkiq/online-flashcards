@@ -53,21 +53,21 @@ pipeline {
                     steps {
                         dir('frontend') {
                             bat 'npm ci'
-                            // bat 'npm run test:coverage'
+                            bat 'npm run test:coverage'
                             bat 'npm run build'
                         }
                     }
-                    // post {
-                    //     always {
-                    //         publishHTML(target: [
-                    //             reportName:   'Frontend Coverage',
-                    //             reportDir:    'frontend/coverage',
-                    //             reportFiles:  'index.html',
-                    //             keepAll:      true,
-                    //             allowMissing: true
-                    //         ])
-                    //     }
-                    // }
+                    post {
+                        always {
+                            publishHTML(target: [
+                                reportName:   'Frontend Coverage',
+                                reportDir:    'frontend/coverage',
+                                reportFiles:  'index.html',
+                                keepAll:      true,
+                                allowMissing: true
+                            ])
+                        }
+                    }
                 }
             }
         }
