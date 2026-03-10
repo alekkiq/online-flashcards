@@ -188,6 +188,8 @@ class QuizControllerTest {
             .andExpect(jsonPath("$.data.title").value("Updated Quiz"));
     }
 
+
+
     @Test
     @DisplayName("updateQuiz(): not found returns 404")
     void updateQuiz_notFound_returns404() throws Exception {
@@ -225,7 +227,7 @@ class QuizControllerTest {
         User teacher = createTeacher();
         CustomUserDetails userDetails = new CustomUserDetails(teacher);
 
-        doNothing().when(this.quizService).deleteQuiz(1L);
+        doNothing().when(this.quizService).deleteQuiz(1L, 1L);
 
         this.mockMvc.perform(delete("/api/v1/quizzes/1")
                 .with(user(userDetails)))
@@ -233,8 +235,10 @@ class QuizControllerTest {
             .andExpect(jsonPath("$.success").value(true))
             .andExpect(jsonPath("$.message").value("Quiz deleted successfully."));
 
-        verify(this.quizService, times(1)).deleteQuiz(1L);
+        verify(this.quizService, times(1)).deleteQuiz(1L, 1L);
     }
+
+
 
     @Test
     @DisplayName("deleteQuiz(): not found returns 404")
@@ -243,7 +247,7 @@ class QuizControllerTest {
         CustomUserDetails userDetails = new CustomUserDetails(teacher);
 
         doThrow(new ResourceNotFoundException("Quiz", "Quiz with ID 99 not found."))
-            .when(this.quizService).deleteQuiz(99L);
+            .when(this.quizService).deleteQuiz(eq(99L), anyLong());
 
         this.mockMvc.perform(delete("/api/v1/quizzes/99")
                 .with(user(userDetails)))

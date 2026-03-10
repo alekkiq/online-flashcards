@@ -14,7 +14,7 @@ public interface IQuizService {
 
     QuizResponse updateQuiz(long id, long userId, QuizCreationRequest request);
 
-    void deleteQuiz(long id);
+    void deleteQuiz(long id, long userId);
 
     List<QuizResponse> getQuizzesByUser(long userId);
 }

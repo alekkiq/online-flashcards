@@ -44,7 +44,16 @@ public class ClassroomService implements IClassroomService {
 
     @Override
     @Transactional(readOnly = true)
-    public Classroom getClassroomById(Long classroomId) {
+    public Classroom getClassroomById(Long classroomId, Long userId) {
+        return this.classroomRepository.findByClassroomIdAndUsers_UserId(classroomId, userId)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Classroom",
+                        classroomId,
+                        "Classroom with ID " + classroomId + " not found or you are not a member of it"
+                ));
+    }
+
+    private Classroom getClassroomEntityById(Long classroomId) {
         return this.classroomRepository.findById(classroomId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Classroom",
@@ -139,7 +148,7 @@ public class ClassroomService implements IClassroomService {
     @Override
     @Transactional
     public Classroom updateClassroom(Long userId, Long classroomId, ClassroomUpdateRequest request) {
-        Classroom classroom = getClassroomById(classroomId);
+        Classroom classroom = getClassroomEntityById(classroomId);
 
         if (classroom.getOwner() == null || !Objects.equals(classroom.getOwner().getUserId(), userId)) {
             throw new IllegalArgumentException("You are not allowed to update this classroom.");
@@ -177,7 +186,7 @@ public class ClassroomService implements IClassroomService {
     @Override
     @Transactional
     public void leaveClassroom(Long userId, Long classroomId) {
-        Classroom classroom = getClassroomById(classroomId);
+        Classroom classroom = getClassroomEntityById(classroomId);
 
         if (classroom.getOwner() != null && Objects.equals(classroom.getOwner().getUserId(), userId)) {
             throw new IllegalArgumentException("Owner cannot leave their own classroom.");
@@ -190,7 +199,7 @@ public class ClassroomService implements IClassroomService {
     @Override
     @Transactional
     public Classroom removeUserFromClassroom(Long ownerId, Long classroomId, Long targetUserId) {
-        Classroom classroom = getClassroomById(classroomId);
+        Classroom classroom = getClassroomEntityById(classroomId);
 
         if (classroom.getOwner() == null || !Objects.equals(classroom.getOwner().getUserId(), ownerId)) {
             throw new IllegalArgumentException("Only the owner can remove users from this classroom.");
@@ -208,7 +217,7 @@ public class ClassroomService implements IClassroomService {
     @Transactional
     public Classroom addLearningMaterial(Long userId, Long classroomId, LearningMaterialCreationRequest request) {
         User creator = getUserById(userId);
-        Classroom classroom = getClassroomById(classroomId);
+        Classroom classroom = getClassroomEntityById(classroomId);
 
         if (classroom.getOwner() == null || !Objects.equals(classroom.getOwner().getUserId(), userId)) {
             throw new IllegalArgumentException("You are not allowed to add learning material to this classroom.");
@@ -228,7 +237,7 @@ public class ClassroomService implements IClassroomService {
     @Override
     @Transactional
     public Classroom removeLearningMaterial(Long userId, Long classroomId, Long learningMaterialId) {
-        Classroom classroom = getClassroomById(classroomId);
+        Classroom classroom = getClassroomEntityById(classroomId);
 
         if (classroom.getOwner() == null || !Objects.equals(classroom.getOwner().getUserId(), userId)) {
             throw new IllegalArgumentException("You are not allowed to remove learning material from this classroom.");
@@ -241,7 +250,7 @@ public class ClassroomService implements IClassroomService {
     @Override
     @Transactional
     public Classroom addQuizToClassroom(Long userId, Long classroomId, Long quizId) {
-        Classroom classroom = getClassroomById(classroomId);
+        Classroom classroom = getClassroomEntityById(classroomId);
 
         if (classroom.getOwner() == null || !Objects.equals(classroom.getOwner().getUserId(), userId)) {
             throw new IllegalArgumentException("You are not allowed to add quizzes to this classroom.");
@@ -268,7 +277,7 @@ public class ClassroomService implements IClassroomService {
     @Override
     @Transactional
     public Classroom removeQuizFromClassroom(Long userId, Long classroomId, Long quizId) {
-        Classroom classroom = getClassroomById(classroomId);
+        Classroom classroom = getClassroomEntityById(classroomId);
 
         if (classroom.getOwner() == null || !Objects.equals(classroom.getOwner().getUserId(), userId)) {
             throw new IllegalArgumentException("You are not allowed to remove quizzes from this classroom.");
@@ -281,7 +290,7 @@ public class ClassroomService implements IClassroomService {
     @Override
     @Transactional
     public Classroom editLearningMaterial(Long userId, Long classroomId, Long learningMaterialId, LearningMaterialCreationRequest request) {
-        Classroom classroom = getClassroomById(classroomId);
+        Classroom classroom = getClassroomEntityById(classroomId);
 
         if (classroom.getOwner() == null || !Objects.equals(classroom.getOwner().getUserId(), userId)) {
             throw new IllegalArgumentException("You are not allowed to edit learning material in this classroom.");
