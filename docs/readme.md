@@ -2,17 +2,294 @@
 
 This is the second year Software Engineering project. The application is a quiz learning platform where the main learning method is flashcard learning.
 
-## TECHSTACK
+## PRODUCT DESCRIPTION
 
-The following technologies were used to create the application:
+**OnlyCards** is a web-based quiz and flashcard learning platform designed for students and educators. Users can create, share, discover, and study flashcard quizzes across a variety of subjects — all through a modern, responsive single-page application.
 
-- Java Springboot
-- JaCoCo
-- React 16
-- Jakarta Persistence (JPA)
+### Core Features
 
+#### Authentication & User Roles
+The platform supports three user roles with increasing privileges:
+- **Student** — the default role. Can browse, search, and play quizzes, join classrooms, and view results.
+- **Teacher** — a promoted role. Can do everything a student can, plus create and manage quizzes and classrooms.
+- **Admin** — has full administrative privileges, including approving or rejecting promotion requests and managing all users and classrooms.
 
+Users register with a username, email, and password. Authentication is handled via **JWT tokens**, so sessions are stateless and secure. Students who want to create content can submit a **promotion request** to be upgraded to the Teacher role, which an Admin can then approve or reject.
 
+#### Quizzes & Flashcards
+The central learning unit is the **quiz**, which is a named collection of **flashcards**. Each flashcard has a question side and an answer side. Quizzes are categorized by **subject** (e.g. Mathematics, History) for easy filtering.
 
+Teachers create quizzes by giving them a title, description, subject, and then adding individual flashcards. Quizzes are publicly searchable and playable by all users.
 
+#### Quiz Game
+When a user plays a quiz, they are presented with flashcards one at a time in an interactive **flip-card** UI. The user reads the question, mentally answers, then flips the card to reveal the correct answer and self-evaluates. Navigation between cards is animated with sliding transitions. After completing all cards, the result (score percentage) is recorded and the user is taken to a **results page**.
 
+#### Quiz Results & Progress Tracking
+Each quiz attempt is saved as a **quiz result**, recording the score percentage and timestamp. This allows users to track their learning progress over time and revisit quizzes to improve.
+
+#### Search & Discovery
+The **Search Quizzes** page lets any visitor — authenticated or not — browse and search the full library of community-created quizzes. Quizzes can be filtered by subject. Each quiz card shows the title, creator, subject, and flashcard count.
+
+#### Classrooms
+Teachers and Admins can create **classrooms** — virtual study groups organized around a subject. A classroom has:
+- A **title**, **description**, and optional **note**
+- A **join code** that students use to enroll
+- **Quizzes** assigned to the classroom for guided study
+- **Learning materials** (text-based resources) uploaded by the owner
+- A **members list** managed by the owner
+
+Classroom owners can add or remove members, attach quizzes, and upload learning materials. Students can join using the code, view all classroom content, and leave at any time.
+
+#### Profile Management
+Authenticated users have a **profile page** where they can:
+- View their username, email, and role
+- Edit their profile (change username, email, or password)
+- Submit a promotion request (Student > Teacher)
+- See quick links to their quizzes and classrooms
+
+## TECHNOLOGIES USED
+
+### Frontend
+| Technology | Purpose |
+|---|---|
+| **React 19** | UI library |
+| **Vite 7** | Build tool & dev server |
+| **Tailwind CSS 4** | Utility-first CSS framework |
+| **React Router 7** | Client-side routing |
+| **React Hook Form** + **Zod** | Form handling & validation |
+| **Lucide React** | Icon library |
+| **Nginx** | Production static file serving & reverse proxy |
+
+### Backend
+| Technology | Purpose |
+|---|---|
+| **Java 17** | Programming language |
+| **Spring Boot 4** | Application framework |
+| **Spring Security** | Authentication & authorization |
+| **Spring Data JPA** / **Hibernate** | ORM & database access |
+| **JWT (jjwt)** | Token-based authentication |
+| **Jackson** | JSON serialization |
+| **SpringDoc OpenAPI** | API documentation (Swagger UI) |
+| **Maven** | Build & dependency management |
+
+### Database
+| Technology | Purpose |
+|---|---|
+| **MariaDB 11** | Relational database |
+
+### Testing
+| Technology | Purpose |
+|---|---|
+| **Vitest** + **jsdom** | Frontend unit testing |
+| **React Testing Library** | Component testing |
+| **V8 Coverage** | Frontend code coverage |
+| **JUnit 5** (Spring Boot Test) | Backend unit & integration testing |
+| **JaCoCo** | Backend code coverage |
+
+### DevOps & Deployment
+| Technology | Purpose |
+|---|---|
+| **Docker** | Containerization |
+| **Docker Compose** | Multi-container orchestration |
+| **Jenkins** | CI/CD pipeline |
+| **Docker Hub** | Container image registry |
+| **Railway** | Cloud hosting & deployment |
+
+### Code Quality
+| Technology | Purpose |
+|---|---|
+| **ESLint 9** | Frontend linting |
+| **Prettier** | Code formatting |
+
+## CI/CD PIPELINE
+The project uses a **Jenkins declarative pipeline** (`Jenkinsfile`) that automates building, testing, and containerizing the application. The pipeline runs on a **Windows** Jenkins agent and uses `bat` commands throughout.
+
+### Pipeline Overview
+
+```
+Checkout & Setup ➜ Build & Test (parallel) ➜ Build Docker Images ➜ Cleanup
+```
+
+### Pipeline Stages
+
+| Stage | Description |
+|---|---|
+| **Setup & Checkout** | Clones the repository via `checkout scm` and injects the `.env` credentials file from Jenkins into the workspace root |
+| **Backend** *(parallel)* | Spins up a MariaDB container (`docker compose up -d --wait db`), then runs `mvnw.cmd clean package` which compiles, tests, and packages the Spring Boot JAR |
+| **Frontend** *(parallel)* | Installs dependencies (`npm ci`), runs Vitest with V8 coverage (`npm run test:coverage`), and builds the production bundle (`npm run build`) |
+| **Build Docker Images** | Runs `docker compose build` to create production-ready images for all services |
+
+### Jenkins Tools
+
+The pipeline declares three managed tools in the `tools` block:
+
+```groovy
+tools {
+    nodejs 'node-20'    // NodeJS plugin – Node.js 20.x
+    jdk    'jdk-21'     // JDK 21
+    maven  'Maven3'     // Maven 3.x
+}
+```
+
+These must be configured in **Manage Jenkins → Tools** with the exact names shown above.
+
+### Environment & Credentials
+
+All environment variables (database credentials, JWT secret, etc.) are stored in a **single `.env` file** managed as a Jenkins `file` credential (`flashcards-env`). During the *Setup & Checkout* stage, the file is copied into the workspace root:
+
+```groovy
+withCredentials([file(credentialsId: 'flashcards-env', variable: 'ENV_FILE')]) {
+    bat 'copy "%ENV_FILE%" .env'
+}
+```
+
+Docker Compose automatically reads the `.env` file to populate service environment variables.
+
+### Test Reporting
+
+| Report | Tool | Location |
+|---|---|---|
+| Backend unit tests | JUnit Publisher | `backend/target/surefire-reports/*.xml` |
+| Backend code coverage | JaCoCo Publisher | `backend/target/jacoco.exec` |
+| Frontend code coverage | HTML Publisher | `frontend/coverage/index.html` |
+
+### Post-Pipeline Cleanup
+
+The `post > always` block ensures resources are freed after every run:
+
+```groovy
+post {
+    always {
+        bat 'docker compose down -v || exit 0'   // stop containers & remove volumes
+        cleanWs()                                  // delete the workspace
+    }
+}
+```
+
+### Required Jenkins Plugins
+
+| Plugin | Purpose |
+|---|---|
+| **NodeJS** | Provides the `nodejs` tool installer |
+| **JUnit** | Publishes backend test results |
+| **JaCoCo** | Publishes backend code coverage |
+| **HTML Publisher** | Publishes the frontend coverage report |
+| **Docker Pipeline** | Docker integration for building images |
+
+---
+
+## DOCKER SETUP
+
+### Docker Images
+
+| Image | Base | Description |
+|---|---|---|
+| **Backend** | `eclipse-temurin:21-jre-alpine` | Copies the pre-built `online-flashcards-api.jar` into `/app` and runs it with `java -jar` |
+| **Frontend** | `nginx:stable-alpine` | Copies the Vite `dist/` output and a custom `nginx.conf` into the container |
+| **Database** | `mariadb:11` | Official MariaDB image, configured entirely via environment variables |
+
+### Backend Dockerfile
+
+```dockerfile
+FROM eclipse-temurin:21-jre-alpine
+WORKDIR /app
+COPY target/online-flashcards-api.jar app.jar
+CMD ["java", "-jar", "app.jar"]
+```
+
+The JAR is built by Maven during the pipeline's *Backend* stage **before** Docker builds the image.
+
+### Frontend Dockerfile
+
+```dockerfile
+FROM nginx:stable-alpine
+COPY dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+The Vite production build (`dist/`) is created during the pipeline's *Frontend* stage.
+
+### Nginx Reverse Proxy (`nginx.conf`)
+
+```nginx
+server {
+    listen 80;
+
+    location / {
+        root /usr/share/nginx/html;
+        index index.html;
+        try_files $uri $uri/ /index.html;   # SPA fallback
+    }
+
+    location /api/v1/ {
+        proxy_pass http://backend:8080;      # resolves via Docker network / Railway internal networking
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
+
+- **`/`** — serves the static React SPA with `try_files` fallback for client-side routing
+- **`/api/v1/`** — proxies all API requests to the backend service on port `8080`
+
+### Docker Compose Services
+
+The `docker-compose.yaml` orchestrates three services:
+
+| Service | Container Name | Ports | Notes |
+|---|---|---|---|
+| **db** | `flashcards-db` | `3307:3306` | MariaDB with health check, persistent `db_data` volume |
+| **backend** | `flashcards-backend` | `8080:8080` | Starts only after `db` is healthy (`depends_on: condition: service_healthy`) |
+| **frontend** | `flashcards-frontend` | `3000:80` | Depends on `backend`; Nginx proxies `/api/v1/` to `http://backend:8080` |
+
+### Database Health Check
+
+The database service uses a health check to ensure it is fully ready before the backend starts:
+
+```yaml
+healthcheck:
+  test: ["CMD", "mariadb", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}", "-e", "SELECT 1"]
+  interval: 10s
+  timeout: 30s
+  retries: 20
+  start_period: 60s
+```
+
+---
+
+## DEPLOYMENT (RAILWAY)
+
+Production images are deployed to **[Railway](https://railway.app)** as three separate services:
+
+| Railway Service | Source | Description |
+|---|---|---|
+| **Frontend** | `frontend/Dockerfile` | Nginx serving the SPA and reverse-proxying API calls |
+| **Backend** | `backend/Dockerfile` | Spring Boot API |
+| **Database** | Railway MariaDB plugin | Managed MariaDB instance |
+
+### Internal Networking
+
+Railway services communicate over a **private internal network**. The frontend Nginx `proxy_pass` resolves the backend via Railway's internal DNS (e.g., `http://online-flashcards-backend.railway.internal:8080`). The `BACKEND_URL` environment variable is set on the frontend Railway service to configure this.
+
+### Required Railway Environment Variables
+
+Each service must have its environment variables configured in the Railway dashboard — the same variables that appear in the `.env` file locally (database credentials, `JWT_SECRET`, `JWT_EXPIRATION`, `BACKEND_URL`, etc.).
+
+## ARCHITECTURE DESIGN
+
+### ER Diagram
+
+![Entity Relationship Diagram](./diagrams/er-diagram.png)
+
+### Database schema
+
+![Database Schema](./diagrams/db-diagram.png)
+
+## SPRINT REPORTS
+
+[Sprint Report Directory](./sprint_report)
