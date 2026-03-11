@@ -18,6 +18,7 @@ const Classrooms = lazy(() => import("/src/pages/Classrooms"));
 const CreateClassroom = lazy(() => import("/src/pages/CreateClassroom"));
 const ClassroomView = lazy(() => import("/src/pages/ClassroomView"));
 const CreateMaterial = lazy(() => import("/src/pages/CreateMaterial"));
+const MaterialView = lazy(() => import("/src/pages/MaterialView"));
 
 
 function App() {
@@ -103,6 +104,14 @@ function App() {
                   element={
                     <ProtectedRoute roles={["TEACHER", "ADMIN"]}>
                       <CreateMaterial />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="classrooms/:classroomId/materials/:materialId"
+                  element={
+                    <ProtectedRoute>
+                      <MaterialView />
                     </ProtectedRoute>
                   }
                 />

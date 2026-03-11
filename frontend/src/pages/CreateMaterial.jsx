@@ -1,146 +1,133 @@
-import { useNavigate, useParams, useSearchParams } from "react-router";
-import { useForm, useFieldArray, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { useNavigate, useSearchParams } from "react-router";
+import { useState } from "react";
 import { Button } from "../components/ui/Button";
 import { Input } from "../components/ui/Input";
 import { FormField } from "../components/ui/FormField";
-import { FlashcardInput } from "../components/ui/FlashcardInput";
-import { SubjectSelect } from "../components/ui/SubjectSelect";
-import { useMyQuizzes } from "../hooks/useMyQuizzes";
-import { useState, useEffect } from "react";
-import { PageLoader } from "../components/ui/PageLoader";
 import { BackLink } from "../components/ui/BackLink";
-import { quizSchema } from "/src/lib/schemas";
-import { addQuizToClassroom } from "/src/api";
+import { useAuth } from "../hooks/useAuth";
+import { addLearningMaterial } from "/src/api";
 
 export default function CreateMaterial() {
-  const { id } = useParams();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const classroomId = searchParams.get("classroomId");
-  const {
-    handleCreateQuiz,
-    handleUpdateQuiz,
-    quizzes,
-    isLoading: isMaterialLoading,
-  } = useMyQuizzes();
-  const isEditMode = !!id;
+  const { isTeacher } = useAuth();
+
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState(null);
 
-  const {
-    register,
-    control,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm({
-    resolver: zodResolver(quizSchema),
-    defaultValues: {
-      title: "",
-      description: "",
-      subject: "",
-      cards: [
-        { question: "", answer: "" },
-        { question: "", answer: "" },
-      ],
-    },
-  });
+  if (!isTeacher) {
+    return (
+      <div className="max-w-5xl mx-auto py-8 px-4 md:px-0 text-center">
+        <h1 className="font-serif text-3xl font-bold text-main mb-4">Unauthorized</h1>
+        <p className="text-secondary">Only teachers can create learning materials.</p>
+        <Button variant="outline" className="mt-4" onClick={() => navigate(-1)}>
+          Go Back
+        </Button>
+      </div>
+    );
+  }
 
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "cards",
-  });
+  if (!classroomId) {
+    return (
+      <div className="max-w-5xl mx-auto py-8 px-4 md:px-0 text-center">
+        <h1 className="font-serif text-3xl font-bold text-main mb-4">Missing Classroom</h1>
+        <p className="text-secondary">A classroom must be selected to add learning material.</p>
+        <Button variant="outline" className="mt-4" onClick={() => navigate("/classrooms")}>
+          Go to Classrooms
+        </Button>
+      </div>
+    );
+  }
 
-  useEffect(() => {
-    if (isEditMode && !isMaterialLoading) {
-      const quizToEdit = quizzes.find((q) => q.quizId === parseInt(id));
-      console.log(quizToEdit);
-      if (quizToEdit) {
-        reset({
-          title: quizToEdit.title,
-          description: quizToEdit.description || "",
-          subject: quizToEdit.subjectName || "",
-          cards: quizToEdit.flashcards || [{ question: "", answer: "" }],
-        });
-      }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!title.trim()) {
+      setError("Title is required.");
+      return;
     }
-  }, [isEditMode, id, quizzes, isMaterialLoading, reset]);
+    if (!content.trim()) {
+      setError("Content is required.");
+      return;
+    }
 
-  const onSubmit = async (data) => {
     setIsSubmitting(true);
+    setError(null);
+
     try {
-      if (isEditMode) {
-        await handleUpdateQuiz(id, data);
-        navigate("/my-quizzes");
+      const response = await addLearningMaterial(classroomId, {
+        title: title.trim(),
+        content: content.trim(),
+      });
+
+      if (response.success) {
+        navigate(`/classrooms/${classroomId}`);
       } else {
-        const created = await handleCreateQuiz(data);
-        if (classroomId && created?.quizId) {
-          await addQuizToClassroom(classroomId, created.quizId);
-          navigate(`/classrooms/${classroomId}`);
-        } else {
-          navigate("/my-quizzes");
-        }
+        setError(response.error || "Failed to create learning material.");
       }
-    } catch (error) {
-      console.error("Failed to save quiz:", error);
+    } catch (err) {
+      console.error("Failed to create learning material:", err);
+      setError("An unexpected error occurred.");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  if (isEditMode && isQuizzesLoading) {
-    return <PageLoader />;
-  }
-
   return (
     <div className="max-w-5xl mx-auto py-8 px-4 md:px-0">
-      <BackLink label="Back to classroom" />
+      <BackLink label="Back to classroom" to={`/classrooms/${classroomId}`} />
       <div className="mb-8 text-center md:text-left">
         <h1 className="font-serif text-4xl md:text-5xl font-bold text-main mb-2">
-          {isEditMode ? "Edit Quiz" : classroomId ? "Add Learning Material to Classroom" : "Create New Quiz"}
+          Add Learning Material
         </h1>
-        <p className="text-secondary text-lg">Build custom learning materials</p>
+        <p className="text-secondary text-lg">Create text-based learning content for your classroom</p>
       </div>
 
       <div className="bg-white rounded-2xl shadow-sm border border-secondary/10">
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
-          <div className="p-6 md:p-8 flex flex-col gap-6 border-b border-secondary/10">
-            <h2 className="font-bold text-lg text-main">General Information</h2>
+        <form onSubmit={handleSubmit} className="flex flex-col">
+          <div className="p-6 md:p-8 flex flex-col gap-6">
+            <h2 className="font-bold text-lg text-main">Material Details</h2>
 
-            <FormField label="Title" error={errors.title?.message}>
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm">
+                {error}
+              </div>
+            )}
+
+            <FormField label="Title">
               <Input
                 id="title"
                 placeholder="Enter material title"
-                hasError={!!errors.title}
-                {...register("title")}
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
               />
             </FormField>
 
-            <FormField label="Description" error={errors.description?.message}>
+            <FormField label="Content">
               <textarea
-                id="description"
-                {...register("description")}
-                className="flex min-h-[120px] w-full rounded-xl border border-secondary/30 bg-white p-3 text-sm text-main transition-colors placeholder:text-secondary/60 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50 resize-none"
-                placeholder="Enter description (optional)"
-              />
-            </FormField>
-
-            <FormField label="Subject" error={errors.subject?.message}>
-              <Controller
-                name="subject"
-                control={control}
-                render={({ field }) => (
-                  <SubjectSelect
-                    value={field.value}
-                    onChange={field.onChange}
-                    hasError={!!errors.subject}
-                  />
-                )}
+                id="content"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                className="flex min-h-[250px] w-full rounded-xl border border-secondary/30 bg-white p-3 text-sm text-main transition-colors placeholder:text-secondary/60 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50 resize-none"
+                placeholder="Write the learning material content here..."
               />
             </FormField>
           </div>
 
+          <div className="flex justify-end gap-3 p-6 md:p-8 border-t border-secondary/10">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => navigate(`/classrooms/${classroomId}`)}
+            >
+              Cancel
+            </Button>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Creating..." : "Create Material"}
+            </Button>
+          </div>
         </form>
       </div>
     </div>

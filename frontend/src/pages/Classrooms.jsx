@@ -33,7 +33,7 @@ export default function Classrooms() {
   ];
 
   return (
-    <div className="max-w-5xl mx-auto py-8 space-y-6 md:space-y-8">
+    <div className="max-w-7xl mx-auto py-8 space-y-6 md:space-y-8">
       <div className="mt-8">
         <div className="mb-6">
           <h1 className="font-serif text-4xl md:text-5xl font-bold text-main mb-2">

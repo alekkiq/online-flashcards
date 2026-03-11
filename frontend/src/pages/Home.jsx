@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { useAuth } from "../hooks/useAuth";
 import hero_section_1 from "/src/assets/images/hero_section_1.png";
 import hero_section_2 from "/src/assets/images/hero_section_2.png";
+import hero_main from "/src/assets/images/hero_main.png";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -10,28 +11,31 @@ export default function Home() {
 
   return (
     <div className="max-w-7xl mx-auto">
-      <section className="relative flex flex-col items-center md:items-start gap-4 md:gap-6 px-4 md:px-0 py-12 mt-[10vh] min-h-[70vh]">
-        <h1 className="font-serif text-center md:text-left font-bold text-5xl md:text-6xl lg:text-7xl text-main">
-          Flashcard learning
-          <br />
-          made <span className="text-primary">easy</span>
-        </h1>
-        <Button
-          onClick={() => navigate("/search")}
-          className="py-5 px-10 text-lg md:py-6 md:px-12 md:text-2xl"
-        >
-          Search Quizzes
-        </Button>
-        <div className="flex flex-col font-serif items-center md:items-start font-bold text-center md:text-left max-w-md text-base md:text-lg">
-          <p className="text-secondary">
-            In vulputate cursus sem ac consectetur. Nam nec ex scelerisque, blandit neque sit amet.
-          </p>
-          <p className="text-gray-500">
-            Morbi efficitur augue in odio posuere, vel lacinia purus auctor. Donec finibus non odio
-            sed pellentesque.
-          </p>
+      <section className="relative grid grid-cols-1 md:grid-cols-2 items-center gap-4 md:gap-10 px-4 md:px-0 py-12 min-h-[70vh]">
+        <div className="flex flex-col items-center md:items-start gap-4 md:gap-6">
+          <h1 className="font-serif text-center md:text-left font-bold text-5xl md:text-6xl lg:text-7xl text-main">
+            Flashcard learning
+            <br />
+            made <span className="text-primary">easy</span>
+          </h1>
+          <Button
+            onClick={() => navigate("/search")}
+            className="py-5 px-10 text-lg md:py-6 md:px-12 md:text-2xl"
+          >
+            Search Quizzes
+          </Button>
+          <div className="flex flex-col font-serif items-center md:items-start font-bold text-center md:text-left max-w-md text-base md:text-lg">
+            <p className="text-secondary">
+              In vulputate cursus sem ac consectetur. Nam nec ex scelerisque, blandit neque sit amet.
+            </p>
+            <p className="text-gray-500">
+              Morbi efficitur augue in odio posuere, vel lacinia purus auctor. Donec finibus non odio
+              sed pellentesque.
+            </p>
+          </div>
         </div>
-        <hr className="border-secondary w-full absolute bottom-0" />
+        <img src={hero_main} alt="Picture of searching quizzes" className="hidden md:block w-full object-contain" />
+        <hr className="border-secondary w-full absolute bottom-0 col-span-full" />
       </section>
       <section className="bg-grid">
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between text-center gap-4 md:gap-6 px-4 md:px-0 py-12 mt-[10vh]">

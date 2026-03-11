@@ -3,3 +3,4 @@ export * from "./classroomApi";
 export * from "./promotionApi";
 export * from "./quizApi";
 export * from "./subjectApi";
+export * from "./learningMaterialApi";

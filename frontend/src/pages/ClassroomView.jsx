@@ -66,6 +66,7 @@ export default function ClassroomView() {
       <MaterialsSection
         materials={classroom.learningMaterials}
         isOwner={isOwner}
+        classroomId={classroom.id}
         onAddMaterial={() => navigate(`/create-material?classroomId=${classroom.id}`)}
       />
 

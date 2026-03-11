@@ -1,5 +1,6 @@
 import { FileText } from "lucide-react";
 import { Button } from "/src/components/ui/Button";
+import { useNavigate } from "react-router";
 
 /**
  * Learning materials section for the classroom view.
@@ -8,7 +9,9 @@ import { Button } from "/src/components/ui/Button";
  * @param {boolean} props.isOwner - whether the current user is the owner
  * @param {function} [props.onAddMaterial] - callback when "+ Add Material" is clicked
  */
-export default function MaterialsSection({ materials = [], isOwner, onAddMaterial }) {
+export default function MaterialsSection({ materials = [], isOwner, onAddMaterial, classroomId }) {
+  const navigate = useNavigate();
+
   return (
     <div className="mt-6 rounded-xl bg-white p-5 md:p-8">
       <div className="flex items-center justify-between mb-4">
@@ -29,6 +32,7 @@ export default function MaterialsSection({ materials = [], isOwner, onAddMateria
             <div
               key={material.id}
               className="flex items-start gap-3 p-4 rounded-xl border border-secondary/10 hover:bg-secondary/5 transition-colors cursor-pointer"
+              onClick={() => navigate(`/classrooms/${classroomId}/materials/${material.id}`)}
             >
               <FileText size={18} className="text-primary shrink-0 mt-0.5" />
               <div className="flex-1 min-w-0">
