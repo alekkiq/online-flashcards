@@ -11,6 +11,7 @@ export function useClassroom() {
     setError(null);
     try {
       const response = await getClassroomById(classroomId);
+      console.log(response)
       if (response.success) {
         setClassroom(response.data.data);
       } else {

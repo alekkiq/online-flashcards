@@ -63,7 +63,12 @@ export default function ClassroomView() {
         onLeave={handleLeave}
       />
 
-      <MaterialsSection materials={classroom.learningMaterials} isOwner={isOwner} />
+      <MaterialsSection
+        materials={classroom.learningMaterials}
+        isOwner={isOwner}
+        classroomId={classroom.id}
+        onAddMaterial={() => navigate(`/create-material?classroomId=${classroom.id}`)}
+      />
 
       <QuizzesSection
         quizzes={classroom.quizzes}

@@ -14,7 +14,7 @@ public class LearningMaterial {
     @Column(nullable = false, length = 255)
     private String title;
 
-    @Column(nullable = true)
+    @Column(nullable = true, length = 4000)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)

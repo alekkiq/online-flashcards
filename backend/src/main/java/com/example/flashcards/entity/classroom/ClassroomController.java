@@ -48,7 +48,7 @@ public class ClassroomController {
             @PathVariable Long classroomId
     ) {
         Long userId = userDetails.getUserId();
-        Classroom classroom = classroomService.getClassroomById(classroomId);
+        Classroom classroom = classroomService.getClassroomById(classroomId, userId);
 
         return ResponseEntity.ok(ApiResponse.success(mapToClassroomResponse(classroom, userId)));
     }

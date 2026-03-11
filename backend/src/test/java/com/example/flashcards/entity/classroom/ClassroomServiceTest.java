@@ -58,9 +58,9 @@ class ClassroomServiceTest {
         Classroom classroom = new Classroom("Title", "Desc", "Note", "ABC123", owner, subject);
         classroom.setClassroomId(1L);
 
-        when(this.classroomRepository.findById(1L)).thenReturn(Optional.of(classroom));
+        when(this.classroomRepository.findByClassroomIdAndUsers_UserId(1L, 1L)).thenReturn(Optional.of(classroom));
 
-        Classroom result = this.classroomService.getClassroomById(1L);
+        Classroom result = this.classroomService.getClassroomById(1L, 1L);
 
         assertEquals(1L, result.getClassroomId());
         assertEquals("Title", result.getTitle());
@@ -69,8 +69,8 @@ class ClassroomServiceTest {
     @Test
     @DisplayName("getClassroomById(): not found throws exception")
     void getClassroomById_notFound_throwsException() {
-        when(this.classroomRepository.findById(99L)).thenReturn(Optional.empty());
-        assertThrows(ResourceNotFoundException.class, () -> this.classroomService.getClassroomById(99L));
+        when(this.classroomRepository.findByClassroomIdAndUsers_UserId(eq(99L), anyLong())).thenReturn(Optional.empty());
+        assertThrows(ResourceNotFoundException.class, () -> this.classroomService.getClassroomById(99L, 1L));
     }
 
     @Test

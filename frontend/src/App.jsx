@@ -17,6 +17,9 @@ const CreateQuiz = lazy(() => import("/src/pages/CreateQuiz"));
 const Classrooms = lazy(() => import("/src/pages/Classrooms"));
 const CreateClassroom = lazy(() => import("/src/pages/CreateClassroom"));
 const ClassroomView = lazy(() => import("/src/pages/ClassroomView"));
+const CreateMaterial = lazy(() => import("/src/pages/CreateMaterial"));
+const MaterialView = lazy(() => import("/src/pages/MaterialView"));
+
 
 function App() {
   return (
@@ -93,6 +96,22 @@ function App() {
                   element={
                     <ProtectedRoute>
                       <ClassroomView />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="create-material"
+                  element={
+                    <ProtectedRoute roles={["TEACHER", "ADMIN"]}>
+                      <CreateMaterial />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="classrooms/:classroomId/materials/:materialId"
+                  element={
+                    <ProtectedRoute>
+                      <MaterialView />
                     </ProtectedRoute>
                   }
                 />

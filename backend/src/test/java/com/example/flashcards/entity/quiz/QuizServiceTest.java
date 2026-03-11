@@ -245,24 +245,32 @@ class QuizServiceTest {
         assertThrows(ResourceNotFoundException.class, () -> this.quizService.updateQuiz(1L, 1L, request));
     }
 
+
+
     // --- deleteQuiz ---
 
     @Test
     @DisplayName("deleteQuiz(): successfully deletes quiz")
     void deleteQuiz_success() {
-        when(this.quizRepository.existsById(1L)).thenReturn(true);
+        User creator = createTestUser();
+        Subject subject = createTestSubject();
+        Quiz quiz = createTestQuiz(creator, subject);
 
-        this.quizService.deleteQuiz(1L);
+        when(this.quizRepository.findById(1L)).thenReturn(Optional.of(quiz));
 
-        verify(this.quizRepository, times(1)).deleteById(1L);
+        this.quizService.deleteQuiz(1L, 1L);
+
+        verify(this.quizRepository, times(1)).delete(quiz);
     }
 
     @Test
     @DisplayName("deleteQuiz(): not found throws exception")
     void deleteQuiz_notFound_throwsException() {
-        when(this.quizRepository.existsById(99L)).thenReturn(false);
-        assertThrows(ResourceNotFoundException.class, () -> this.quizService.deleteQuiz(99L));
+        when(this.quizRepository.findById(99L)).thenReturn(Optional.empty());
+        assertThrows(ResourceNotFoundException.class, () -> this.quizService.deleteQuiz(99L, 1L));
     }
+
+
 
     // --- getQuizzesByUser ---
 

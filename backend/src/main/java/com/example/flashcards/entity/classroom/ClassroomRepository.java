@@ -16,4 +16,6 @@ public interface ClassroomRepository extends JpaRepository<Classroom, Long> {
     Optional<Classroom> findByJoinCode(String joinCode);
 
     boolean existsByJoinCode(String joinCode);
+
+    Optional<Classroom> findByClassroomIdAndUsers_UserId(Long classroomId, Long userId);
 }

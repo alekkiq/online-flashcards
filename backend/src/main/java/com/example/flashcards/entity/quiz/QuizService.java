@@ -79,6 +79,10 @@ public class QuizService implements IQuizService {
         Quiz quiz = quizRepository.findById(id)
             .orElseThrow(() -> new ResourceNotFoundException("Quiz", "Quiz with ID " + id + " not found."));
 
+        if (quiz.getCreator().getUserId() != userId) {
+            throw new IllegalArgumentException("You are not the owner of this quiz.");
+        }
+
         Subject subject = subjectRepository.findByName(request.subject())
             .orElseThrow(() -> new ResourceNotFoundException("Subject", "Subject with name '" + request.subject() + "' not found."));
 
@@ -100,11 +104,15 @@ public class QuizService implements IQuizService {
 
     @Override
     @Transactional
-    public void deleteQuiz(long id) {
-        if (!quizRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Quiz", "Quiz with ID " + id + " not found.");
+    public void deleteQuiz(long id, long userId) {
+        Quiz quiz = quizRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Quiz", "Quiz with ID " + id + " not found."));
+            
+        if (quiz.getCreator().getUserId() != userId) {
+            throw new IllegalArgumentException("You are not the owner of this quiz.");
         }
-        quizRepository.deleteById(id);
+        
+        quizRepository.delete(quiz);
     }
 
     @Override

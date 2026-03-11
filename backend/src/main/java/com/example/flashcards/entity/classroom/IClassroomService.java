@@ -9,7 +9,7 @@ import java.util.List;
 public interface IClassroomService {
     List<Classroom> getMyClassrooms(Long userId);
 
-    Classroom getClassroomById(Long classroomId);
+    Classroom getClassroomById(Long classroomId, Long userId);
 
     Classroom createClassroom(Long userId, ClassroomCreateRequest request);
 

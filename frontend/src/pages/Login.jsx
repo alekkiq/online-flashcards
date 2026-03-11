@@ -9,17 +9,22 @@ export default function Login() {
   const [searchParams] = useSearchParams();
   const [activeTab, setActiveTab] = useState("login");
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, isLoading } = useAuth();
 
   useEffect(() => {
     setActiveTab(searchParams.get("signup") ? "register" : "login");
   }, [searchParams]);
 
   useEffect(() => {
-    if (user) {
-      navigate("/");
+    if (user && !isLoading) {
+      const redirectPath = searchParams.get("redirect") || "/";
+      navigate(redirectPath, { replace: true });
     }
-  }, [user]);
+  }, [user, isLoading, searchParams, navigate]);
+
+  if (isLoading) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen grid md:grid-cols-2">

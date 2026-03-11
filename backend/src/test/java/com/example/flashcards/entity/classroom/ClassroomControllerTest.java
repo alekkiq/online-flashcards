@@ -118,7 +118,7 @@ class ClassroomControllerTest {
         CustomUserDetails userDetails = new CustomUserDetails(teacher);
         Classroom classroom = createTestClassroom(teacher);
 
-        when(this.classroomService.getClassroomById(1L)).thenReturn(classroom);
+        when(this.classroomService.getClassroomById(1L, 1L)).thenReturn(classroom);
 
         this.mockMvc.perform(get("/api/v1/classrooms/1")
                 .with(user(userDetails)))
@@ -127,7 +127,7 @@ class ClassroomControllerTest {
             .andExpect(jsonPath("$.data.title").value("Test Class"))
             .andExpect(jsonPath("$.data.isOwner").value(true));
 
-        verify(this.classroomService, times(1)).getClassroomById(1L);
+        verify(this.classroomService, times(1)).getClassroomById(1L, 1L);
     }
 
     @Test
@@ -136,7 +136,7 @@ class ClassroomControllerTest {
         User teacher = createTeacher();
         CustomUserDetails userDetails = new CustomUserDetails(teacher);
 
-        when(this.classroomService.getClassroomById(99L))
+        when(this.classroomService.getClassroomById(eq(99L), anyLong()))
             .thenThrow(new ResourceNotFoundException("Classroom", "Not found"));
 
         this.mockMvc.perform(get("/api/v1/classrooms/99")

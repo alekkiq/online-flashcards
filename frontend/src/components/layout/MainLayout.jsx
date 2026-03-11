@@ -8,10 +8,22 @@ import { useEffect } from "react";
 import Footer from "./Footer";
 
 export default function MainLayout() {
-  const { user, handleAutoLogin } = useAuth();
+  const { handleAutoLogin } = useAuth();
 
   useEffect(() => {
-    handleAutoLogin();
+    let isMounted = true;
+
+    const login = async () => {
+      try {
+        await handleAutoLogin();
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    login();
+
+    return () => { isMounted = false; };
   }, []);
 
   return (
