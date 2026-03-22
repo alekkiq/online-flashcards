@@ -5,10 +5,12 @@ import MobileNav from "./MobileNav";
 import AuthLinks from "/src/components/auth/AuthLinks";
 import { useAuth } from "/src/hooks/useAuth";
 import { Spade, BookCopy } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function NavBar() {
   const { user } = useAuth();
-  const links = navLinks(user);
+  const { t } = useTranslation();
+  const links = navLinks(user, t);
 
   return (
     <nav className="relative flex items-center justify-between p-4 w-full border-b border-secondary/30 bg-white py-5">

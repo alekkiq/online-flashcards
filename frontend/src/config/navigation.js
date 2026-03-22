@@ -1,17 +1,17 @@
-export const navLinks = (user) => [
+export const navLinks = (user, t) => [
   {
     to: "/search",
-    label: "Find Quizzes",
+    label: t ? t("nav.findQuizzes") : "Find Quizzes",
   },
   ...(user
     ? [
         {
           to: "/my-quizzes",
-          label: "My Quizzes",
+          label: t ? t("nav.myQuizzes") : "My Quizzes",
         },
         {
           to: "/classrooms",
-          label: "Classrooms",
+          label: t ? t("nav.classrooms") : "Classrooms",
         },
       ]
     : []),

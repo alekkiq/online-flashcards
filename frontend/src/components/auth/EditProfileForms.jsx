@@ -5,9 +5,11 @@ import { FormField } from "/src/components/ui/FormField";
 import { Input } from "/src/components/ui/Input";
 import { Button } from "/src/components/ui/Button";
 import { useAuth } from "/src/hooks/useAuth";
+import { useTranslation } from "react-i18next";
 
 function EditEmailForm({ user }) {
   const { handleUpdateEmail } = useAuth();
+  const { t } = useTranslation();
 
   const form = useForm({
     resolver: zodResolver(editEmailSchema),
@@ -24,8 +26,8 @@ function EditEmailForm({ user }) {
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-      <h3 className="text-sm font-semibold text-secondary uppercase tracking-wide">Update Email</h3>
-      <FormField label="Email" error={form.formState.errors.email?.message}>
+      <h3 className="text-sm font-semibold text-secondary uppercase tracking-wide">{t("editProfile.updateEmail")}</h3>
+      <FormField label={t("editProfile.email")} error={form.formState.errors.email?.message}>
         <Input
           type="email"
           autoComplete="email"
@@ -37,10 +39,10 @@ function EditEmailForm({ user }) {
         <p className="text-sm text-red-600">{form.formState.errors.root.message}</p>
       )}
       {form.formState.isSubmitSuccessful && (
-        <p className="text-sm text-green-600">Email updated successfully.</p>
+        <p className="text-sm text-green-600">{t("editProfile.emailUpdated")}</p>
       )}
       <Button type="submit" disabled={form.formState.isSubmitting}>
-        {form.formState.isSubmitting ? "Saving..." : "Update Email"}
+        {form.formState.isSubmitting ? t("editProfile.saving") : t("editProfile.updateEmailBtn")}
       </Button>
     </form>
   );
@@ -48,6 +50,7 @@ function EditEmailForm({ user }) {
 
 function EditPasswordForm() {
   const { handleUpdatePassword } = useAuth();
+  const { t } = useTranslation();
 
   const form = useForm({
     resolver: zodResolver(editPasswordSchema),
@@ -66,9 +69,9 @@ function EditPasswordForm() {
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
       <h3 className="text-sm font-semibold text-secondary uppercase tracking-wide">
-        Change Password
+        {t("editProfile.changePassword")}
       </h3>
-      <FormField label="Current Password" error={form.formState.errors.oldPassword?.message}>
+      <FormField label={t("editProfile.currentPassword")} error={form.formState.errors.oldPassword?.message}>
         <Input
           type="password"
           placeholder="••••••••"
@@ -77,7 +80,7 @@ function EditPasswordForm() {
           {...form.register("oldPassword")}
         />
       </FormField>
-      <FormField label="New Password" error={form.formState.errors.newPassword?.message}>
+      <FormField label={t("editProfile.newPassword")} error={form.formState.errors.newPassword?.message}>
         <Input
           type="password"
           placeholder="••••••••"
@@ -87,7 +90,7 @@ function EditPasswordForm() {
         />
       </FormField>
       <FormField
-        label="Confirm New Password"
+        label={t("editProfile.confirmNewPassword")}
         error={form.formState.errors.confirmPassword?.message}
       >
         <Input
@@ -102,23 +105,25 @@ function EditPasswordForm() {
         <p className="text-sm text-red-600">{form.formState.errors.root.message}</p>
       )}
       {form.formState.isSubmitSuccessful && (
-        <p className="text-sm text-green-600">Password updated successfully.</p>
+        <p className="text-sm text-green-600">{t("editProfile.passwordUpdated")}</p>
       )}
       <Button type="submit" disabled={form.formState.isSubmitting}>
-        {form.formState.isSubmitting ? "Saving..." : "Update Password"}
+        {form.formState.isSubmitting ? t("editProfile.saving") : t("editProfile.updatePasswordBtn")}
       </Button>
     </form>
   );
 }
 
 export default function EditProfileForm({ user, onCancel }) {
+  const { t } = useTranslation();
+
   return (
     <div className="mt-4 space-y-6">
       <EditEmailForm user={user} />
       <hr className="border-secondary/20" />
       <EditPasswordForm />
       <Button type="button" variant="outline" onClick={onCancel}>
-        Close
+        {t("editProfile.close")}
       </Button>
     </div>
   );

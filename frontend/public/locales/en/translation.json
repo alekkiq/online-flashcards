@@ -1,0 +1,287 @@
+{
+  "nav": {
+    "findQuizzes": "Find Quizzes",
+    "myQuizzes": "My Quizzes",
+    "classrooms": "Classrooms",
+    "logIn": "Log In",
+    "signUp": "Sign Up",
+    "signOut": "Sign Out",
+    "profile": "Profile"
+  },
+  "home": {
+    "heroTitle": "Flashcard learning",
+    "heroTitleMade": "made",
+    "heroTitleEasy": "easy",
+    "searchQuizzes": "Search Quizzes",
+    "heroDescription1": "In vulputate cursus sem ac consectetur. Nam nec ex scelerisque, blandit neque sit amet.",
+    "heroDescription2": "Morbi efficitur augue in odio posuere, vel lacinia purus auctor. Donec finibus non odio sed pellentesque.",
+    "findTitle": "Find",
+    "communityMade": "community made",
+    "quizzes": "quizzes",
+    "findDescription": "In vulputate cursus sem ac consectetur. Nam nec ex scelerisque, blandit neque sit amet.",
+    "createTitle": "Create",
+    "yourOwn": "your own",
+    "registerNow": "Register Now",
+    "registerDescription": "Register now to create your own quizzes and share them to the community."
+  },
+  "login": {
+    "loginToStart": "Login to start",
+    "teaching": "teaching",
+    "learning": "learning",
+    "loginToStartLearning": "Login to start learning",
+    "learnFaster": "Learn faster and smarter with online flashcards",
+    "logIn": "Log In",
+    "signUp": "Sign Up"
+  },
+  "loginForm": {
+    "username": "Username *",
+    "password": "Password *",
+    "usernamePlaceholder": "Username",
+    "passwordPlaceholder": "Password",
+    "loggingIn": "Logging in...",
+    "logIn": "Log In"
+  },
+  "registerForm": {
+    "username": "Username *",
+    "email": "Email address *",
+    "password": "Password *",
+    "repeatPassword": "Repeat password *",
+    "usernamePlaceholder": "Username",
+    "emailPlaceholder": "Email address",
+    "passwordPlaceholder": "Password",
+    "repeatPasswordPlaceholder": "Repeat password",
+    "creatingAccount": "Creating account...",
+    "signUp": "Sign Up"
+  },
+  "profile": {
+    "title": "Profile",
+    "subtitle": "Manage your account and jump back into studying.",
+    "editProfile": "Edit profile",
+    "cancel": "Cancel",
+    "quickActions": "Quick Actions",
+    "searchQuizzes": "Search Quizzes",
+    "myQuizzes": "My Quizzes",
+    "createNewQuiz": "Create New Quiz",
+    "requestPromotion": "Request Promotion to Teacher",
+    "requestPending": "Request pending",
+    "requestPromotionBtn": "Request Promotion"
+  },
+  "editProfile": {
+    "updateEmail": "Update Email",
+    "email": "Email",
+    "emailUpdated": "Email updated successfully.",
+    "saving": "Saving...",
+    "updateEmailBtn": "Update Email",
+    "changePassword": "Change Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password",
+    "passwordUpdated": "Password updated successfully.",
+    "updatePasswordBtn": "Update Password",
+    "close": "Close"
+  },
+  "promotionRequest": {
+    "messageLabel": "Message (optional)",
+    "messagePlaceholder": "Tell us why you'd like to become a teacher…",
+    "submitting": "Submitting…",
+    "submitRequest": "Submit Request"
+  },
+  "classroomList": {
+    "title": "My Classrooms",
+    "empty": "You are not part of any classrooms yet.",
+    "leaveClassroom": "Leave classroom",
+    "owner": "Owner"
+  },
+  "myQuizzes": {
+    "title": "My Quizzes",
+    "subtitle": "View, edit and create quizzes",
+    "newQuiz": "New Quiz",
+    "createNewQuiz": "Create a new quiz"
+  },
+  "searchQuizzes": {
+    "title": "Search Quizzes",
+    "subtitle": "Search for community made Quizzes.",
+    "placeholder": "Search for quizzes...",
+    "subject": "Subject",
+    "all": "All",
+    "searchResultsFor": "Search results for \"{{query}}\":"
+  },
+  "createQuiz": {
+    "backToClassroom": "Back to classroom",
+    "backToMyQuizzes": "Back to my quizzes",
+    "editQuiz": "Edit Quiz",
+    "addQuizToClassroom": "Add Quiz to Classroom",
+    "createNewQuiz": "Create New Quiz",
+    "subtitle": "Build a custom flashcard set",
+    "generalInfo": "General Information",
+    "title": "Title",
+    "titlePlaceholder": "Enter quiz title",
+    "description": "Description",
+    "descriptionPlaceholder": "Enter description (optional)",
+    "subject": "Subject",
+    "cards": "Cards",
+    "addCard": "+ Add Card",
+    "cancel": "Cancel",
+    "saving": "Saving...",
+    "saveQuiz": "Save Quiz"
+  },
+  "flashcardInput": {
+    "question": "Question *",
+    "answer": "Answer *",
+    "questionPlaceholder": "Type the question...",
+    "answerPlaceholder": "Type the answer..."
+  },
+  "quizDetails": {
+    "backToQuizSearch": "Back to quiz search",
+    "createdBy": "Created by ",
+    "history": "History",
+    "loginToSave": "Login to save attempts",
+    "tries": "Tries",
+    "cardCount": "Card Count",
+    "playQuiz": "Play Quiz"
+  },
+  "quizGame": {
+    "backToSearch": "Back to Search",
+    "iDontKnow": "I don't know this",
+    "iKnow": "I know this",
+    "previous": "PREVIOUS",
+    "next": "NEXT"
+  },
+  "results": {
+    "quizComplete": "Quiz Complete!",
+    "yourScore": "Your Score",
+    "correct": "Correct",
+    "incorrect": "Incorrect",
+    "backToDetails": "Back to Details",
+    "playAgain": "Play Again"
+  },
+  "classrooms": {
+    "title": "My Classrooms",
+    "subtitleTeacher": "Manage your classrooms.",
+    "subtitleStudent": "Classrooms you are a member of.",
+    "searchPlaceholder": "Search your classrooms...",
+    "subject": "Subject",
+    "all": "All",
+    "searchResultsFor": "Search results for \"{{query}}\":",
+    "newClassroom": "New Classroom",
+    "createNewClassroom": "Create a new classroom",
+    "joinClassroom": "Join Classroom",
+    "enterJoinCode": "Enter a join code",
+    "noClassroomsFound": "No classrooms found.",
+    "joinModalTitle": "Join a Classroom",
+    "joinModalDescription": "Enter the join code your teacher provided."
+  },
+  "createClassroom": {
+    "backToClassrooms": "Back to classrooms",
+    "editClassroom": "Edit Classroom",
+    "createNewClassroom": "Create New Classroom",
+    "subtitleEdit": "Update your classroom details",
+    "subtitleCreate": "Set up a classroom for your students",
+    "generalInfo": "General Information",
+    "title": "Title",
+    "titlePlaceholder": "Enter classroom title",
+    "description": "Description",
+    "descriptionPlaceholder": "Describe your classroom (optional)",
+    "subject": "Subject",
+    "settings": "Settings",
+    "announcement": "Announcement",
+    "announcementPlaceholder": "Pin an announcement for your students (optional)",
+    "customJoinCode": "Custom Join Code",
+    "joinCodeHint": "At least 6 characters. Leave blank to auto-generate.",
+    "joinCodePlaceholder": "e.g. BIO2026",
+    "cancel": "Cancel",
+    "saving": "Saving...",
+    "saveChanges": "Save Changes",
+    "createClassroom": "Create Classroom",
+    "somethingWentWrong": "Something went wrong. Please try again."
+  },
+  "classroomView": {
+    "backToClassrooms": "Back to classrooms",
+    "classroomNotFound": "Classroom not found.",
+    "backToClassroomsBtn": "Back to Classrooms"
+  },
+  "classroomHeader": {
+    "owner": "Owner",
+    "manage": "Manage",
+    "leave": "Leave",
+    "joinCode": "Join Code",
+    "announcement": "Announcement"
+  },
+  "quizzesSection": {
+    "title": "Quizzes",
+    "addQuiz": "+ Add Quiz",
+    "noQuizzes": "No quizzes added yet."
+  },
+  "materialsSection": {
+    "title": "Learning Materials",
+    "addMaterial": "+ Add Material",
+    "noMaterials": "No learning materials added yet.",
+    "addedBy": "Added by {{username}}"
+  },
+  "membersSection": {
+    "title": "Members",
+    "owner": "Owner",
+    "remove": "Remove"
+  },
+  "joinClassroomForm": {
+    "placeholder": "Enter classroom join code",
+    "joining": "Joining...",
+    "joinClassroom": "Join Classroom"
+  },
+  "createMaterial": {
+    "unauthorized": "Unauthorized",
+    "onlyTeachers": "Only teachers can create learning materials.",
+    "goBack": "Go Back",
+    "missingClassroom": "Missing Classroom",
+    "classroomRequired": "A classroom must be selected to add learning material.",
+    "goToClassrooms": "Go to Classrooms",
+    "backToClassroom": "Back to classroom",
+    "title": "Add Learning Material",
+    "subtitle": "Create text-based learning content for your classroom",
+    "materialDetails": "Material Details",
+    "titleLabel": "Title",
+    "titlePlaceholder": "Enter material title",
+    "contentLabel": "Content",
+    "contentPlaceholder": "Write the learning material content here...",
+    "cancel": "Cancel",
+    "creating": "Creating...",
+    "createMaterial": "Create Material",
+    "titleRequired": "Title is required.",
+    "contentRequired": "Content is required.",
+    "failedToCreate": "Failed to create learning material.",
+    "unexpectedError": "An unexpected error occurred."
+  },
+  "materialView": {
+    "backToClassroom": "Back to classroom",
+    "learningMaterial": "Learning Material",
+    "createdBy": "Created by",
+    "materialNotFound": "Material not found.",
+    "backToClassroomBtn": "Back to Classroom"
+  },
+  "footer": {
+    "tagline": "Create, share, and master flashcards with ease. Study smarter, not harder.",
+    "navigate": "Navigate",
+    "actions": "Actions",
+    "login": "Login",
+    "signUp": "Sign Up",
+    "profile": "Profile",
+    "createQuiz": "Create Quiz",
+    "logout": "Logout",
+    "madeWith": "Made with ❤️ by Ryhmä A-Ryhmä"
+  },
+  "quizCard": {
+    "cards": "{{count}} cards",
+    "edit": "Edit"
+  },
+  "classroomCard": {
+    "member": "member",
+    "members": "members"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "save": "Save",
+    "delete": "Delete",
+    "confirm": "Confirm"
+  }
+}

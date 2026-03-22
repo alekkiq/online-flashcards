@@ -71,3 +71,4 @@ dist-ssr
 # Coverage
 **/coverage
 **/coverage/
+.claude

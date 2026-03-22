@@ -2,10 +2,12 @@ import { Link } from "react-router";
 import { BookCopy } from "lucide-react";
 import { navLinks } from "/src/config";
 import { useAuth } from "/src/hooks/useAuth";
+import { useTranslation } from "react-i18next";
 
 export default function Footer() {
   const { user, handleLogout } = useAuth();
-  const links = navLinks(user);
+  const { t } = useTranslation();
+  const links = navLinks(user, t);
 
   return (
     <footer className="bg-main text-white/80 mt-10 ">
@@ -23,13 +25,12 @@ export default function Footer() {
               </span>
             </Link>
             <p className="mt-4 text-sm text-white/50 leading-relaxed max-w-xs">
-              Create, share, and master flashcards with ease. Study smarter, not
-              harder.
+              {t("footer.tagline")}
             </p>
           </div>
           <div>
             <h4 className="font-inter text-xs font-semibold uppercase tracking-widest text-white/30 mb-4">
-              Navigate
+              {t("footer.navigate")}
             </h4>
             <ul className="space-y-3">
               {links.map((link) => (
@@ -46,18 +47,18 @@ export default function Footer() {
           </div>
           <div>
             <h4 className="font-inter text-xs font-semibold uppercase tracking-widest text-white/30 mb-4">
-              Actions
+              {t("footer.actions")}
             </h4>
             {!user ? (
                 <ul className="space-y-3">
                 <li>
                     <Link to="/login" className="text-sm text-white/50 hover:text-primary transition-colors duration-200">
-                    Login
+                    {t("footer.login")}
                     </Link>
                 </li>
                 <li>
                     <Link to="login?signup=true" className="text-sm text-white/50 hover:text-primary transition-colors duration-200">
-                    Sign Up
+                    {t("footer.signUp")}
                     </Link>
                 </li>
                 </ul>
@@ -65,17 +66,17 @@ export default function Footer() {
                 <ul className="space-y-3">
                     <li>
                         <Link to="/profile" className="text-sm text-white/50 hover:text-primary transition-colors duration-200">
-                            Profile
+                            {t("footer.profile")}
                         </Link>
                     </li>
                     <li>
                         <Link to="/my-quizzes/create" className="text-sm text-white/50 hover:text-primary transition-colors duration-200">
-                            Create Quiz
+                            {t("footer.createQuiz")}
                         </Link>
                     </li>
                     <li>
                         <button onClick={handleLogout} className="text-sm text-white/50 hover:text-primary transition-colors duration-200">
-                            Logout
+                            {t("footer.logout")}
                         </button>
                     </li>
                 </ul>
@@ -87,7 +88,7 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} OnlyCards.
           </p>
           <p className="text-xs text-white/30">
-            Made with ❤️ by Ryhmä A-Ryhmä
+            {t("footer.madeWith")}
           </p>
         </div>
       </div>

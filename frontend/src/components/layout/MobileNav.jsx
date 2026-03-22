@@ -5,11 +5,13 @@ import { navLinks } from "/src/config";
 import { NavButton } from "/src/components/ui/NavButton";
 import { useAuth } from "/src/hooks/useAuth";
 import AuthLinks from "/src/components/auth/AuthLinks";
+import { useTranslation } from "react-i18next";
 
 export default function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useAuth();
-  const links = navLinks(user);
+  const { t } = useTranslation();
+  const links = navLinks(user, t);
 
   return (
     <>

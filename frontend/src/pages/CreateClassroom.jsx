@@ -11,6 +11,7 @@ import { useState, useEffect } from "react";
 import { PageLoader } from "../components/ui/PageLoader";
 import { BackLink } from "../components/ui/BackLink";
 import { useClassroomContext } from "../hooks/useClassroomContext";
+import { useTranslation } from "react-i18next";
 
 export default function CreateClassroom() {
   const { id } = useParams();
@@ -20,6 +21,7 @@ export default function CreateClassroom() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(isEditMode);
   const [submitError, setSubmitError] = useState(null);
+  const { t } = useTranslation();
 
   const {
     register,
@@ -91,7 +93,7 @@ export default function CreateClassroom() {
       }
     } catch (error) {
       console.error("Failed to save classroom:", error);
-      setSubmitError("Something went wrong. Please try again.");
+      setSubmitError(t("createClassroom.somethingWentWrong"));
     } finally {
       setIsSubmitting(false);
     }
@@ -101,41 +103,41 @@ export default function CreateClassroom() {
 
   return (
     <div className="max-w-5xl mx-auto py-8 px-4 md:px-0">
-      <BackLink label="Back to classrooms" />
+      <BackLink label={t("createClassroom.backToClassrooms")} />
       <div className="mb-8 text-center md:text-left">
         <h1 className="font-serif text-4xl md:text-5xl font-bold text-main mb-2">
-          {isEditMode ? "Edit Classroom" : "Create New Classroom"}
+          {isEditMode ? t("createClassroom.editClassroom") : t("createClassroom.createNewClassroom")}
         </h1>
         <p className="text-secondary text-lg">
-          {isEditMode ? "Update your classroom details" : "Set up a classroom for your students"}
+          {isEditMode ? t("createClassroom.subtitleEdit") : t("createClassroom.subtitleCreate")}
         </p>
       </div>
 
       <div className="bg-white rounded-2xl shadow-sm border border-secondary/10">
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
           <div className="p-6 md:p-8 flex flex-col gap-6 border-b border-secondary/10">
-            <h2 className="font-bold text-lg text-main">General Information</h2>
+            <h2 className="font-bold text-lg text-main">{t("createClassroom.generalInfo")}</h2>
 
-            <FormField label="Title" error={errors.title?.message}>
+            <FormField label={t("createClassroom.title")} error={errors.title?.message}>
               <Input
                 id="title"
-                placeholder="Enter classroom title"
+                placeholder={t("createClassroom.titlePlaceholder")}
                 hasError={!!errors.title}
                 {...register("title")}
               />
             </FormField>
 
-            <FormField label="Description" error={errors.description?.message}>
+            <FormField label={t("createClassroom.description")} error={errors.description?.message}>
               <textarea
                 id="description"
                 {...register("description")}
                 className="flex min-h-[120px] w-full rounded-xl border border-secondary/30 bg-white p-3 text-sm text-main transition-colors placeholder:text-secondary/60 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50 resize-none"
-                placeholder="Describe your classroom (optional)"
+                placeholder={t("createClassroom.descriptionPlaceholder")}
               />
             </FormField>
 
             {!isEditMode && (
-              <FormField label="Subject" error={errors.subjectId?.message}>
+              <FormField label={t("createClassroom.subject")} error={errors.subjectId?.message}>
                 <Controller
                   name="subjectId"
                   control={control}
@@ -153,26 +155,26 @@ export default function CreateClassroom() {
           </div>
 
           <div className="p-6 md:p-8 flex flex-col gap-6 border-b border-secondary/10">
-            <h2 className="font-bold text-lg text-main">Settings</h2>
+            <h2 className="font-bold text-lg text-main">{t("createClassroom.settings")}</h2>
 
-            <FormField label="Announcement" error={errors.note?.message}>
+            <FormField label={t("createClassroom.announcement")} error={errors.note?.message}>
               <textarea
                 id="note"
                 {...register("note")}
                 className="flex min-h-[80px] w-full rounded-xl border border-secondary/30 bg-white p-3 text-sm text-main transition-colors placeholder:text-secondary/60 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50 resize-none"
-                placeholder="Pin an announcement for your students (optional)"
+                placeholder={t("createClassroom.announcementPlaceholder")}
               />
             </FormField>
 
             {!isEditMode && (
               <FormField
-                label="Custom Join Code"
+                label={t("createClassroom.customJoinCode")}
                 error={errors.joinCode?.message}
-                hint="At least 6 characters. Leave blank to auto-generate."
+                hint={t("createClassroom.joinCodeHint")}
               >
                 <Input
                   id="joinCode"
-                  placeholder="e.g. BIO2026"
+                  placeholder={t("createClassroom.joinCodePlaceholder")}
                   hasError={!!errors.joinCode}
                   {...register("joinCode")}
                 />
@@ -193,10 +195,10 @@ export default function CreateClassroom() {
               className="flex-1"
               onClick={() => navigate(isEditMode ? `/classrooms/${id}` : "/classrooms")}
             >
-              Cancel
+              {t("createClassroom.cancel")}
             </Button>
             <Button type="submit" className="flex-1" disabled={isSubmitting}>
-              {isSubmitting ? "Saving..." : isEditMode ? "Save Changes" : "Create Classroom"}
+              {isSubmitting ? t("createClassroom.saving") : isEditMode ? t("createClassroom.saveChanges") : t("createClassroom.createClassroom")}
             </Button>
           </div>
         </form>

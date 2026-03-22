@@ -4,10 +4,12 @@ import { useEffect } from "react";
 import { Button } from "../components/ui/Button";
 import { ScoreBadge } from "../components/ui/ScoreBadge";
 import { Trophy, RotateCcw, ArrowLeft } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function ResultsPage() {
   const { currentQuiz, score, resetGameState } = useQuizContext();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!currentQuiz) {
@@ -34,7 +36,7 @@ export default function ResultsPage() {
           <div className="w-16 h-16 md:w-20 md:h-20 bg-primary/10 rounded-full flex items-center justify-center">
             <Trophy className="w-8 h-8 md:w-10 md:h-10 text-primary" />
           </div>
-          <h1 className="font-serif text-2xl md:text-4xl font-bold text-center">Quiz Complete!</h1>
+          <h1 className="font-serif text-2xl md:text-4xl font-bold text-center">{t("results.quizComplete")}</h1>
           <p className="font-serif font-semibold text-sm md:text-lg text-secondary">
             {currentQuiz.title}
           </p>
@@ -42,7 +44,7 @@ export default function ResultsPage() {
 
         <hr className="w-full border-secondary/20 my-2" />
         <div className="flex flex-col items-center gap-4">
-          <p className="font-inter font-medium text-sm md:text-lg text-secondary">Your Score</p>
+          <p className="font-inter font-medium text-sm md:text-lg text-secondary">{t("results.yourScore")}</p>
           <div className="flex flex-row items-baseline gap-2">
             <span className="font-serif font-bold text-5xl md:text-7xl text-main">{score}</span>
             <span className="font-serif font-bold text-2xl md:text-3xl text-secondary">
@@ -56,14 +58,14 @@ export default function ResultsPage() {
         <div className="flex flex-row gap-8 justify-center">
           <div className="flex flex-col items-center">
             <p className="font-inter font-bold text-lg md:text-xl text-green-500">{score}</p>
-            <p className="font-serif font-medium text-sm md:text-base text-secondary">Correct</p>
+            <p className="font-serif font-medium text-sm md:text-base text-secondary">{t("results.correct")}</p>
           </div>
           <div className="w-px h-12 bg-secondary/20"></div>
           <div className="flex flex-col items-center">
             <p className="font-inter font-bold text-lg md:text-xl text-red-500">
               {totalCards - score}
             </p>
-            <p className="font-serif font-medium text-sm md:text-base text-secondary">Incorrect</p>
+            <p className="font-serif font-medium text-sm md:text-base text-secondary">{t("results.incorrect")}</p>
           </div>
         </div>
       </div>
@@ -78,11 +80,11 @@ export default function ResultsPage() {
           }}
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Details
+          {t("results.backToDetails")}
         </Button>
         <Button size="lg" className="w-full md:w-auto" onClick={handlePlayAgain}>
           <RotateCcw className="w-4 h-4 mr-2" />
-          Play Again
+          {t("results.playAgain")}
         </Button>
       </div>
     </div>

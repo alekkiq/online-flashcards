@@ -5,9 +5,11 @@ import { useAuth } from "/src/hooks/useAuth";
 import { FormField } from "/src/components/ui/FormField";
 import { Input } from "/src/components/ui/Input";
 import { Button } from "/src/components/ui/Button";
+import { useTranslation } from "react-i18next";
 
 export default function RegisterForm() {
   const { handleRegister, isLoading, error } = useAuth();
+  const { t } = useTranslation();
 
   const form = useForm({
     resolver: zodResolver(registerSchema),
@@ -26,36 +28,36 @@ export default function RegisterForm() {
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-      <FormField label="Username *" error={form.formState.errors.username?.message}>
+      <FormField label={t("registerForm.username")} error={form.formState.errors.username?.message}>
         <Input
-          placeholder="Username"
+          placeholder={t("registerForm.usernamePlaceholder")}
           hasError={!!form.formState.errors.username}
           {...form.register("username")}
         />
       </FormField>
 
-      <FormField label="Email address *" error={form.formState.errors.email?.message}>
+      <FormField label={t("registerForm.email")} error={form.formState.errors.email?.message}>
         <Input
           type="email"
-          placeholder="Email address"
+          placeholder={t("registerForm.emailPlaceholder")}
           hasError={!!form.formState.errors.email}
           {...form.register("email")}
         />
       </FormField>
 
-      <FormField label="Password *" error={form.formState.errors.password?.message}>
+      <FormField label={t("registerForm.password")} error={form.formState.errors.password?.message}>
         <Input
           type="password"
-          placeholder="Password"
+          placeholder={t("registerForm.passwordPlaceholder")}
           hasError={!!form.formState.errors.password}
           {...form.register("password")}
         />
       </FormField>
 
-      <FormField label="Repeat password *" error={form.formState.errors.repeatPassword?.message}>
+      <FormField label={t("registerForm.repeatPassword")} error={form.formState.errors.repeatPassword?.message}>
         <Input
           type="password"
-          placeholder="Repeat password"
+          placeholder={t("registerForm.repeatPasswordPlaceholder")}
           hasError={!!form.formState.errors.repeatPassword}
           {...form.register("repeatPassword")}
         />
@@ -64,7 +66,7 @@ export default function RegisterForm() {
       {error && <p className="text-sm text-red-600">{error}</p>}
 
       <Button type="submit" className="w-full! h-11" disabled={isLoading}>
-        {isLoading ? "Creating account..." : "Sign Up"}
+        {isLoading ? t("registerForm.creatingAccount") : t("registerForm.signUp")}
       </Button>
     </form>
   );

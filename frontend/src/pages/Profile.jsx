@@ -8,11 +8,13 @@ import PromotionRequestForm from "/src/components/profile/PromotionRequestForm";
 import ClassroomList from "/src/components/profile/ClassroomList";
 import { usePromotionRequests } from "/src/hooks/usePromotionRequests";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function Profile() {
   const { user } = useAuth();
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [isRequestingPromotion, setIsRequestingPromotion] = useState(false);
+  const { t } = useTranslation();
   const {
     requests,
     isLoading: isLoadingRequests,
@@ -37,8 +39,8 @@ export default function Profile() {
   return (
     <div className="mx-auto max-w-5xl">
       <div className="mt-10">
-        <h1 className="font-serif text-3xl md:text-5xl font-black text-main">Profile</h1>
-        <p className="mt-2 text-secondary">Manage your account and jump back into studying.</p>
+        <h1 className="font-serif text-3xl md:text-5xl font-black text-main">{t("profile.title")}</h1>
+        <p className="mt-2 text-secondary">{t("profile.subtitle")}</p>
       </div>
 
       <div className="mt-8 rounded-2xl bg-white p-3 sm:p-8 space-y-4">
@@ -65,7 +67,7 @@ export default function Profile() {
             variant={isEditingProfile ? "outline" : undefined}
             onClick={handleEditProfile}
           >
-            {isEditingProfile ? "Cancel" : "Edit profile"}
+            {isEditingProfile ? t("profile.cancel") : t("profile.editProfile")}
           </Button>
         </div>
 
@@ -77,20 +79,20 @@ export default function Profile() {
 
         <div>
           <h2 className="text-sm font-semibold text-secondary uppercase tracking-wide">
-            Quick Actions
+            {t("profile.quickActions")}
           </h2>
 
           <div className="mt-3 flex flex-wrap gap-3">
             <Link to="/search" className="w-full sm:w-auto">
-              <Button>Search Quizzes</Button>
+              <Button>{t("profile.searchQuizzes")}</Button>
             </Link>
 
             <Link to="/my-quizzes" className="w-full sm:w-auto">
-              <Button variant="outline">My Quizzes</Button>
+              <Button variant="outline">{t("profile.myQuizzes")}</Button>
             </Link>
 
             <Link to="/my-quizzes/create" className="w-full sm:w-auto">
-              <Button variant="secondary">Create New Quiz</Button>
+              <Button variant="secondary">{t("profile.createNewQuiz")}</Button>
             </Link>
           </div>
         </div>
@@ -104,13 +106,13 @@ export default function Profile() {
             <hr className="border-secondary/20" />
             <div className="flex items-center justify-between flex-wrap gap-y-2">
               <h2 className="text-sm font-semibold text-secondary uppercase tracking-wide">
-                Request Promotion to Teacher
+                {t("profile.requestPromotion")}
               </h2>
               {user?.role !== "ADMIN" &&
                 !isLoadingRequests &&
                 (hasPending ? (
                   <Badge bgColor="bg-green-100" textColor="text-green-700">
-                    Request pending
+                    {t("profile.requestPending")}
                   </Badge>
                 ) : (
                   <Button
@@ -118,7 +120,7 @@ export default function Profile() {
                     variant={isRequestingPromotion ? "outline" : "secondary"}
                     onClick={handleRequestPromotion}
                   >
-                    {isRequestingPromotion ? "Cancel" : "Request Promotion"}
+                    {isRequestingPromotion ? t("profile.cancel") : t("profile.requestPromotionBtn")}
                   </Button>
                 ))}
             </div>

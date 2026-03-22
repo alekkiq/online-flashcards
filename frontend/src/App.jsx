@@ -20,7 +20,6 @@ const ClassroomView = lazy(() => import("/src/pages/ClassroomView"));
 const CreateMaterial = lazy(() => import("/src/pages/CreateMaterial"));
 const MaterialView = lazy(() => import("/src/pages/MaterialView"));
 
-
 function App() {
   return (
     <>
