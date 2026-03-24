@@ -47,7 +47,7 @@ export const DropdownMenu = forwardRef(
       <div className={cn("relative", className)} ref={resolvedRef}>
         <div onClick={() => setOpen((prev) => !prev)}>{trigger ?? defaultTrigger}</div>
         {open && (
-          <div className="absolute right-0 z-10 mt-1 min-w-40 rounded-lg border border-secondary/20 bg-white py-1 shadow-lg">
+          <div className="absolute right-0 rtl:left-0 rtl:right-auto z-10 mt-1 min-w-32 rounded-lg border border-secondary/20 bg-white py-1 shadow-lg">
             {items.map((item, index) => (
               <button
                 key={index}
