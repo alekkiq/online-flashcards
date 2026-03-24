@@ -14,8 +14,8 @@ export default function Home() {
   return (
     <div className="max-w-7xl mx-auto">
       <section className="relative grid grid-cols-1 md:grid-cols-2 items-center gap-4 md:gap-10 px-4 md:px-0 py-12 min-h-[70vh]">
-        <div className="flex flex-col items-center md:items-start gap-4 md:gap-6">
-          <h1 className="font-serif text-center md:text-left font-bold text-5xl md:text-6xl lg:text-7xl text-main">
+        <div className="flex flex-col items-center md:items-start text-center md:text-start gap-4 md:gap-6">
+          <h1 className="font-serif font-bold text-5xl md:text-6xl lg:text-7xl text-main">
             {t("home.heroTitle")}
             <br />
             {t("home.heroTitleMade")} <span className="text-primary">{t("home.heroTitleEasy")}</span>
@@ -26,7 +26,7 @@ export default function Home() {
           >
             {t("home.searchQuizzes")}
           </Button>
-          <div className="flex flex-col font-serif items-center md:items-start font-bold text-center md:text-left max-w-md text-base md:text-lg">
+          <div className="flex flex-col font-serif items-center md:items-start font-bold max-w-md text-base md:text-lg">
             <p className="text-secondary">
               {t("home.heroDescription1")}
             </p>
@@ -40,8 +40,8 @@ export default function Home() {
       </section>
       <section className="bg-grid">
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between text-center gap-4 md:gap-6 px-4 md:px-0 py-12 mt-[10vh]">
-          <div className="flex flex-col font-serif gap-6 items-center md:items-start font-bold text-center md:text-left max-w-md text-base md:text-lg">
-            <h2 className="font-serif text-center md:text-left font-bold text-5xl md:text-6xl lg:text-7xl text-main">
+          <div className="flex flex-col font-serif gap-6 items-center md:items-start font-bold text-center md:text-start max-w-md text-base md:text-lg">
+            <h2 className="font-serif font-bold text-5xl md:text-6xl lg:text-7xl text-main">
               {t("home.findTitle")} <br /> <span className="text-secondary">{t("home.communityMade")}</span> <br />{" "}
               <span className="text-primary">{t("home.quizzes")}</span>
             </h2>
@@ -64,8 +64,8 @@ export default function Home() {
             alt="Picture of quiz creation process"
             className="md:w-1/3 w-3/4 py-4 px-20 rounded-2xl bg-primary"
           />
-          <div className="flex flex-col font-serif gap-6 items-center md:items-end font-bold text-center md:text-right max-w-md text-base md:text-lg">
-            <h2 className="font-serif text-center md:text-right font-bold text-5xl md:text-6xl lg:text-7xl text-main">
+          <div className="flex flex-col font-serif gap-6 items-center md:items-end text-center md:text-initial font-bold max-w-md text-base md:text-lg">
+            <h2 className="font-serif font-bold text-5xl md:text-6xl lg:text-7xl text-main">
               {t("home.createTitle")} <br /> <span className="text-secondary">{t("home.yourOwn")}</span> <br />{" "}
               <span className="text-primary">{t("home.quizzes")}</span>
             </h2>

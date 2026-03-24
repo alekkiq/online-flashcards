@@ -31,7 +31,7 @@ export default function Login() {
   return (
     <div className="min-h-screen grid md:grid-cols-2">
       <div className="hidden md:flex flex-col min-h-screen px-12 lg:px-20 pt-[20vh] bg-grid">
-        <h1 className="relative z-10 font-serif text-left font-bold text-5xl md:text-6xl lg:text-7xl text-main">
+        <h1 className="relative z-10 font-serif text-start font-bold text-5xl md:text-6xl lg:text-7xl text-main">
           {t("login.loginToStart")}
           <br />
           <span className="text-secondary">{t("login.teaching")}</span>
