@@ -1,9 +1,11 @@
-import { lazy, Suspense } from "react";
+import {lazy, Suspense, useEffect} from "react";
 import { BrowserRouter, Routes, Route } from "react-router";
 import MainLayout from "/src/components/layout/MainLayout";
 import { PageLoader } from "/src/components/ui/PageLoader";
 import { AuthProvider } from "/src/context/AuthContext";
 import ProtectedRoute from "/src/components/auth/ProtectedRoute";
+import i18n from "./i18n";
+import { LANGUAGES } from "./config";
 
 const Home = lazy(() => import("/src/pages/Home"));
 const SearchQuizzes = lazy(() => import("/src/pages/SearchQuizzes"));
@@ -21,6 +23,23 @@ const CreateMaterial = lazy(() => import("/src/pages/CreateMaterial"));
 const MaterialView = lazy(() => import("/src/pages/MaterialView"));
 
 function App() {
+    // handle text direction (react-i18next)
+    useEffect(() => {
+        const handleDirection = (lng) => {
+            const langConfig = LANGUAGES[lng] || {};
+            document.documentElement.dir = langConfig.isRtl ? 'rtl' : 'ltr';
+            document.documentElement.lang = langConfig.lng;
+        };
+
+        handleDirection(i18n.language);
+
+        i18n.on('languageChanged', handleDirection);
+
+        return () => {
+            i18n.off('languageChanged', handleDirection);
+        }
+    }, []);
+
   return (
     <>
       <BrowserRouter>
