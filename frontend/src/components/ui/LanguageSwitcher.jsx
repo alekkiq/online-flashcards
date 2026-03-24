@@ -18,9 +18,9 @@ export function LanguageSwitcher() {
       className="flex items-center gap-1.5 rounded-md px-2 py-1.5 text-sm text-secondary hover:bg-secondary/10 hover:text-main transition-colors cursor-pointer"
       aria-label="Switch language"
     >
-      <Globe size={16} />
-      <span className="hidden sm:inline uppercase">
-        {LANGUAGES[currentLang]?.lng ?? currentLang}
+      <Globe size={24} />
+      <span className="hidden sm:inline">
+        {LANGUAGES[currentLang]?.lng.toUpperCase() ?? currentLang.toUpperCase()}
       </span>
     </button>
   );
