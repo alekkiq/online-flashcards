@@ -1,11 +1,12 @@
 import { Link } from "react-router";
 import { navLinks } from "/src/config";
 import { NavButton } from "/src/components/ui/NavButton";
-import { LanguageSwitcher } from "/src/components/ui/LanguageSwitcher.jsx";
+import { LanguageSwitcher } from "/src/components/ui/LanguageSwitcher";
 import MobileNav from "./MobileNav";
 import AuthLinks from "/src/components/auth/AuthLinks";
 import { useAuth } from "/src/hooks/useAuth";
 import { Spade, BookCopy } from "lucide-react";
+import { Logo } from "/src/components/ui/Logo";
 import { useTranslation } from "react-i18next";
 
 export default function NavBar() {
@@ -17,11 +18,7 @@ export default function NavBar() {
     <nav className="relative flex items-center justify-between p-4 w-full border-b border-secondary/30 bg-white py-5">
       <div>
         <Link to="/">
-          <div className="flex items-center gap-1">
-            {/* <Spade className="text-primary"> */}
-            <BookCopy className="text-primary" strokeWidth={2.25} />
-            <p className="font-serif text-xl md:text-2xl font-black">OnlyCards</p>
-          </div>
+            <Logo />
         </Link>
       </div>
 
@@ -34,10 +31,10 @@ export default function NavBar() {
       </div>
 
       <div className="flex items-center gap-3">
+        <LanguageSwitcher />
         <div className="hidden md:flex">
           <AuthLinks />
         </div>
-        <LanguageSwitcher />
         <MobileNav />
       </div>
     </nav>

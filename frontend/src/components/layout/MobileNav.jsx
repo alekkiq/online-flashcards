@@ -6,6 +6,7 @@ import { NavButton } from "/src/components/ui/NavButton";
 import { useAuth } from "/src/hooks/useAuth";
 import AuthLinks from "/src/components/auth/AuthLinks";
 import { useTranslation } from "react-i18next";
+import {Logo} from "../ui/Logo.jsx";
 
 export default function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,13 +37,13 @@ export default function MobileNav() {
         <button
           onClick={() => setIsOpen(false)}
           aria-label="Close mobile drawer"
-          className="absolute top-5 right-5 p-2 text-secondary"
+          className="absolute top-5 right-5 rtl:left-5 rtl:right-auto p-2 text-secondary"
         >
           <X size={28} />
         </button>
         <div className="mb-8">
           <Link to="/" onClick={() => setIsOpen(false)}>
-            <p className="text-2xl font-bold">OnlyCards</p>
+            <Logo />
           </Link>
         </div>
         <ul className="flex flex-col gap-4 flex-1">

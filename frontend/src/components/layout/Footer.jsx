@@ -3,6 +3,7 @@ import { BookCopy } from "lucide-react";
 import { navLinks } from "/src/config";
 import { useAuth } from "/src/hooks/useAuth";
 import { useTranslation } from "react-i18next";
+import {Logo} from "../ui/Logo.jsx";
 
 export default function Footer() {
   const { user, handleLogout } = useAuth();
@@ -15,14 +16,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
           <div className="md:col-span-1">
             <Link to="/" className="inline-flex items-center gap-2 group">
-              <BookCopy
-                className="text-primary transition-transform duration-300 group-hover:scale-110"
-                strokeWidth={2.25}
-                size={24}
-              />
-              <span className="font-serif text-2xl font-black text-white">
-                OnlyCards
-              </span>
+              <Logo />
             </Link>
             <p className="mt-4 text-sm text-white/50 leading-relaxed max-w-xs">
               {t("footer.tagline")}
