@@ -64,7 +64,7 @@ export default function Home() {
             alt="Picture of quiz creation process"
             className="md:w-1/3 w-3/4 py-4 px-20 rounded-2xl bg-primary"
           />
-          <div className="flex flex-col font-serif gap-6 items-center md:items-end text-center md:text-initial font-bold max-w-md text-base md:text-lg">
+          <div className="flex flex-col font-serif gap-6 items-center md:items-start text-center md:text-start font-bold max-w-md text-base md:text-lg">
             <h2 className="font-serif font-bold text-5xl md:text-6xl lg:text-7xl text-main">
               {t("home.createTitle")} <br /> <span className="text-secondary">{t("home.yourOwn")}</span> <br />{" "}
               <span className="text-primary">{t("home.quizzes")}</span>
