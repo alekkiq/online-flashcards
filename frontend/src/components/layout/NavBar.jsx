@@ -1,6 +1,7 @@
 import { Link } from "react-router";
 import { navLinks } from "/src/config";
 import { NavButton } from "/src/components/ui/NavButton";
+import { LanguageSwitcher } from "/src/components/ui/LanguageSwitcher.jsx";
 import MobileNav from "./MobileNav";
 import AuthLinks from "/src/components/auth/AuthLinks";
 import { useAuth } from "/src/hooks/useAuth";
@@ -36,6 +37,7 @@ export default function NavBar() {
         <div className="hidden md:flex">
           <AuthLinks />
         </div>
+        <LanguageSwitcher />
         <MobileNav />
       </div>
     </nav>
