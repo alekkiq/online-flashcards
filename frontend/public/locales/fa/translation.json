@@ -283,5 +283,29 @@
     "save": "ذخیره",
     "delete": "حذف",
     "confirm": "تأیید"
+  },
+  "validation": {
+    "usernameRequired": "نام کاربری الزامی است",
+    "passwordRequired": "رمز عبور الزامی است",
+    "emailInvalid": "یک ایمیل معتبر وارد کنید",
+    "passwordMin6": "رمز عبور باید حداقل ۶ کاراکتر باشد",
+    "repeatPasswordRequired": "تکرار رمز عبور الزامی است",
+    "passwordsMustMatch": "رمزهای عبور مطابقت ندارند",
+    "currentPasswordRequired": "رمز عبور فعلی الزامی است",
+    "passwordMin8": "رمز عبور باید حداقل ۸ کاراکتر باشد",
+    "titleRequired": "عنوان الزامی است",
+    "titleMax40": "عنوان باید حداکثر ۴۰ کاراکتر باشد",
+    "titleMax255": "عنوان باید حداکثر ۲۵۵ کاراکتر باشد",
+    "descriptionMax255": "توضیحات باید حداکثر ۲۵۵ کاراکتر باشد",
+    "subjectRequired": "موضوع الزامی است",
+    "questionRequired": "سؤال الزامی است",
+    "questionMax255": "سؤال باید حداکثر ۲۵۵ کاراکتر باشد",
+    "answerRequired": "جواب الزامی است",
+    "answerMax255": "جواب باید حداکثر ۲۵۵ کاراکتر باشد",
+    "atLeastOneCard": "حداقل یک کارت الزامی است",
+    "messageMax500": "پیام باید حداکثر ۵۰۰ کاراکتر باشد",
+    "joinCodeRequired": "کد ورود الزامی است",
+    "joinCodeMin6": "کد ورود باید حداقل ۶ کاراکتر باشد",
+    "noteMax255": "یادداشت باید حداکثر ۲۵۵ کاراکتر باشد"
   }
 }

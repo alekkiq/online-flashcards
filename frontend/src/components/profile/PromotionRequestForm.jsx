@@ -14,7 +14,7 @@ export default function PromotionRequestForm({
 }) {
   const { t } = useTranslation();
   const form = useForm({
-    resolver: zodResolver(promotionRequestSchema),
+    resolver: zodResolver(promotionRequestSchema(t)),
     defaultValues: { message: "" },
   });
 

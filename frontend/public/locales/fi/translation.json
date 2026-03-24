@@ -283,5 +283,29 @@
     "save": "Tallenna",
     "delete": "Poista",
     "confirm": "Vahvista"
+  },
+  "validation": {
+    "usernameRequired": "Käyttäjänimi vaaditaan",
+    "passwordRequired": "Salasana vaaditaan",
+    "emailInvalid": "Syötä kelvollinen sähköpostiosoite",
+    "passwordMin6": "Salasanan on oltava vähintään 6 merkkiä",
+    "repeatPasswordRequired": "Salasanan toisto vaaditaan",
+    "passwordsMustMatch": "Salasanat eivät täsmää",
+    "currentPasswordRequired": "Nykyinen salasana vaaditaan",
+    "passwordMin8": "Salasanan on oltava vähintään 8 merkkiä",
+    "titleRequired": "Otsikko vaaditaan",
+    "titleMax40": "Otsikko saa olla enintään 40 merkkiä",
+    "titleMax255": "Otsikko saa olla enintään 255 merkkiä",
+    "descriptionMax255": "Kuvaus saa olla enintään 255 merkkiä",
+    "subjectRequired": "Aihe vaaditaan",
+    "questionRequired": "Kysymys vaaditaan",
+    "questionMax255": "Kysymys saa olla enintään 255 merkkiä",
+    "answerRequired": "Vastaus vaaditaan",
+    "answerMax255": "Vastaus saa olla enintään 255 merkkiä",
+    "atLeastOneCard": "Vähintään yksi kortti vaaditaan",
+    "messageMax500": "Viesti saa olla enintään 500 merkkiä",
+    "joinCodeRequired": "Liittymiskoodi vaaditaan",
+    "joinCodeMin6": "Liittymiskoodin on oltava vähintään 6 merkkiä",
+    "noteMax255": "Muistiinpano saa olla enintään 255 merkkiä"
   }
 }

@@ -12,7 +12,7 @@ export default function RegisterForm() {
   const { t } = useTranslation();
 
   const form = useForm({
-    resolver: zodResolver(registerSchema),
+    resolver: zodResolver(registerSchema(t)),
     defaultValues: {
       username: "",
       email: "",

@@ -12,7 +12,7 @@ function EditEmailForm({ user }) {
   const { t } = useTranslation();
 
   const form = useForm({
-    resolver: zodResolver(editEmailSchema),
+    resolver: zodResolver(editEmailSchema(t)),
     defaultValues: { email: user?.email ?? "" },
     mode: "onSubmit",
   });
@@ -53,7 +53,7 @@ function EditPasswordForm() {
   const { t } = useTranslation();
 
   const form = useForm({
-    resolver: zodResolver(editPasswordSchema),
+    resolver: zodResolver(editPasswordSchema(t)),
     defaultValues: { oldPassword: "", newPassword: "", confirmPassword: "" },
   });
 

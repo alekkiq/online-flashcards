@@ -19,7 +19,7 @@ export default function JoinClassroomForm() {
   const { t } = useTranslation();
 
   const form = useForm({
-    resolver: zodResolver(joinClassroomSchema),
+    resolver: zodResolver(joinClassroomSchema(t)),
     defaultValues: { joinCode: "" },
     mode: "onSubmit",
   });

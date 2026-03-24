@@ -37,7 +37,7 @@ export default function CreateQuiz() {
     formState: { errors },
     reset,
   } = useForm({
-    resolver: zodResolver(quizSchema),
+    resolver: zodResolver(quizSchema(t)),
     defaultValues: {
       title: "",
       description: "",

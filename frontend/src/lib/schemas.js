@@ -1,42 +1,77 @@
 import * as z from "zod";
 
-export const quizSchema = z.object({
-  title: z.string().min(1, "Title is required").max(40, "Title must be at most 40 characters"),
-  description: z.string().max(255, "Description must be at most 255 characters").optional(),
-  subject: z.string().min(1, "Subject is required"),
-  cards: z
-    .array(
-      z.object({
-        question: z.string().min(1, "Question is required").max(255, "Question must be at most 255 characters"),
-        answer: z.string().min(1, "Answer is required").max(255, "Answer must be at most 255 characters"),
-      })
-    )
-    .min(1, "At least one card is required"),
-});
+export const quizSchema = (t) =>
+  z.object({
+    title: z
+      .string()
+      .min(1, t("validation.titleRequired"))
+      .max(40, t("validation.titleMax40")),
+    description: z
+      .string()
+      .max(255, t("validation.descriptionMax255"))
+      .optional(),
+    subject: z.string().min(1, t("validation.subjectRequired")),
+    cards: z
+      .array(
+        z.object({
+          question: z
+            .string()
+            .min(1, t("validation.questionRequired"))
+            .max(255, t("validation.questionMax255")),
+          answer: z
+            .string()
+            .min(1, t("validation.answerRequired"))
+            .max(255, t("validation.answerMax255")),
+        })
+      )
+      .min(1, t("validation.atLeastOneCard")),
+  });
 
-export const promotionRequestSchema = z.object({
-  message: z.string().max(500, "Message must be at most 500 characters").optional(),
-});
+export const promotionRequestSchema = (t) =>
+  z.object({
+    message: z.string().max(500, t("validation.messageMax500")).optional(),
+  });
 
-export const joinClassroomSchema = z.object({
-  joinCode: z.string().min(1, "Join code is required"),
-});
+export const joinClassroomSchema = (t) =>
+  z.object({
+    joinCode: z.string().min(1, t("validation.joinCodeRequired")),
+  });
 
-export const classroomSchema = z.object({
-  title: z.string().min(1, "Title is required").max(255, "Title must be at most 255 characters"),
-  description: z.string().max(255, "Description must be at most 255 characters").optional(),
-  note: z.string().max(255, "Note must be at most 255 characters").optional(),
-  joinCode: z.union([z.literal(""), z.string().min(6, "Join code must be at least 6 characters")]),
-  subjectId: z.preprocess(
-    (val) => (val === null || val === "" ? undefined : Number(val)),
-    z
-      .number({ required_error: "Subject is required", invalid_type_error: "Subject is required" })
-      .min(1, "Subject is required")
-  ),
-});
+export const classroomSchema = (t) =>
+  z.object({
+    title: z
+      .string()
+      .min(1, t("validation.titleRequired"))
+      .max(255, t("validation.titleMax255")),
+    description: z
+      .string()
+      .max(255, t("validation.descriptionMax255"))
+      .optional(),
+    note: z.string().max(255, t("validation.noteMax255")).optional(),
+    joinCode: z.union([
+      z.literal(""),
+      z.string().min(6, t("validation.joinCodeMin6")),
+    ]),
+    subjectId: z.preprocess(
+      (val) => (val === null || val === "" ? undefined : Number(val)),
+      z
+        .number({
+          required_error: t("validation.subjectRequired"),
+          invalid_type_error: t("validation.subjectRequired"),
+        })
+        .min(1, t("validation.subjectRequired"))
+    ),
+  });
 
-export const classroomUpdateSchema = z.object({
-  title: z.string().min(1, "Title is required").max(255, "Title must be at most 255 characters"),
-  description: z.string().max(255, "Description must be at most 255 characters").optional(),
-  note: z.string().max(255, "Note must be at most 255 characters").optional(),
-});
+export const classroomUpdateSchema = (t) =>
+  z.object({
+    title: z
+      .string()
+      .min(1, t("validation.titleRequired"))
+      .max(255, t("validation.titleMax255")),
+    description: z
+      .string()
+      .max(255, t("validation.descriptionMax255"))
+      .optional(),
+    note: z.string().max(255, t("validation.noteMax255")).optional(),
+  });

@@ -30,7 +30,7 @@ export default function CreateClassroom() {
     formState: { errors },
     reset,
   } = useForm({
-    resolver: zodResolver(isEditMode ? classroomUpdateSchema : classroomSchema),
+    resolver: zodResolver(isEditMode ? classroomUpdateSchema(t) : classroomSchema(t)),
     defaultValues: {
       title: "",
       description: "",

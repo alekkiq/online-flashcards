@@ -12,7 +12,7 @@ export default function LoginForm() {
   const { t } = useTranslation();
 
   const form = useForm({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(loginSchema(t)),
     defaultValues: { username: "", password: "" },
     mode: "onSubmit",
   });

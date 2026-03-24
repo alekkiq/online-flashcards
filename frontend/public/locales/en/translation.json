@@ -283,5 +283,29 @@
     "save": "Save",
     "delete": "Delete",
     "confirm": "Confirm"
+  },
+  "validation": {
+    "usernameRequired": "Username is required",
+    "passwordRequired": "Password is required",
+    "emailInvalid": "Enter a valid email",
+    "passwordMin6": "Password must be at least 6 characters",
+    "repeatPasswordRequired": "Repeat password is required",
+    "passwordsMustMatch": "Passwords do not match",
+    "currentPasswordRequired": "Current password is required",
+    "passwordMin8": "Password must be at least 8 characters",
+    "titleRequired": "Title is required",
+    "titleMax40": "Title must be at most 40 characters",
+    "titleMax255": "Title must be at most 255 characters",
+    "descriptionMax255": "Description must be at most 255 characters",
+    "subjectRequired": "Subject is required",
+    "questionRequired": "Question is required",
+    "questionMax255": "Question must be at most 255 characters",
+    "answerRequired": "Answer is required",
+    "answerMax255": "Answer must be at most 255 characters",
+    "atLeastOneCard": "At least one card is required",
+    "messageMax500": "Message must be at most 500 characters",
+    "joinCodeRequired": "Join code is required",
+    "joinCodeMin6": "Join code must be at least 6 characters",
+    "noteMax255": "Note must be at most 255 characters"
   }
 }
