@@ -1,26 +1,26 @@
 export const LANGUAGES = {
-    fi: {
-        locale: 'fi_FI',
-        lng: 'fi',
-        label: 'Suomi',
-        isRtl: false,
-    },
     en: {
         locale: 'en_UK',
         lng: 'en',
         label: 'English',
         isRtl: false,
     },
+    fi: {
+        locale: 'fi_FI',
+        lng: 'fi',
+        label: 'Suomi',
+        isRtl: false,
+    },
     fa: {
         locale: 'fa_IR',
         lng: 'fa',
-        label: 'Farsi',
+        label: 'فارسی',
         isRtl: true,
     },
     zh: {
         locale: 'zh_CN',
         lng: 'zh',
-        label: 'Mandarin',
+        label: '普通话',
         isRtl: false,
     },
 };
