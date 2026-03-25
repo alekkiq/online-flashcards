@@ -56,7 +56,7 @@ export const DropdownMenu = forwardRef(
                   setOpen(false);
                 }}
                 className={cn(
-                  "flex w-full items-center gap-2 px-3 py-2 text-sm transition-colors",
+                  "flex w-full items-center gap-2 px-3 py-2 text-sm transition-colors cursor-pointer",
                   itemVariants[item.variant ?? "default"],
                   item.active && "bg-primary/10 text-primary font-semibold"
                 )}
