@@ -11,6 +11,7 @@ import { useClassroom } from "../hooks/useClassroom";
 import { useAuth } from "../hooks/useAuth";
 import { useClassroomContext } from "../hooks/useClassroomContext";
 import { removeUserFromClassroom, leaveClassroom } from "/src/api";
+import { useTranslation } from "react-i18next";
 
 export default function ClassroomView() {
   const { id } = useParams();
@@ -18,6 +19,7 @@ export default function ClassroomView() {
   const { isAdmin } = useAuth();
   const { classroom, isLoading, error, fetchClassroom } = useClassroom();
   const { fetchClassrooms } = useClassroomContext();
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchClassroom(id);
@@ -43,9 +45,9 @@ export default function ClassroomView() {
   if (error || !classroom) {
     return (
       <div className="max-w-7xl mx-auto py-8 md:px-0 text-center">
-        <p className="text-destructive">{error || "Classroom not found."}</p>
+        <p className="text-destructive">{error || t("classroomView.classroomNotFound")}</p>
         <Button variant="outline" className="mt-4" onClick={() => navigate("/classrooms")}>
-          Back to Classrooms
+          {t("classroomView.backToClassroomsBtn")}
         </Button>
       </div>
     );
@@ -55,7 +57,7 @@ export default function ClassroomView() {
 
   return (
     <div className="max-w-7xl mx-auto py-8 md:px-0">
-      <BackLink label="Back to classrooms" />
+      <BackLink label={t("classroomView.backToClassrooms")} />
       <ClassroomHeader
         classroom={classroom}
         isOwner={isOwner}

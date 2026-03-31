@@ -9,15 +9,17 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 import { joinClassroomByCode } from "/src/api";
 import { useClassroomContext } from "/src/hooks/useClassroomContext";
+import { useTranslation } from "react-i18next";
 
 export default function JoinClassroomForm() {
   const navigate = useNavigate();
   const { fetchClassrooms } = useClassroomContext();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const { t } = useTranslation();
 
   const form = useForm({
-    resolver: zodResolver(joinClassroomSchema),
+    resolver: zodResolver(joinClassroomSchema(t)),
     defaultValues: { joinCode: "" },
     mode: "onSubmit",
   });
@@ -46,7 +48,7 @@ export default function JoinClassroomForm() {
         <FormField error={form.formState.errors.joinCode?.message} className="flex-1">
           <Input
             type="text"
-            placeholder="Enter classroom join code"
+            placeholder={t("joinClassroomForm.placeholder")}
             hasError={!!form.formState.errors.joinCode}
             startIcon={<DoorOpen size={18} />}
             className="h-11"
@@ -56,7 +58,7 @@ export default function JoinClassroomForm() {
 
         <Button type="submit" className="h-11" disabled={isLoading}>
           <LockKeyholeOpen size={16} />
-          {isLoading ? "Joining..." : "Join Classroom"}
+          {isLoading ? t("joinClassroomForm.joining") : t("joinClassroomForm.joinClassroom")}
         </Button>
       </div>
 

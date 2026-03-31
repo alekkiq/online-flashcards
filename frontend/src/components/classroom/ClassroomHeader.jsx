@@ -3,15 +3,11 @@ import { Avatar } from "/src/components/ui/Avatar";
 import { Button } from "/src/components/ui/Button";
 import { Copy, Check, StickyNote, LogOut, Settings } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
-/**
- * Header section for the classroom view — title, description, owner, join code, announcement.
- * @param {object} props
- * @param {object} props.classroom - the classroom response object
- * @param {boolean} props.isOwner - whether the current user is the owner
- */
 export default function ClassroomHeader({ classroom, isOwner, onManage, onLeave }) {
   const [copiedCode, setCopiedCode] = useState(false);
+  const { t } = useTranslation();
 
   const handleCopyCode = () => {
     navigator.clipboard.writeText(classroom.joinCode);
@@ -36,7 +32,7 @@ export default function ClassroomHeader({ classroom, isOwner, onManage, onLeave 
             <Avatar name={classroom.ownerUsername} />
             <span className="text-sm text-secondary">
               <span className="text-main font-medium">{classroom.ownerUsername}</span>
-              {" · "}Owner
+              {" · "}{t("classroomHeader.owner")}
             </span>
           </div>
         </div>
@@ -45,12 +41,12 @@ export default function ClassroomHeader({ classroom, isOwner, onManage, onLeave 
           {isOwner ? (
             <Button variant="outline" size="sm" onClick={onManage}>
               <Settings size={16} />
-              Manage
+              {t("classroomHeader.manage")}
             </Button>
           ) : (
             <Button variant="outline" size="sm" onClick={onLeave}>
               <LogOut size={16} />
-              Leave
+              {t("classroomHeader.leave")}
             </Button>
           )}
         </div>
@@ -61,7 +57,7 @@ export default function ClassroomHeader({ classroom, isOwner, onManage, onLeave 
           <hr className="border-secondary/20" />
           <div className="flex items-center justify-between sm:justify-start gap-3">
             <span className="text-sm font-semibold text-secondary uppercase tracking-wide">
-              Join Code
+              {t("classroomHeader.joinCode")}
             </span>
             <div className="flex items-center gap-2">
               <code className="px-3 py-1.5 rounded-lg bg-secondary/5 border border-secondary/20 text-sm font-mono font-semibold text-main">
@@ -81,7 +77,7 @@ export default function ClassroomHeader({ classroom, isOwner, onManage, onLeave 
           <div className="flex gap-3 rounded-xl bg-primary/5 border border-primary/10 p-4">
             <StickyNote size={20} className="text-primary shrink-0 mt-0.5" />
             <div>
-              <p className="text-sm font-semibold text-primary mb-1">Announcement</p>
+              <p className="text-sm font-semibold text-primary mb-1">{t("classroomHeader.announcement")}</p>
               <p className="text-sm text-main">{classroom.note}</p>
             </div>
           </div>
@@ -92,12 +88,12 @@ export default function ClassroomHeader({ classroom, isOwner, onManage, onLeave 
         {isOwner ? (
           <Button variant="outline" size="sm" onClick={onManage}>
             <Settings size={16} />
-            Manage
+            {t("classroomHeader.manage")}
           </Button>
         ) : (
           <Button variant="outline" size="sm" onClick={onLeave}>
             <LogOut size={16} />
-            Leave
+            {t("classroomHeader.leave")}
           </Button>
         )}
       </div>

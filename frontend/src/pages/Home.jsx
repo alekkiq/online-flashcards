@@ -4,33 +4,34 @@ import { useAuth } from "../hooks/useAuth";
 import hero_section_1 from "/src/assets/images/hero_section_1.png";
 import hero_section_2 from "/src/assets/images/hero_section_2.png";
 import hero_main from "/src/assets/images/hero_main.png";
+import { useTranslation } from "react-i18next";
 
 export default function Home() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   return (
     <div className="max-w-7xl mx-auto">
       <section className="relative grid grid-cols-1 md:grid-cols-2 items-center gap-4 md:gap-10 px-4 md:px-0 py-12 min-h-[70vh]">
-        <div className="flex flex-col items-center md:items-start gap-4 md:gap-6">
-          <h1 className="font-serif text-center md:text-left font-bold text-5xl md:text-6xl lg:text-7xl text-main">
-            Flashcard learning
+        <div className="flex flex-col items-center md:items-start text-center md:text-start gap-4 md:gap-6">
+          <h1 className="font-serif font-bold text-5xl md:text-6xl lg:text-7xl text-main">
+            {t("home.heroTitle")}
             <br />
-            made <span className="text-primary">easy</span>
+            {t("home.heroTitleMade")} <span className="text-primary">{t("home.heroTitleEasy")}</span>
           </h1>
           <Button
             onClick={() => navigate("/search")}
             className="py-5 px-10 text-lg md:py-6 md:px-12 md:text-2xl"
           >
-            Search Quizzes
+            {t("home.searchQuizzes")}
           </Button>
-          <div className="flex flex-col font-serif items-center md:items-start font-bold text-center md:text-left max-w-md text-base md:text-lg">
+          <div className="flex flex-col font-serif items-center md:items-start font-bold max-w-md text-base md:text-lg">
             <p className="text-secondary">
-              In vulputate cursus sem ac consectetur. Nam nec ex scelerisque, blandit neque sit amet.
+              {t("home.heroDescription1")}
             </p>
             <p className="text-gray-500">
-              Morbi efficitur augue in odio posuere, vel lacinia purus auctor. Donec finibus non odio
-              sed pellentesque.
+              {t("home.heroDescription2")}
             </p>
           </div>
         </div>
@@ -39,14 +40,13 @@ export default function Home() {
       </section>
       <section className="bg-grid">
         <div className="relative z-10 flex flex-col md:flex-row items-center justify-between text-center gap-4 md:gap-6 px-4 md:px-0 py-12 mt-[10vh]">
-          <div className="flex flex-col font-serif gap-6 items-center md:items-start font-bold text-center md:text-left max-w-md text-base md:text-lg">
-            <h2 className="font-serif text-center md:text-left font-bold text-5xl md:text-6xl lg:text-7xl text-main">
-              Find <br /> <span className="text-secondary">community made</span> <br />{" "}
-              <span className="text-primary">quizzes</span>
+          <div className="flex flex-col font-serif gap-6 items-center md:items-start font-bold text-center md:text-start max-w-md text-base md:text-lg">
+            <h2 className="font-serif font-bold text-5xl md:text-6xl lg:text-7xl text-main">
+              {t("home.findTitle")} <br /> <span className="text-secondary">{t("home.communityMade")}</span> <br />{" "}
+              <span className="text-primary">{t("home.quizzes")}</span>
             </h2>
             <p className="text-secondary">
-              In vulputate cursus sem ac consectetur. Nam nec ex scelerisque, blandit neque sit
-              amet.
+              {t("home.findDescription")}
             </p>
           </div>
           <img
@@ -64,20 +64,20 @@ export default function Home() {
             alt="Picture of quiz creation process"
             className="md:w-1/3 w-3/4 py-4 px-20 rounded-2xl bg-primary"
           />
-          <div className="flex flex-col font-serif gap-6 items-center md:items-end font-bold text-center md:text-right max-w-md text-base md:text-lg">
-            <h2 className="font-serif text-center md:text-right font-bold text-5xl md:text-6xl lg:text-7xl text-main">
-              Create <br /> <span className="text-secondary">your own</span> <br />{" "}
-              <span className="text-primary">quizzes</span>
+          <div className="flex flex-col font-serif gap-6 items-center md:items-start text-center md:text-start font-bold max-w-md text-base md:text-lg">
+            <h2 className="font-serif font-bold text-5xl md:text-6xl lg:text-7xl text-main">
+              {t("home.createTitle")} <br /> <span className="text-secondary">{t("home.yourOwn")}</span> <br />{" "}
+              <span className="text-primary">{t("home.quizzes")}</span>
             </h2>
             <Button
               onClick={() => navigate("/login?signup=true")}
               className="py-5 px-10 text-lg md:py-6 md:px-12 md:text-2xl"
               disabled={user !== null}
             >
-              Register Now
+              {t("home.registerNow")}
             </Button>
             <p className="text-secondary">
-              Register now to create your own quizzes and share them to the community.
+              {t("home.registerDescription")}
             </p>
           </div>
         </div>

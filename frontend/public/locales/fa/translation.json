@@ -1,0 +1,311 @@
+{
+  "nav": {
+    "findQuizzes": "جستجوی آزمون‌ها",
+    "myQuizzes": "آزمون‌های من",
+    "classrooms": "کلاس‌ها",
+    "logIn": "ورود",
+    "signUp": "ثبت‌نام",
+    "signOut": "خروج",
+    "profile": "پروفایل"
+  },
+  "home": {
+    "heroTitle": "یادگیری با فلش‌کارت",
+    "heroTitleMade": "آسان",
+    "heroTitleEasy": "شده",
+    "searchQuizzes": "جستجوی آزمون‌ها",
+    "heroDescription1": "In vulputate cursus sem ac consectetur. Nam nec ex scelerisque, blandit neque sit amet.",
+    "heroDescription2": "Morbi efficitur augue in odio posuere, vel lacinia purus auctor. Donec finibus non odio sed pellentesque.",
+    "findTitle": "پیدا کنید",
+    "communityMade": "ساخته جامعه",
+    "quizzes": "آزمون‌ها",
+    "findDescription": "In vulputate cursus sem ac consectetur. Nam nec ex scelerisque, blandit neque sit amet.",
+    "createTitle": "بسازید",
+    "yourOwn": "آزمون خودتان را",
+    "registerNow": "همین حالا ثبت‌نام کنید",
+    "registerDescription": "همین حالا ثبت‌نام کنید تا آزمون‌های خود را بسازید و با جامعه به اشتراک بگذارید."
+  },
+  "login": {
+    "loginToStart": "وارد شوید تا شروع کنید",
+    "teaching": "تدریس",
+    "learning": "یادگیری",
+    "loginToStartLearning": "وارد شوید تا یادگیری را شروع کنید",
+    "learnFaster": "با فلش‌کارت‌های آنلاین سریع‌تر و هوشمندانه‌تر یاد بگیرید",
+    "logIn": "ورود",
+    "signUp": "ثبت‌نام"
+  },
+  "loginForm": {
+    "username": "نام کاربری *",
+    "password": "رمز عبور *",
+    "usernamePlaceholder": "نام کاربری",
+    "passwordPlaceholder": "رمز عبور",
+    "loggingIn": "در حال ورود...",
+    "logIn": "ورود"
+  },
+  "registerForm": {
+    "username": "نام کاربری *",
+    "email": "آدرس ایمیل *",
+    "password": "رمز عبور *",
+    "repeatPassword": "تکرار رمز عبور *",
+    "usernamePlaceholder": "نام کاربری",
+    "emailPlaceholder": "آدرس ایمیل",
+    "passwordPlaceholder": "رمز عبور",
+    "repeatPasswordPlaceholder": "تکرار رمز عبور",
+    "creatingAccount": "در حال ایجاد حساب...",
+    "signUp": "ثبت‌نام"
+  },
+  "profile": {
+    "title": "پروفایل",
+    "subtitle": "حساب کاربری خود را مدیریت کنید و به مطالعه بازگردید.",
+    "editProfile": "ویرایش پروفایل",
+    "cancel": "لغو",
+    "quickActions": "دسترسی سریع",
+    "searchQuizzes": "جستجوی آزمون‌ها",
+    "myQuizzes": "آزمون‌های من",
+    "createNewQuiz": "ساخت آزمون جدید",
+    "requestPromotion": "درخواست ارتقا به معلم",
+    "requestPending": "درخواست در انتظار بررسی",
+    "requestPromotionBtn": "درخواست ارتقا"
+  },
+  "editProfile": {
+    "updateEmail": "به‌روزرسانی ایمیل",
+    "email": "ایمیل",
+    "emailUpdated": "ایمیل با موفقیت به‌روزرسانی شد.",
+    "saving": "در حال ذخیره...",
+    "updateEmailBtn": "به‌روزرسانی ایمیل",
+    "changePassword": "تغییر رمز عبور",
+    "currentPassword": "رمز عبور فعلی",
+    "newPassword": "رمز عبور جدید",
+    "confirmNewPassword": "تأیید رمز عبور جدید",
+    "passwordUpdated": "رمز عبور با موفقیت به‌روزرسانی شد.",
+    "updatePasswordBtn": "به‌روزرسانی رمز عبور",
+    "close": "بستن"
+  },
+  "promotionRequest": {
+    "messageLabel": "پیام (اختیاری)",
+    "messagePlaceholder": "بگویید چرا می‌خواهید معلم شوید…",
+    "submitting": "در حال ارسال…",
+    "submitRequest": "ارسال درخواست"
+  },
+  "classroomList": {
+    "title": "کلاس‌های من",
+    "empty": "هنوز عضو هیچ کلاسی نشده‌اید.",
+    "leaveClassroom": "خروج از کلاس",
+    "owner": "مالک"
+  },
+  "myQuizzes": {
+    "title": "آزمون‌های من",
+    "subtitle": "مشاهده، ویرایش و ساخت آزمون‌ها",
+    "newQuiz": "آزمون جدید",
+    "createNewQuiz": "ساخت آزمون جدید"
+  },
+  "searchQuizzes": {
+    "title": "جستجوی آزمون‌ها",
+    "subtitle": "آزمون‌های ساخته‌شده توسط جامعه را جستجو کنید.",
+    "placeholder": "جستجوی آزمون‌ها...",
+    "subject": "موضوع",
+    "all": "همه",
+    "searchResultsFor": "نتایج جستجو برای «{{query}}»:"
+  },
+  "createQuiz": {
+    "backToClassroom": "بازگشت به کلاس",
+    "backToMyQuizzes": "بازگشت به آزمون‌های من",
+    "editQuiz": "ویرایش آزمون",
+    "addQuizToClassroom": "افزودن آزمون به کلاس",
+    "createNewQuiz": "ساخت آزمون جدید",
+    "subtitle": "یک مجموعه فلش‌کارت سفارشی بسازید",
+    "generalInfo": "اطلاعات کلی",
+    "title": "عنوان",
+    "titlePlaceholder": "عنوان آزمون را وارد کنید",
+    "description": "توضیحات",
+    "descriptionPlaceholder": "توضیحات را وارد کنید (اختیاری)",
+    "subject": "موضوع",
+    "cards": "کارت‌ها",
+    "addCard": "+ افزودن کارت",
+    "cancel": "لغو",
+    "saving": "در حال ذخیره...",
+    "saveQuiz": "ذخیره آزمون"
+  },
+  "flashcardInput": {
+    "question": "سؤال *",
+    "answer": "جواب *",
+    "questionPlaceholder": "سؤال را بنویسید...",
+    "answerPlaceholder": "جواب را بنویسید..."
+  },
+  "quizDetails": {
+    "backToQuizSearch": "بازگشت به جستجوی آزمون",
+    "createdBy": "ساخته‌شده توسط ",
+    "history": "تاریخچه",
+    "loginToSave": "برای ذخیره نتایج وارد شوید",
+    "tries": "تعداد تلاش‌ها",
+    "cardCount": "تعداد کارت‌ها",
+    "playQuiz": "شروع آزمون"
+  },
+  "quizGame": {
+    "backToSearch": "بازگشت به جستجو",
+    "iDontKnow": "نمی‌دانم",
+    "iKnow": "می‌دانم",
+    "previous": "قبلی",
+    "next": "بعدی"
+  },
+  "results": {
+    "quizComplete": "آزمون تمام شد!",
+    "yourScore": "امتیاز شما",
+    "correct": "درست",
+    "incorrect": "نادرست",
+    "backToDetails": "بازگشت به جزئیات",
+    "playAgain": "دوباره بازی کنید"
+  },
+  "classrooms": {
+    "title": "کلاس‌های من",
+    "subtitleTeacher": "کلاس‌های خود را مدیریت کنید.",
+    "subtitleStudent": "کلاس‌هایی که عضو آن‌ها هستید.",
+    "searchPlaceholder": "جستجوی کلاس‌های شما...",
+    "subject": "موضوع",
+    "all": "همه",
+    "searchResultsFor": "نتایج جستجو برای «{{query}}»:",
+    "newClassroom": "کلاس جدید",
+    "createNewClassroom": "ساخت کلاس جدید",
+    "joinClassroom": "پیوستن به کلاس",
+    "enterJoinCode": "کد ورود را وارد کنید",
+    "noClassroomsFound": "کلاسی یافت نشد.",
+    "joinModalTitle": "پیوستن به کلاس",
+    "joinModalDescription": "کد ورودی که معلم شما داده است را وارد کنید."
+  },
+  "createClassroom": {
+    "backToClassrooms": "بازگشت به کلاس‌ها",
+    "editClassroom": "ویرایش کلاس",
+    "createNewClassroom": "ساخت کلاس جدید",
+    "subtitleEdit": "جزئیات کلاس را به‌روزرسانی کنید",
+    "subtitleCreate": "یک کلاس برای دانش‌آموزان خود راه‌اندازی کنید",
+    "generalInfo": "اطلاعات کلی",
+    "title": "عنوان",
+    "titlePlaceholder": "عنوان کلاس را وارد کنید",
+    "description": "توضیحات",
+    "descriptionPlaceholder": "کلاس خود را توصیف کنید (اختیاری)",
+    "subject": "موضوع",
+    "settings": "تنظیمات",
+    "announcement": "اطلاعیه",
+    "announcementPlaceholder": "یک اطلاعیه برای دانش‌آموزان خود پین کنید (اختیاری)",
+    "customJoinCode": "کد ورود سفارشی",
+    "joinCodeHint": "حداقل ۶ کاراکتر. برای تولید خودکار خالی بگذارید.",
+    "joinCodePlaceholder": "مثلاً BIO2026",
+    "cancel": "لغو",
+    "saving": "در حال ذخیره...",
+    "saveChanges": "ذخیره تغییرات",
+    "createClassroom": "ساخت کلاس",
+    "somethingWentWrong": "مشکلی پیش آمد. لطفاً دوباره تلاش کنید."
+  },
+  "classroomView": {
+    "backToClassrooms": "بازگشت به کلاس‌ها",
+    "classroomNotFound": "کلاس یافت نشد.",
+    "backToClassroomsBtn": "بازگشت به کلاس‌ها"
+  },
+  "classroomHeader": {
+    "owner": "مالک",
+    "manage": "مدیریت",
+    "leave": "خروج",
+    "joinCode": "کد ورود",
+    "announcement": "اطلاعیه"
+  },
+  "quizzesSection": {
+    "title": "آزمون‌ها",
+    "addQuiz": "+ افزودن آزمون",
+    "noQuizzes": "هنوز آزمونی اضافه نشده است."
+  },
+  "materialsSection": {
+    "title": "مواد آموزشی",
+    "addMaterial": "+ افزودن ماده آموزشی",
+    "noMaterials": "هنوز ماده آموزشی اضافه نشده است.",
+    "addedBy": "اضافه‌شده توسط {{username}}"
+  },
+  "membersSection": {
+    "title": "اعضا",
+    "owner": "مالک",
+    "remove": "حذف"
+  },
+  "joinClassroomForm": {
+    "placeholder": "کد ورود کلاس را وارد کنید",
+    "joining": "در حال پیوستن...",
+    "joinClassroom": "پیوستن به کلاس"
+  },
+  "createMaterial": {
+    "unauthorized": "دسترسی غیرمجاز",
+    "onlyTeachers": "فقط معلمان می‌توانند مواد آموزشی ایجاد کنند.",
+    "goBack": "بازگشت",
+    "missingClassroom": "کلاس مشخص نشده",
+    "classroomRequired": "برای افزودن ماده آموزشی باید یک کلاس انتخاب شود.",
+    "goToClassrooms": "رفتن به کلاس‌ها",
+    "backToClassroom": "بازگشت به کلاس",
+    "title": "افزودن ماده آموزشی",
+    "subtitle": "محتوای آموزشی متنی برای کلاس خود بسازید",
+    "materialDetails": "جزئیات ماده آموزشی",
+    "titleLabel": "عنوان",
+    "titlePlaceholder": "عنوان ماده آموزشی را وارد کنید",
+    "contentLabel": "محتوا",
+    "contentPlaceholder": "محتوای ماده آموزشی را اینجا بنویسید...",
+    "cancel": "لغو",
+    "creating": "در حال ایجاد...",
+    "createMaterial": "ایجاد ماده آموزشی",
+    "titleRequired": "عنوان الزامی است.",
+    "contentRequired": "محتوا الزامی است.",
+    "failedToCreate": "ایجاد ماده آموزشی با شکست مواجه شد.",
+    "unexpectedError": "یک خطای غیرمنتظره رخ داد."
+  },
+  "materialView": {
+    "backToClassroom": "بازگشت به کلاس",
+    "learningMaterial": "ماده آموزشی",
+    "createdBy": "ساخته‌شده توسط",
+    "materialNotFound": "ماده آموزشی یافت نشد.",
+    "backToClassroomBtn": "بازگشت به کلاس"
+  },
+  "footer": {
+    "tagline": "فلش‌کارت‌ها را با سهولت بسازید، به اشتراک بگذارید و تسلط یابید. هوشمندانه‌تر مطالعه کنید.",
+    "navigate": "ناوبری",
+    "actions": "اقدامات",
+    "login": "ورود",
+    "signUp": "ثبت‌نام",
+    "profile": "پروفایل",
+    "createQuiz": "ساخت آزمون",
+    "logout": "خروج",
+    "madeWith": "ساخته‌شده با ❤️ توسط Ryhmä A-Ryhmä"
+  },
+  "quizCard": {
+    "cards": "{{count}} کارت",
+    "edit": "ویرایش"
+  },
+  "classroomCard": {
+    "member": "عضو",
+    "members": "عضو"
+  },
+  "common": {
+    "loading": "در حال بارگذاری...",
+    "error": "خطا",
+    "save": "ذخیره",
+    "delete": "حذف",
+    "confirm": "تأیید"
+  },
+  "validation": {
+    "usernameRequired": "نام کاربری الزامی است",
+    "passwordRequired": "رمز عبور الزامی است",
+    "emailInvalid": "یک ایمیل معتبر وارد کنید",
+    "passwordMin6": "رمز عبور باید حداقل ۶ کاراکتر باشد",
+    "repeatPasswordRequired": "تکرار رمز عبور الزامی است",
+    "passwordsMustMatch": "رمزهای عبور مطابقت ندارند",
+    "currentPasswordRequired": "رمز عبور فعلی الزامی است",
+    "passwordMin8": "رمز عبور باید حداقل ۸ کاراکتر باشد",
+    "titleRequired": "عنوان الزامی است",
+    "titleMax40": "عنوان باید حداکثر ۴۰ کاراکتر باشد",
+    "titleMax255": "عنوان باید حداکثر ۲۵۵ کاراکتر باشد",
+    "descriptionMax255": "توضیحات باید حداکثر ۲۵۵ کاراکتر باشد",
+    "subjectRequired": "موضوع الزامی است",
+    "questionRequired": "سؤال الزامی است",
+    "questionMax255": "سؤال باید حداکثر ۲۵۵ کاراکتر باشد",
+    "answerRequired": "جواب الزامی است",
+    "answerMax255": "جواب باید حداکثر ۲۵۵ کاراکتر باشد",
+    "atLeastOneCard": "حداقل یک کارت الزامی است",
+    "messageMax500": "پیام باید حداکثر ۵۰۰ کاراکتر باشد",
+    "joinCodeRequired": "کد ورود الزامی است",
+    "joinCodeMin6": "کد ورود باید حداقل ۶ کاراکتر باشد",
+    "noteMax255": "یادداشت باید حداکثر ۲۵۵ کاراکتر باشد"
+  }
+}

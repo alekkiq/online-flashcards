@@ -5,6 +5,7 @@ import FlipCard from "../components/Quiz/FlipCard";
 import { Button } from "../components/ui/Button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { PageLoader } from "/src/components/ui/PageLoader";
+import { useTranslation } from "react-i18next";
 
 export default function QuizGame() {
   const {
@@ -29,6 +30,7 @@ export default function QuizGame() {
   const [slideDirection, setSlideDirection] = useState(null);
   const scoreRef = useRef(score);
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   // keep score ref in sync
   useEffect(() => {
@@ -100,7 +102,7 @@ export default function QuizGame() {
       <div className="flex items-center mt-2 gap-2">
         <Button variant="link" onClick={() => navigate("/search")}>
           <ArrowLeft />
-          Back to Search
+          {t("quizGame.backToSearch")}
         </Button>
       </div>
       <div className="flex flex-col items-center justify-center min-h-[80vh] p-8 gap-8">
@@ -144,7 +146,7 @@ export default function QuizGame() {
               className="text-black-50"
               onClick={() => advanceProgress(false)}
             >
-              I don't know this
+              {t("quizGame.iDontKnow")}
             </Button>
             <Button
               size="lg"
@@ -153,7 +155,7 @@ export default function QuizGame() {
               className="text-black-50"
               onClick={() => advanceProgress(true)}
             >
-              I know this
+              {t("quizGame.iKnow")}
             </Button>
           </div>
           <div className="flex justify-between w-full">
@@ -165,10 +167,10 @@ export default function QuizGame() {
               >
                 <ArrowLeft />
               </Button>
-              <p className="font-inter font-bold text-sm md:text-base text-secondary">PREVIOUS</p>
+              <p className="font-inter font-bold text-sm md:text-base text-secondary">{t("quizGame.previous")}</p>
             </div>
             <div className="flex items-center gap-2">
-              <p className="font-inter font-bold text-sm md:text-base text-secondary">NEXT</p>
+              <p className="font-inter font-bold text-sm md:text-base text-secondary">{t("quizGame.next")}</p>
               <Button
                 onClick={() => navigateCard("next")}
                 disabled={isNavigating || currentCardIndex === totalCards - 1}

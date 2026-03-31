@@ -1,0 +1,311 @@
+{
+  "nav": {
+    "findQuizzes": "Etsi visoja",
+    "myQuizzes": "Omat visat",
+    "classrooms": "Luokkahuoneet",
+    "logIn": "Kirjaudu sisään",
+    "signUp": "Rekisteröidy",
+    "signOut": "Kirjaudu ulos",
+    "profile": "Profiili"
+  },
+  "home": {
+    "heroTitle": "Muistikorttien opiskelu",
+    "heroTitleMade": "tehty",
+    "heroTitleEasy": "helpoksi",
+    "searchQuizzes": "Etsi visoja",
+    "heroDescription1": "In vulputate cursus sem ac consectetur. Nam nec ex scelerisque, blandit neque sit amet.",
+    "heroDescription2": "Morbi efficitur augue in odio posuere, vel lacinia purus auctor. Donec finibus non odio sed pellentesque.",
+    "findTitle": "Löydä",
+    "communityMade": "yhteisön luomia",
+    "quizzes": "visoja",
+    "findDescription": "In vulputate cursus sem ac consectetur. Nam nec ex scelerisque, blandit neque sit amet.",
+    "createTitle": "Luo",
+    "yourOwn": "omia",
+    "registerNow": "Rekisteröidy nyt",
+    "registerDescription": "Rekisteröidy nyt luodaksesi omia visoja ja jakaaksesi ne yhteisölle."
+  },
+  "login": {
+    "loginToStart": "Kirjaudu aloittaaksesi",
+    "teaching": "opettamisen",
+    "learning": "oppimisen",
+    "loginToStartLearning": "Kirjaudu aloittaaksesi oppimisen",
+    "learnFaster": "Opi nopeammin ja tehokkaammin verkkomuistikorteilla",
+    "logIn": "Kirjaudu sisään",
+    "signUp": "Rekisteröidy"
+  },
+  "loginForm": {
+    "username": "Käyttäjänimi *",
+    "password": "Salasana *",
+    "usernamePlaceholder": "Käyttäjänimi",
+    "passwordPlaceholder": "Salasana",
+    "loggingIn": "Kirjaudutaan...",
+    "logIn": "Kirjaudu sisään"
+  },
+  "registerForm": {
+    "username": "Käyttäjänimi *",
+    "email": "Sähköpostiosoite *",
+    "password": "Salasana *",
+    "repeatPassword": "Toista salasana *",
+    "usernamePlaceholder": "Käyttäjänimi",
+    "emailPlaceholder": "Sähköpostiosoite",
+    "passwordPlaceholder": "Salasana",
+    "repeatPasswordPlaceholder": "Toista salasana",
+    "creatingAccount": "Luodaan tiliä...",
+    "signUp": "Rekisteröidy"
+  },
+  "profile": {
+    "title": "Profiili",
+    "subtitle": "Hallitse tiliäsi ja jatka opiskelua.",
+    "editProfile": "Muokkaa profiilia",
+    "cancel": "Peruuta",
+    "quickActions": "Pikatoiminnot",
+    "searchQuizzes": "Etsi visoja",
+    "myQuizzes": "Omat visat",
+    "createNewQuiz": "Luo uusi visa",
+    "requestPromotion": "Pyydä ylennystä opettajaksi",
+    "requestPending": "Pyyntö odottaa",
+    "requestPromotionBtn": "Pyydä ylennystä"
+  },
+  "editProfile": {
+    "updateEmail": "Päivitä sähköposti",
+    "email": "Sähköposti",
+    "emailUpdated": "Sähköposti päivitetty onnistuneesti.",
+    "saving": "Tallennetaan...",
+    "updateEmailBtn": "Päivitä sähköposti",
+    "changePassword": "Vaihda salasana",
+    "currentPassword": "Nykyinen salasana",
+    "newPassword": "Uusi salasana",
+    "confirmNewPassword": "Vahvista uusi salasana",
+    "passwordUpdated": "Salasana päivitetty onnistuneesti.",
+    "updatePasswordBtn": "Päivitä salasana",
+    "close": "Sulje"
+  },
+  "promotionRequest": {
+    "messageLabel": "Viesti (valinnainen)",
+    "messagePlaceholder": "Kerro miksi haluaisit tulla opettajaksi…",
+    "submitting": "Lähetetään…",
+    "submitRequest": "Lähetä pyyntö"
+  },
+  "classroomList": {
+    "title": "Omat luokkahuoneet",
+    "empty": "Et kuulu vielä yhteenkään luokkahuoneeseen.",
+    "leaveClassroom": "Poistu luokkahuoneesta",
+    "owner": "Omistaja"
+  },
+  "myQuizzes": {
+    "title": "Omat visat",
+    "subtitle": "Näytä, muokkaa ja luo visoja",
+    "newQuiz": "Uusi visa",
+    "createNewQuiz": "Luo uusi visa"
+  },
+  "searchQuizzes": {
+    "title": "Etsi visoja",
+    "subtitle": "Etsi yhteisön luomia visoja.",
+    "placeholder": "Etsi visoja...",
+    "subject": "Aihe",
+    "all": "Kaikki",
+    "searchResultsFor": "Hakutulokset haulle \"{{query}}\":"
+  },
+  "createQuiz": {
+    "backToClassroom": "Takaisin luokkahuoneeseen",
+    "backToMyQuizzes": "Takaisin omiin visoihin",
+    "editQuiz": "Muokkaa visaa",
+    "addQuizToClassroom": "Lisää visa luokkahuoneeseen",
+    "createNewQuiz": "Luo uusi visa",
+    "subtitle": "Rakenna mukautettu muistikorttisetti",
+    "generalInfo": "Yleiset tiedot",
+    "title": "Otsikko",
+    "titlePlaceholder": "Syötä visan otsikko",
+    "description": "Kuvaus",
+    "descriptionPlaceholder": "Syötä kuvaus (valinnainen)",
+    "subject": "Aihe",
+    "cards": "Kortit",
+    "addCard": "+ Lisää kortti",
+    "cancel": "Peruuta",
+    "saving": "Tallennetaan...",
+    "saveQuiz": "Tallenna visa"
+  },
+  "flashcardInput": {
+    "question": "Kysymys *",
+    "answer": "Vastaus *",
+    "questionPlaceholder": "Kirjoita kysymys...",
+    "answerPlaceholder": "Kirjoita vastaus..."
+  },
+  "quizDetails": {
+    "backToQuizSearch": "Takaisin visahakuun",
+    "createdBy": "Luonut ",
+    "history": "Historia",
+    "loginToSave": "Kirjaudu tallentaaksesi yritykset",
+    "tries": "Yritykset",
+    "cardCount": "Korttien määrä",
+    "playQuiz": "Pelaa visa"
+  },
+  "quizGame": {
+    "backToSearch": "Takaisin hakuun",
+    "iDontKnow": "En tiedä tätä",
+    "iKnow": "Tiedän tämän",
+    "previous": "EDELLINEN",
+    "next": "SEURAAVA"
+  },
+  "results": {
+    "quizComplete": "Visa suoritettu!",
+    "yourScore": "Tuloksesi",
+    "correct": "Oikein",
+    "incorrect": "Väärin",
+    "backToDetails": "Takaisin tietoihin",
+    "playAgain": "Pelaa uudelleen"
+  },
+  "classrooms": {
+    "title": "Omat luokkahuoneet",
+    "subtitleTeacher": "Hallitse luokkahuoneitasi.",
+    "subtitleStudent": "Luokkahuoneet, joiden jäsen olet.",
+    "searchPlaceholder": "Etsi luokkahuoneistasi...",
+    "subject": "Aihe",
+    "all": "Kaikki",
+    "searchResultsFor": "Hakutulokset haulle \"{{query}}\":",
+    "newClassroom": "Uusi luokkahuone",
+    "createNewClassroom": "Luo uusi luokkahuone",
+    "joinClassroom": "Liity luokkahuoneeseen",
+    "enterJoinCode": "Syötä liittymiskoodi",
+    "noClassroomsFound": "Luokkahuoneita ei löytynyt.",
+    "joinModalTitle": "Liity luokkahuoneeseen",
+    "joinModalDescription": "Syötä opettajasi antama liittymiskoodi."
+  },
+  "createClassroom": {
+    "backToClassrooms": "Takaisin luokkahuoneisiin",
+    "editClassroom": "Muokkaa luokkahuonetta",
+    "createNewClassroom": "Luo uusi luokkahuone",
+    "subtitleEdit": "Päivitä luokkahuoneen tiedot",
+    "subtitleCreate": "Luo luokkahuone opiskelijoillesi",
+    "generalInfo": "Yleiset tiedot",
+    "title": "Otsikko",
+    "titlePlaceholder": "Syötä luokkahuoneen otsikko",
+    "description": "Kuvaus",
+    "descriptionPlaceholder": "Kuvaile luokkahuonettasi (valinnainen)",
+    "subject": "Aihe",
+    "settings": "Asetukset",
+    "announcement": "Ilmoitus",
+    "announcementPlaceholder": "Kiinnitä ilmoitus opiskelijoillesi (valinnainen)",
+    "customJoinCode": "Mukautettu liittymiskoodi",
+    "joinCodeHint": "Vähintään 6 merkkiä. Jätä tyhjäksi automaattista luontia varten.",
+    "joinCodePlaceholder": "esim. BIO2026",
+    "cancel": "Peruuta",
+    "saving": "Tallennetaan...",
+    "saveChanges": "Tallenna muutokset",
+    "createClassroom": "Luo luokkahuone",
+    "somethingWentWrong": "Jokin meni pieleen. Yritä uudelleen."
+  },
+  "classroomView": {
+    "backToClassrooms": "Takaisin luokkahuoneisiin",
+    "classroomNotFound": "Luokkahuonetta ei löytynyt.",
+    "backToClassroomsBtn": "Takaisin luokkahuoneisiin"
+  },
+  "classroomHeader": {
+    "owner": "Omistaja",
+    "manage": "Hallitse",
+    "leave": "Poistu",
+    "joinCode": "Liittymiskoodi",
+    "announcement": "Ilmoitus"
+  },
+  "quizzesSection": {
+    "title": "Visat",
+    "addQuiz": "+ Lisää visa",
+    "noQuizzes": "Visoja ei ole vielä lisätty."
+  },
+  "materialsSection": {
+    "title": "Oppimateriaalit",
+    "addMaterial": "+ Lisää materiaali",
+    "noMaterials": "Oppimateriaaleja ei ole vielä lisätty.",
+    "addedBy": "Lisännyt {{username}}"
+  },
+  "membersSection": {
+    "title": "Jäsenet",
+    "owner": "Omistaja",
+    "remove": "Poista"
+  },
+  "joinClassroomForm": {
+    "placeholder": "Syötä luokkahuoneen liittymiskoodi",
+    "joining": "Liitytään...",
+    "joinClassroom": "Liity luokkahuoneeseen"
+  },
+  "createMaterial": {
+    "unauthorized": "Ei oikeuksia",
+    "onlyTeachers": "Vain opettajat voivat luoda oppimateriaaleja.",
+    "goBack": "Takaisin",
+    "missingClassroom": "Luokkahuone puuttuu",
+    "classroomRequired": "Oppimateriaalin lisäämiseksi on valittava luokkahuone.",
+    "goToClassrooms": "Siirry luokkahuoneisiin",
+    "backToClassroom": "Takaisin luokkahuoneeseen",
+    "title": "Lisää oppimateriaali",
+    "subtitle": "Luo tekstipohjaista oppisisältöä luokkahuoneellesi",
+    "materialDetails": "Materiaalin tiedot",
+    "titleLabel": "Otsikko",
+    "titlePlaceholder": "Syötä materiaalin otsikko",
+    "contentLabel": "Sisältö",
+    "contentPlaceholder": "Kirjoita oppimateriaalin sisältö tähän...",
+    "cancel": "Peruuta",
+    "creating": "Luodaan...",
+    "createMaterial": "Luo materiaali",
+    "titleRequired": "Otsikko on pakollinen.",
+    "contentRequired": "Sisältö on pakollinen.",
+    "failedToCreate": "Oppimateriaalin luonti epäonnistui.",
+    "unexpectedError": "Odottamaton virhe tapahtui."
+  },
+  "materialView": {
+    "backToClassroom": "Takaisin luokkahuoneeseen",
+    "learningMaterial": "Oppimateriaali",
+    "createdBy": "Luonut",
+    "materialNotFound": "Materiaalia ei löytynyt.",
+    "backToClassroomBtn": "Takaisin luokkahuoneeseen"
+  },
+  "footer": {
+    "tagline": "Luo, jaa ja hallitse muistikortteja helposti. Opiskele fiksummin, älä kovemmin.",
+    "navigate": "Navigointi",
+    "actions": "Toiminnot",
+    "login": "Kirjaudu",
+    "signUp": "Rekisteröidy",
+    "profile": "Profiili",
+    "createQuiz": "Luo visa",
+    "logout": "Kirjaudu ulos",
+    "madeWith": "❤️:lla tehty by Ryhmä A-Ryhmä"
+  },
+  "quizCard": {
+    "cards": "{{count}} korttia",
+    "edit": "Muokkaa"
+  },
+  "classroomCard": {
+    "member": "jäsen",
+    "members": "jäsentä"
+  },
+  "common": {
+    "loading": "Ladataan...",
+    "error": "Virhe",
+    "save": "Tallenna",
+    "delete": "Poista",
+    "confirm": "Vahvista"
+  },
+  "validation": {
+    "usernameRequired": "Käyttäjänimi vaaditaan",
+    "passwordRequired": "Salasana vaaditaan",
+    "emailInvalid": "Syötä kelvollinen sähköpostiosoite",
+    "passwordMin6": "Salasanan on oltava vähintään 6 merkkiä",
+    "repeatPasswordRequired": "Salasanan toisto vaaditaan",
+    "passwordsMustMatch": "Salasanat eivät täsmää",
+    "currentPasswordRequired": "Nykyinen salasana vaaditaan",
+    "passwordMin8": "Salasanan on oltava vähintään 8 merkkiä",
+    "titleRequired": "Otsikko vaaditaan",
+    "titleMax40": "Otsikko saa olla enintään 40 merkkiä",
+    "titleMax255": "Otsikko saa olla enintään 255 merkkiä",
+    "descriptionMax255": "Kuvaus saa olla enintään 255 merkkiä",
+    "subjectRequired": "Aihe vaaditaan",
+    "questionRequired": "Kysymys vaaditaan",
+    "questionMax255": "Kysymys saa olla enintään 255 merkkiä",
+    "answerRequired": "Vastaus vaaditaan",
+    "answerMax255": "Vastaus saa olla enintään 255 merkkiä",
+    "atLeastOneCard": "Vähintään yksi kortti vaaditaan",
+    "messageMax500": "Viesti saa olla enintään 500 merkkiä",
+    "joinCodeRequired": "Liittymiskoodi vaaditaan",
+    "joinCodeMin6": "Liittymiskoodin on oltava vähintään 6 merkkiä",
+    "noteMax255": "Muistiinpano saa olla enintään 255 merkkiä"
+  }
+}

@@ -5,8 +5,11 @@ import { LogOut, Users } from "lucide-react";
 import { useEffect } from "react";
 import { useClassroomContext } from "/src/hooks/useClassroomContext";
 import { leaveClassroom } from "/src/api";
+import { useTranslation } from "react-i18next";
 
 function ClassroomRow({ classroom, onLeave }) {
+  const { t } = useTranslation();
+
   const handleLeave = async () => {
     const response = await leaveClassroom(classroom.id);
     if (response.success) {
@@ -16,7 +19,7 @@ function ClassroomRow({ classroom, onLeave }) {
 
   const menuItems = [
     {
-      label: "Leave classroom",
+      label: t("classroomList.leaveClassroom"),
       icon: <LogOut size={14} />,
       variant: "destructive",
       onClick: handleLeave,
@@ -39,7 +42,7 @@ function ClassroomRow({ classroom, onLeave }) {
           </Link>
           {classroom.isOwner && (
             <Badge bgColor="bg-green-100" textColor="text-green-700">
-              Owner
+              {t("classroomList.owner")}
             </Badge>
           )}
         </div>
@@ -55,6 +58,7 @@ function ClassroomRow({ classroom, onLeave }) {
 
 export default function ClassroomList() {
   const { classrooms, fetchClassrooms } = useClassroomContext();
+  const { t } = useTranslation();
 
   useEffect(() => {
     fetchClassrooms();
@@ -63,11 +67,11 @@ export default function ClassroomList() {
   return (
     <div>
       <h2 className="text-sm font-semibold text-secondary uppercase tracking-wide">
-        My Classrooms
+        {t("classroomList.title")}
       </h2>
 
       {classrooms.length === 0 ? (
-        <p className="mt-3 text-sm text-secondary">You are not part of any classrooms yet.</p>
+        <p className="mt-3 text-sm text-secondary">{t("classroomList.empty")}</p>
       ) : (
         <div className="mt-2 flex flex-col divide-y divide-secondary/10">
           {classrooms.map((classroom) => (

@@ -3,20 +3,12 @@ import { Badge } from "./Badge";
 import { Avatar } from "./Avatar";
 import { Button } from "./Button";
 import { Pencil, BookCopy } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
-/**
- * Unified quiz card component.
- * Shows an edit button in the footer when `onEdit` is provided,
- * otherwise shows creator info with avatar and role badge.
- *
- * @param {object} quiz - quiz object containing title, cardCount, creatorUsername, creatorRole, etc.
- * @param {function} onClick - click handler for the card
- * @param {function} [onEdit] - when provided, renders an edit button in the footer instead of creator info
- * @param {string} [className] - any extra classes
- */
 export function QuizCard({ quiz, onClick, onEdit, className = "" }) {
   const cardCount = quiz?.cardCount;
   const creatorRole = quiz?.creatorRole ? String(quiz.creatorRole) : "STUDENT";
+  const { t } = useTranslation();
 
   return (
     <div
@@ -44,7 +36,7 @@ export function QuizCard({ quiz, onClick, onEdit, className = "" }) {
           {cardCount !== undefined && (
             <Badge textColor="text-primary" bgColor="bg-primary/10">
               <BookCopy size={12} className="inline mr-1" />
-              {cardCount} cards
+              {t("quizCard.cards", { count: cardCount })}
             </Badge>
           )}
         </div>
@@ -63,7 +55,7 @@ export function QuizCard({ quiz, onClick, onEdit, className = "" }) {
               }}
             >
               <Pencil className="w-4 h-4 mr-2" />
-              Edit
+              {t("quizCard.edit")}
             </Button>
           </div>
         ) : (

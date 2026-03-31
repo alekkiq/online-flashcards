@@ -13,12 +13,14 @@ import { PageLoader } from "../components/ui/PageLoader";
 import { BackLink } from "../components/ui/BackLink";
 import { quizSchema } from "/src/lib/schemas";
 import { addQuizToClassroom } from "/src/api";
+import { useTranslation } from "react-i18next";
 
 export default function CreateQuiz() {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const classroomId = searchParams.get("classroomId");
+  const { t } = useTranslation();
   const {
     handleCreateQuiz,
     handleUpdateQuiz,
@@ -35,7 +37,7 @@ export default function CreateQuiz() {
     formState: { errors },
     reset,
   } = useForm({
-    resolver: zodResolver(quizSchema),
+    resolver: zodResolver(quizSchema(t)),
     defaultValues: {
       title: "",
       description: "",
@@ -95,38 +97,38 @@ export default function CreateQuiz() {
 
   return (
     <div className="max-w-5xl mx-auto py-8 px-4 md:px-0">
-      <BackLink label={classroomId ? "Back to classroom" : "Back to my quizzes"}/>
+      <BackLink label={classroomId ? t("createQuiz.backToClassroom") : t("createQuiz.backToMyQuizzes")}/>
       <div className="mb-8 text-center md:text-left">
         <h1 className="font-serif text-4xl md:text-5xl font-bold text-main mb-2">
-          {isEditMode ? "Edit Quiz" : classroomId ? "Add Quiz to Classroom" : "Create New Quiz"}
+          {isEditMode ? t("createQuiz.editQuiz") : classroomId ? t("createQuiz.addQuizToClassroom") : t("createQuiz.createNewQuiz")}
         </h1>
-        <p className="text-secondary text-lg">Build a custom flashcard set</p>
+        <p className="text-secondary text-lg">{t("createQuiz.subtitle")}</p>
       </div>
 
       <div className="bg-white rounded-2xl shadow-sm border border-secondary/10">
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
           <div className="p-6 md:p-8 flex flex-col gap-6 border-b border-secondary/10">
-            <h2 className="font-bold text-lg text-main">General Information</h2>
+            <h2 className="font-bold text-lg text-main">{t("createQuiz.generalInfo")}</h2>
 
-            <FormField label="Title" error={errors.title?.message}>
+            <FormField label={t("createQuiz.title")} error={errors.title?.message}>
               <Input
                 id="title"
-                placeholder="Enter quiz title"
+                placeholder={t("createQuiz.titlePlaceholder")}
                 hasError={!!errors.title}
                 {...register("title")}
               />
             </FormField>
 
-            <FormField label="Description" error={errors.description?.message}>
+            <FormField label={t("createQuiz.description")} error={errors.description?.message}>
               <textarea
                 id="description"
                 {...register("description")}
                 className="flex min-h-[120px] w-full rounded-xl border border-secondary/30 bg-white p-3 text-sm text-main transition-colors placeholder:text-secondary/60 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50 resize-none"
-                placeholder="Enter description (optional)"
+                placeholder={t("createQuiz.descriptionPlaceholder")}
               />
             </FormField>
 
-            <FormField label="Subject" error={errors.subject?.message}>
+            <FormField label={t("createQuiz.subject")} error={errors.subject?.message}>
               <Controller
                 name="subject"
                 control={control}
@@ -142,7 +144,7 @@ export default function CreateQuiz() {
           </div>
 
           <div className="p-6 md:p-8 flex flex-col gap-6">
-            <h2 className="font-bold text-lg text-main">Cards</h2>
+            <h2 className="font-bold text-lg text-main">{t("createQuiz.cards")}</h2>
 
             <div className="flex flex-col">
               {fields.map((field, index) => (
@@ -162,7 +164,7 @@ export default function CreateQuiz() {
               onClick={() => append({ question: "", answer: "" })}
               className="w-full py-4 border-2 border-dashed border-gray-200 text-gray-400 hover:border-primary hover:text-primary hover:bg-primary/5 transition-all"
             >
-              + Add Card
+              {t("createQuiz.addCard")}
             </Button>
           </div>
 
@@ -173,10 +175,10 @@ export default function CreateQuiz() {
               className="flex-1"
               onClick={() => navigate(classroomId ? `/classrooms/${classroomId}` : "/my-quizzes")}
             >
-              Cancel
+              {t("createQuiz.cancel")}
             </Button>
             <Button type="submit" className="flex-1" disabled={isSubmitting}>
-              {isSubmitting ? "Saving..." : "Save Quiz"}
+              {isSubmitting ? t("createQuiz.saving") : t("createQuiz.saveQuiz")}
             </Button>
           </div>
         </form>

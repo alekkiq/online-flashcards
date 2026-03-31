@@ -2,9 +2,11 @@ import { cn } from "/src/lib/utils";
 import { Badge } from "./Badge";
 import { Avatar } from "./Avatar";
 import { Users } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function ClassroomCard({ classroom, onClick, className }) {
   const memberCount = classroom.userCount || 0;
+  const { t } = useTranslation();
 
   return (
     <div
@@ -31,7 +33,7 @@ export default function ClassroomCard({ classroom, onClick, className }) {
           )}
           <Badge textColor="text-primary" bgColor="bg-primary/10">
             <Users size={12} className="inline mr-1" />
-            {memberCount} {memberCount === 1 ? "member" : "members"}
+            {memberCount} {memberCount === 1 ? t("classroomCard.member") : t("classroomCard.members")}
           </Badge>
         </div>
       </div>

@@ -2,15 +2,17 @@ import { Link } from "react-router";
 import { Button } from "/src/components/ui/Button";
 import { useAuth } from "/src/hooks/useAuth";
 import { User } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function AuthLinks() {
   const { user, handleLogout } = useAuth();
+  const { t } = useTranslation();
 
   if (user) {
     return (
       <div className="flex items-center gap-3">
         <Button variant="outline" size="md" onClick={handleLogout}>
-          Sign Out
+          {t("nav.signOut")}
         </Button>
         <Link
           to="/profile"
@@ -27,11 +29,11 @@ export default function AuthLinks() {
     <div className="flex items-center gap-2">
       <Link to="/login">
         <Button variant="outline" size="md">
-          Log In
+          {t("nav.logIn")}
         </Button>
       </Link>
       <Link to="/login?signup=true">
-        <Button size="md">Sign Up</Button>
+        <Button size="md">{t("nav.signUp")}</Button>
       </Link>
     </div>
   );

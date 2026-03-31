@@ -6,12 +6,14 @@ import { FormField } from "../components/ui/FormField";
 import { BackLink } from "../components/ui/BackLink";
 import { useAuth } from "../hooks/useAuth";
 import { addLearningMaterial } from "/src/api";
+import { useTranslation } from "react-i18next";
 
 export default function CreateMaterial() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const classroomId = searchParams.get("classroomId");
   const { isTeacher } = useAuth();
+  const { t } = useTranslation();
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -21,10 +23,10 @@ export default function CreateMaterial() {
   if (!isTeacher) {
     return (
       <div className="max-w-5xl mx-auto py-8 px-4 md:px-0 text-center">
-        <h1 className="font-serif text-3xl font-bold text-main mb-4">Unauthorized</h1>
-        <p className="text-secondary">Only teachers can create learning materials.</p>
+        <h1 className="font-serif text-3xl font-bold text-main mb-4">{t("createMaterial.unauthorized")}</h1>
+        <p className="text-secondary">{t("createMaterial.onlyTeachers")}</p>
         <Button variant="outline" className="mt-4" onClick={() => navigate(-1)}>
-          Go Back
+          {t("createMaterial.goBack")}
         </Button>
       </div>
     );
@@ -33,10 +35,10 @@ export default function CreateMaterial() {
   if (!classroomId) {
     return (
       <div className="max-w-5xl mx-auto py-8 px-4 md:px-0 text-center">
-        <h1 className="font-serif text-3xl font-bold text-main mb-4">Missing Classroom</h1>
-        <p className="text-secondary">A classroom must be selected to add learning material.</p>
+        <h1 className="font-serif text-3xl font-bold text-main mb-4">{t("createMaterial.missingClassroom")}</h1>
+        <p className="text-secondary">{t("createMaterial.classroomRequired")}</p>
         <Button variant="outline" className="mt-4" onClick={() => navigate("/classrooms")}>
-          Go to Classrooms
+          {t("createMaterial.goToClassrooms")}
         </Button>
       </div>
     );
@@ -45,11 +47,11 @@ export default function CreateMaterial() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!title.trim()) {
-      setError("Title is required.");
+      setError(t("createMaterial.titleRequired"));
       return;
     }
     if (!content.trim()) {
-      setError("Content is required.");
+      setError(t("createMaterial.contentRequired"));
       return;
     }
 
@@ -65,11 +67,11 @@ export default function CreateMaterial() {
       if (response.success) {
         navigate(`/classrooms/${classroomId}`);
       } else {
-        setError(response.error || "Failed to create learning material.");
+        setError(response.error || t("createMaterial.failedToCreate"));
       }
     } catch (err) {
       console.error("Failed to create learning material:", err);
-      setError("An unexpected error occurred.");
+      setError(t("createMaterial.unexpectedError"));
     } finally {
       setIsSubmitting(false);
     }
@@ -77,18 +79,18 @@ export default function CreateMaterial() {
 
   return (
     <div className="max-w-5xl mx-auto py-8 px-4 md:px-0">
-      <BackLink label="Back to classroom" to={`/classrooms/${classroomId}`} />
+      <BackLink label={t("createMaterial.backToClassroom")} to={`/classrooms/${classroomId}`} />
       <div className="mb-8 text-center md:text-left">
         <h1 className="font-serif text-4xl md:text-5xl font-bold text-main mb-2">
-          Add Learning Material
+          {t("createMaterial.title")}
         </h1>
-        <p className="text-secondary text-lg">Create text-based learning content for your classroom</p>
+        <p className="text-secondary text-lg">{t("createMaterial.subtitle")}</p>
       </div>
 
       <div className="bg-white rounded-2xl shadow-sm border border-secondary/10">
         <form onSubmit={handleSubmit} className="flex flex-col">
           <div className="p-6 md:p-8 flex flex-col gap-6">
-            <h2 className="font-bold text-lg text-main">Material Details</h2>
+            <h2 className="font-bold text-lg text-main">{t("createMaterial.materialDetails")}</h2>
 
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm">
@@ -96,22 +98,22 @@ export default function CreateMaterial() {
               </div>
             )}
 
-            <FormField label="Title">
+            <FormField label={t("createMaterial.titleLabel")}>
               <Input
                 id="title"
-                placeholder="Enter material title"
+                placeholder={t("createMaterial.titlePlaceholder")}
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
               />
             </FormField>
 
-            <FormField label="Content">
+            <FormField label={t("createMaterial.contentLabel")}>
               <textarea
                 id="content"
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 className="flex min-h-[250px] w-full rounded-xl border border-secondary/30 bg-white p-3 text-sm text-main transition-colors placeholder:text-secondary/60 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-primary disabled:cursor-not-allowed disabled:opacity-50 resize-none"
-                placeholder="Write the learning material content here..."
+                placeholder={t("createMaterial.contentPlaceholder")}
               />
             </FormField>
           </div>
@@ -122,10 +124,10 @@ export default function CreateMaterial() {
               variant="outline"
               onClick={() => navigate(`/classrooms/${classroomId}`)}
             >
-              Cancel
+              {t("createMaterial.cancel")}
             </Button>
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Creating..." : "Create Material"}
+              {isSubmitting ? t("createMaterial.creating") : t("createMaterial.createMaterial")}
             </Button>
           </div>
         </form>
