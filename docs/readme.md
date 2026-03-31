@@ -9,7 +9,9 @@ This is the second year Software Engineering project. The application is a quiz 
 ### Core Features
 
 #### Authentication & User Roles
+
 The platform supports three user roles with increasing privileges:
+
 - **Student** — the default role. Can browse, search, and play quizzes, join classrooms, and view results.
 - **Teacher** — a promoted role. Can do everything a student can, plus create and manage quizzes and classrooms.
 - **Admin** — has full administrative privileges, including approving or rejecting promotion requests and managing all users and classrooms.
@@ -17,21 +19,27 @@ The platform supports three user roles with increasing privileges:
 Users register with a username, email, and password. Authentication is handled via **JWT tokens**, so sessions are stateless and secure. Students who want to create content can submit a **promotion request** to be upgraded to the Teacher role, which an Admin can then approve or reject.
 
 #### Quizzes & Flashcards
+
 The central learning unit is the **quiz**, which is a named collection of **flashcards**. Each flashcard has a question side and an answer side. Quizzes are categorized by **subject** (e.g. Mathematics, History) for easy filtering.
 
 Teachers create quizzes by giving them a title, description, subject, and then adding individual flashcards. Quizzes are publicly searchable and playable by all users.
 
 #### Quiz Game
+
 When a user plays a quiz, they are presented with flashcards one at a time in an interactive **flip-card** UI. The user reads the question, mentally answers, then flips the card to reveal the correct answer and self-evaluates. Navigation between cards is animated with sliding transitions. After completing all cards, the result (score percentage) is recorded and the user is taken to a **results page**.
 
 #### Quiz Results & Progress Tracking
+
 Each quiz attempt is saved as a **quiz result**, recording the score percentage and timestamp. This allows users to track their learning progress over time and revisit quizzes to improve.
 
 #### Search & Discovery
+
 The **Search Quizzes** page lets any visitor — authenticated or not — browse and search the full library of community-created quizzes. Quizzes can be filtered by subject. Each quiz card shows the title, creator, subject, and flashcard count.
 
 #### Classrooms
+
 Teachers and Admins can create **classrooms** — virtual study groups organized around a subject. A classroom has:
+
 - A **title**, **description**, and optional **note**
 - A **join code** that students use to enroll
 - **Quizzes** assigned to the classroom for guided study
@@ -41,7 +49,9 @@ Teachers and Admins can create **classrooms** — virtual study groups organized
 Classroom owners can add or remove members, attach quizzes, and upload learning materials. Students can join using the code, view all classroom content, and leave at any time.
 
 #### Profile Management
+
 Authenticated users have a **profile page** where they can:
+
 - View their username, email, and role
 - Edit their profile (change username, email, or password)
 - Submit a promotion request (Student > Teacher)
@@ -50,58 +60,65 @@ Authenticated users have a **profile page** where they can:
 ## TECHNOLOGIES USED
 
 ### Frontend
-| Technology | Purpose |
-|---|---|
-| **React 19** | UI library |
-| **Vite 7** | Build tool & dev server |
-| **Tailwind CSS 4** | Utility-first CSS framework |
-| **React Router 7** | Client-side routing |
-| **React Hook Form** + **Zod** | Form handling & validation |
-| **Lucide React** | Icon library |
-| **Nginx** | Production static file serving & reverse proxy |
+
+| Technology                    | Purpose                                        |
+| ----------------------------- | ---------------------------------------------- |
+| **React 19**                  | UI library                                     |
+| **Vite 7**                    | Build tool & dev server                        |
+| **Tailwind CSS 4**            | Utility-first CSS framework                    |
+| **React Router 7**            | Client-side routing                            |
+| **React Hook Form** + **Zod** | Form handling & validation                     |
+| **Lucide React**              | Icon library                                   |
+| **Nginx**                     | Production static file serving & reverse proxy |
 
 ### Backend
-| Technology | Purpose |
-|---|---|
-| **Java 17** | Programming language |
-| **Spring Boot 4** | Application framework |
-| **Spring Security** | Authentication & authorization |
-| **Spring Data JPA** / **Hibernate** | ORM & database access |
-| **JWT (jjwt)** | Token-based authentication |
-| **Jackson** | JSON serialization |
-| **SpringDoc OpenAPI** | API documentation (Swagger UI) |
-| **Maven** | Build & dependency management |
+
+| Technology                          | Purpose                        |
+| ----------------------------------- | ------------------------------ |
+| **Java 17**                         | Programming language           |
+| **Spring Boot 4**                   | Application framework          |
+| **Spring Security**                 | Authentication & authorization |
+| **Spring Data JPA** / **Hibernate** | ORM & database access          |
+| **JWT (jjwt)**                      | Token-based authentication     |
+| **Jackson**                         | JSON serialization             |
+| **SpringDoc OpenAPI**               | API documentation (Swagger UI) |
+| **Maven**                           | Build & dependency management  |
 
 ### Database
-| Technology | Purpose |
-|---|---|
+
+| Technology     | Purpose             |
+| -------------- | ------------------- |
 | **MariaDB 11** | Relational database |
 
 ### Testing
-| Technology | Purpose |
-|---|---|
-| **Vitest** + **jsdom** | Frontend unit testing |
-| **React Testing Library** | Component testing |
-| **V8 Coverage** | Frontend code coverage |
+
+| Technology                     | Purpose                            |
+| ------------------------------ | ---------------------------------- |
+| **Vitest** + **jsdom**         | Frontend unit testing              |
+| **React Testing Library**      | Component testing                  |
+| **V8 Coverage**                | Frontend code coverage             |
 | **JUnit 5** (Spring Boot Test) | Backend unit & integration testing |
-| **JaCoCo** | Backend code coverage |
+| **JaCoCo**                     | Backend code coverage              |
 
 ### DevOps & Deployment
-| Technology | Purpose |
-|---|---|
-| **Docker** | Containerization |
+
+| Technology         | Purpose                       |
+| ------------------ | ----------------------------- |
+| **Docker**         | Containerization              |
 | **Docker Compose** | Multi-container orchestration |
-| **Jenkins** | CI/CD pipeline |
-| **Docker Hub** | Container image registry |
-| **Railway** | Cloud hosting & deployment |
+| **Jenkins**        | CI/CD pipeline                |
+| **Docker Hub**     | Container image registry      |
+| **Railway**        | Cloud hosting & deployment    |
 
 ### Code Quality
-| Technology | Purpose |
-|---|---|
+
+| Technology   | Purpose          |
+| ------------ | ---------------- |
 | **ESLint 9** | Frontend linting |
-| **Prettier** | Code formatting |
+| **Prettier** | Code formatting  |
 
 ## CI/CD PIPELINE
+
 The project uses a **Jenkins declarative pipeline** (`Jenkinsfile`) that automates building, testing, and containerizing the application. The pipeline runs on a **Windows** Jenkins agent and uses `bat` commands throughout.
 
 ### Pipeline Overview
@@ -112,12 +129,12 @@ Checkout & Setup ➜ Build & Test (parallel) ➜ Build Docker Images ➜ Cleanup
 
 ### Pipeline Stages
 
-| Stage | Description |
-|---|---|
-| **Setup & Checkout** | Clones the repository via `checkout scm` and injects the `.env` credentials file from Jenkins into the workspace root |
-| **Backend** *(parallel)* | Spins up a MariaDB container (`docker compose up -d --wait db`), then runs `mvnw.cmd clean package` which compiles, tests, and packages the Spring Boot JAR |
-| **Frontend** *(parallel)* | Installs dependencies (`npm ci`), runs Vitest with V8 coverage (`npm run test:coverage`), and builds the production bundle (`npm run build`) |
-| **Build Docker Images** | Runs `docker compose build` to create production-ready images for all services |
+| Stage                     | Description                                                                                                                                                 |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Setup & Checkout**      | Clones the repository via `checkout scm` and injects the `.env` credentials file from Jenkins into the workspace root                                       |
+| **Backend** _(parallel)_  | Spins up a MariaDB container (`docker compose up -d --wait db`), then runs `mvnw.cmd clean package` which compiles, tests, and packages the Spring Boot JAR |
+| **Frontend** _(parallel)_ | Installs dependencies (`npm ci`), runs Vitest with V8 coverage (`npm run test:coverage`), and builds the production bundle (`npm run build`)                |
+| **Build Docker Images**   | Runs `docker compose build` to create production-ready images for all services                                                                              |
 
 ### Jenkins Tools
 
@@ -135,7 +152,7 @@ These must be configured in **Manage Jenkins → Tools** with the exact names sh
 
 ### Environment & Credentials
 
-All environment variables (database credentials, JWT secret, etc.) are stored in a **single `.env` file** managed as a Jenkins `file` credential (`flashcards-env`). During the *Setup & Checkout* stage, the file is copied into the workspace root:
+All environment variables (database credentials, JWT secret, etc.) are stored in a **single `.env` file** managed as a Jenkins `file` credential (`flashcards-env`). During the _Setup & Checkout_ stage, the file is copied into the workspace root:
 
 ```groovy
 withCredentials([file(credentialsId: 'flashcards-env', variable: 'ENV_FILE')]) {
@@ -147,11 +164,11 @@ Docker Compose automatically reads the `.env` file to populate service environme
 
 ### Test Reporting
 
-| Report | Tool | Location |
-|---|---|---|
-| Backend unit tests | JUnit Publisher | `backend/target/surefire-reports/*.xml` |
-| Backend code coverage | JaCoCo Publisher | `backend/target/jacoco.exec` |
-| Frontend code coverage | HTML Publisher | `frontend/coverage/index.html` |
+| Report                 | Tool             | Location                                |
+| ---------------------- | ---------------- | --------------------------------------- |
+| Backend unit tests     | JUnit Publisher  | `backend/target/surefire-reports/*.xml` |
+| Backend code coverage  | JaCoCo Publisher | `backend/target/jacoco.exec`            |
+| Frontend code coverage | HTML Publisher   | `frontend/coverage/index.html`          |
 
 ### Post-Pipeline Cleanup
 
@@ -168,12 +185,12 @@ post {
 
 ### Required Jenkins Plugins
 
-| Plugin | Purpose |
-|---|---|
-| **NodeJS** | Provides the `nodejs` tool installer |
-| **JUnit** | Publishes backend test results |
-| **JaCoCo** | Publishes backend code coverage |
-| **HTML Publisher** | Publishes the frontend coverage report |
+| Plugin              | Purpose                                |
+| ------------------- | -------------------------------------- |
+| **NodeJS**          | Provides the `nodejs` tool installer   |
+| **JUnit**           | Publishes backend test results         |
+| **JaCoCo**          | Publishes backend code coverage        |
+| **HTML Publisher**  | Publishes the frontend coverage report |
 | **Docker Pipeline** | Docker integration for building images |
 
 ---
@@ -182,11 +199,11 @@ post {
 
 ### Docker Images
 
-| Image | Base | Description |
-|---|---|---|
-| **Backend** | `eclipse-temurin:21-jre-alpine` | Copies the pre-built `online-flashcards-api.jar` into `/app` and runs it with `java -jar` |
-| **Frontend** | `nginx:stable-alpine` | Copies the Vite `dist/` output and a custom `nginx.conf` into the container |
-| **Database** | `mariadb:11` | Official MariaDB image, configured entirely via environment variables |
+| Image        | Base                            | Description                                                                               |
+| ------------ | ------------------------------- | ----------------------------------------------------------------------------------------- |
+| **Backend**  | `eclipse-temurin:21-jre-alpine` | Copies the pre-built `online-flashcards-api.jar` into `/app` and runs it with `java -jar` |
+| **Frontend** | `nginx:stable-alpine`           | Copies the Vite `dist/` output and a custom `nginx.conf` into the container               |
+| **Database** | `mariadb:11`                    | Official MariaDB image, configured entirely via environment variables                     |
 
 ### Backend Dockerfile
 
@@ -197,7 +214,7 @@ COPY target/online-flashcards-api.jar app.jar
 CMD ["java", "-jar", "app.jar"]
 ```
 
-The JAR is built by Maven during the pipeline's *Backend* stage **before** Docker builds the image.
+The JAR is built by Maven during the pipeline's _Backend_ stage **before** Docker builds the image.
 
 ### Frontend Dockerfile
 
@@ -209,7 +226,7 @@ EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
 ```
 
-The Vite production build (`dist/`) is created during the pipeline's *Frontend* stage.
+The Vite production build (`dist/`) is created during the pipeline's _Frontend_ stage.
 
 ### Nginx Reverse Proxy (`nginx.conf`)
 
@@ -241,11 +258,11 @@ server {
 
 The `docker-compose.yaml` orchestrates three services:
 
-| Service | Container Name | Ports | Notes |
-|---|---|---|---|
-| **db** | `flashcards-db` | `3307:3306` | MariaDB with health check, persistent `db_data` volume |
-| **backend** | `flashcards-backend` | `8080:8080` | Starts only after `db` is healthy (`depends_on: condition: service_healthy`) |
-| **frontend** | `flashcards-frontend` | `3000:80` | Depends on `backend`; Nginx proxies `/api/v1/` to `http://backend:8080` |
+| Service      | Container Name        | Ports       | Notes                                                                        |
+| ------------ | --------------------- | ----------- | ---------------------------------------------------------------------------- |
+| **db**       | `flashcards-db`       | `3307:3306` | MariaDB with health check, persistent `db_data` volume                       |
+| **backend**  | `flashcards-backend`  | `8080:8080` | Starts only after `db` is healthy (`depends_on: condition: service_healthy`) |
+| **frontend** | `flashcards-frontend` | `3000:80`   | Depends on `backend`; Nginx proxies `/api/v1/` to `http://backend:8080`      |
 
 ### Database Health Check
 
@@ -253,7 +270,16 @@ The database service uses a health check to ensure it is fully ready before the 
 
 ```yaml
 healthcheck:
-  test: ["CMD", "mariadb", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}", "-e", "SELECT 1"]
+  test:
+    [
+      "CMD",
+      "mariadb",
+      "-u",
+      "root",
+      "-p${MYSQL_ROOT_PASSWORD}",
+      "-e",
+      "SELECT 1",
+    ]
   interval: 10s
   timeout: 30s
   retries: 20
@@ -266,11 +292,11 @@ healthcheck:
 
 Production images are deployed to **[Railway](https://railway.app)** as three separate services:
 
-| Railway Service | Source | Description |
-|---|---|---|
-| **Frontend** | `frontend/Dockerfile` | Nginx serving the SPA and reverse-proxying API calls |
-| **Backend** | `backend/Dockerfile` | Spring Boot API |
-| **Database** | Railway MariaDB plugin | Managed MariaDB instance |
+| Railway Service | Source                 | Description                                          |
+| --------------- | ---------------------- | ---------------------------------------------------- |
+| **Frontend**    | `frontend/Dockerfile`  | Nginx serving the SPA and reverse-proxying API calls |
+| **Backend**     | `backend/Dockerfile`   | Spring Boot API                                      |
+| **Database**    | Railway MariaDB plugin | Managed MariaDB instance                             |
 
 ### Internal Networking
 
@@ -279,6 +305,62 @@ Railway services communicate over a **private internal network**. The frontend N
 ### Required Railway Environment Variables
 
 Each service must have its environment variables configured in the Railway dashboard — the same variables that appear in the `.env` file locally (database credentials, `JWT_SECRET`, `JWT_EXPIRATION`, `BACKEND_URL`, etc.).
+
+## Localization (i18n)
+
+The app uses [i18next](https://www.i18next.com/) with `react-i18next` for internationalization.
+
+### Supported languages
+
+| Code | Language | RTL |
+| ---- | -------- | --- |
+| `en` | English  | No  |
+| `fi` | Suomi    | No  |
+| `fa` | فارسی    | Yes |
+| `zh` | 普通话   | No  |
+
+### Translation files
+
+Translations are stored as JSON files under `public/locales/<lang>/translation.json`. The app loads them at runtime via `i18next-http-backend`.
+
+```
+public/
+  locales/
+    en/translation.json
+    fi/translation.json
+    fa/translation.json
+    zh/translation.json
+```
+
+### Adding a new language
+
+1. Add an entry to `src/config/languages.js`:
+   ```js
+   sv: {
+     locale: 'sv_SE',
+     lng: 'sv',
+     label: 'Svenska',
+     isRtl: false,
+   }
+   ```
+2. Create `public/locales/sv/translation.json` with the translated strings (use `en/translation.json` as a reference).
+
+### Using translations in components
+
+```jsx
+import { useTranslation } from "react-i18next";
+
+function MyComponent() {
+  const { t } = useTranslation();
+  return <p>{t("common.loading")}</p>;
+}
+```
+
+The `LanguageSwitcher` component (`src/components/ui/LanguageSwitcher.jsx`) renders a dropdown in the navbar that lets users switch languages at runtime. The selected language is detected from the browser on first load and falls back to English if unsupported.
+
+### RTL support
+
+Languages marked `isRtl: true` in `src/config/languages.js` (currently Farsi) require RTL layout handling in CSS. This flag is available app-wide via the `LANGUAGES` config so components can conditionally apply RTL styles.
 
 ## ARCHITECTURE DESIGN
 
