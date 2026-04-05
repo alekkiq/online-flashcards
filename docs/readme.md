@@ -54,11 +54,19 @@ Authenticated users have a **profile page** where they can:
 |---|---|
 | **React 19** | UI library |
 | **Vite 7** | Build tool & dev server |
+| **i18next** + **react-i18next** | Frontend internationalization and localization |
 | **Tailwind CSS 4** | Utility-first CSS framework |
 | **React Router 7** | Client-side routing |
 | **React Hook Form** + **Zod** | Form handling & validation |
 | **Lucide React** | Icon library |
 | **Nginx** | Production static file serving & reverse proxy |
+
+#### Internationalization (i18n/l10n)
+The frontend is localized with **i18next** and **react-i18next**. Localization is initialized from `frontend/src/i18n.js` and loaded at app startup through `frontend/src/main.jsx`, so the language system is available across the whole React application.
+
+Supported languages currently include **English (`en`)**, **Finnish (`fi`)**, **Persian (`fa`)**, and **Chinese (`zh`)**. The active language is detected from the user's browser preference when possible, with **English** used as the fallback language.
+
+Translation files are stored in `frontend/public/locales/<language>/translation.json`, and the language configuration also includes metadata such as display labels and RTL support. Persian is marked as **right-to-left**, which lets the UI adapt correctly for RTL layouts where needed.
 
 ### Backend
 | Technology | Purpose |
