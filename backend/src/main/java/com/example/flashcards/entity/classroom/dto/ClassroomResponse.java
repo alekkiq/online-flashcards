@@ -11,6 +11,7 @@ public record ClassroomResponse(
         String description,
         String note,
         String joinCode,
+        String language,
         String subjectName,
         String ownerUsername,
         boolean isOwner,
