@@ -39,7 +39,6 @@ public class QuizController {
 
     /**
      * search quizzes.
-     * @param title optional title filter
      * @return list of matching quizzes
      */
     @GetMapping("/search")

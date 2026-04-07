@@ -9,6 +9,6 @@ import java.util.List;
 public interface QuizRepository extends JpaRepository<Quiz, Long> {
     @Query("SELECT q FROM Quiz q")
     List<Quiz> getAllQuizzes();
-
+    List<Quiz> findAllByLanguage(String language);
     List<Quiz> findByCreator_UserId(long userId);
 }

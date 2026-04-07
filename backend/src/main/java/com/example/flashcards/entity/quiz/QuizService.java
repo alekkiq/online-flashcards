@@ -2,6 +2,7 @@ package com.example.flashcards.entity.quiz;
 
 import java.util.List;
 
+import com.example.flashcards.common.provider.CurrentLanguageProvider;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,11 +23,13 @@ public class QuizService implements IQuizService {
     private final QuizRepository quizRepository;
     private final UserRepository userRepository;
     private final SubjectRepository subjectRepository;
+    private final CurrentLanguageProvider currentLanguageProvider;
 
-    public QuizService(QuizRepository quizRepository, UserRepository userRepository, SubjectRepository subjectRepository) {
+    public QuizService(QuizRepository quizRepository, UserRepository userRepository, SubjectRepository subjectRepository, CurrentLanguageProvider currentLanguageProvider) {
         this.quizRepository = quizRepository;
         this.userRepository = userRepository;
         this.subjectRepository = subjectRepository;
+        this.currentLanguageProvider = currentLanguageProvider;
     }
 
     @Override
@@ -38,11 +41,13 @@ public class QuizService implements IQuizService {
 
     @Override
     public List<QuizSeachResponse> searchQuizzes() {
-        return quizRepository.getAllQuizzes().stream()
+        String language = currentLanguageProvider.getCurrentLanguage();
+        return quizRepository.findAllByLanguage(language).stream()
             .map(quiz -> new QuizSeachResponse(
                 quiz.getQuizId(),
                 quiz.getTitle(),
                 quiz.getDescription(),
+                quiz.getLanguage(),
                 quiz.getCreator().getUsername(),
                 quiz.getCreator().getRole().name(),
                 quiz.getSubject().getName(),
@@ -57,10 +62,10 @@ public class QuizService implements IQuizService {
         User creator = userRepository.findById(userId)
             .orElseThrow(() -> new ResourceNotFoundException("User", "User with ID " + userId + " not found."));
 
-        Subject subject = subjectRepository.findByName(request.subject())
-            .orElseThrow(() -> new ResourceNotFoundException("Subject", "Subject with name '" + request.subject() + "' not found."));
+        Subject subject = subjectRepository.findByCodeAndLanguage(request.subjectCode(), request.language())
+            .orElseThrow(() -> new ResourceNotFoundException("Subject", "Subject with name '" + request.subjectCode() + "' not found."));
 
-        Quiz quiz = new Quiz(request.title(), request.description(), creator, subject);
+        Quiz quiz = new Quiz(request.title(), request.description(), request.language(), creator, subject);
 
         if (request.flashcards() != null) {
             request.flashcards().forEach(fc -> {
@@ -83,8 +88,8 @@ public class QuizService implements IQuizService {
             throw new IllegalArgumentException("You are not the owner of this quiz.");
         }
 
-        Subject subject = subjectRepository.findByName(request.subject())
-            .orElseThrow(() -> new ResourceNotFoundException("Subject", "Subject with name '" + request.subject() + "' not found."));
+        Subject subject = subjectRepository.findByCodeAndLanguage(request.subjectCode(), request.language())
+            .orElseThrow(() -> new ResourceNotFoundException("Subject", "Subject with name '" + request.subjectCode() + "' not found."));
 
         quiz.setTitle(request.title());
         quiz.setDescription(request.description());
@@ -131,6 +136,7 @@ public class QuizService implements IQuizService {
             quiz.getQuizId(),
             quiz.getTitle(),
             quiz.getDescription(),
+            quiz.getLanguage(),
             quiz.getCreator().getUsername(), 
             quiz.getCreator().getRole().name(),
             quiz.getSubject().getName(), 
