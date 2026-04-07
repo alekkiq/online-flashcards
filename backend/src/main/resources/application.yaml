@@ -3,7 +3,7 @@ app:
     default-language: en
     supported-languages:
       - code: en
-        tag: en-US
+        tag: en-UK
         label: English
       - code: fi
         tag: fi-FI
