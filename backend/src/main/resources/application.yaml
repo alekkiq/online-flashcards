@@ -1,3 +1,19 @@
+app:
+  i18n:
+    default-language: en
+    supported-languages:
+      - code: en
+        tag: en-US
+        label: English
+      - code: fi
+        tag: fi-FI
+        label: Suomi
+      - code: fa
+        tag: fa-IR
+        label: فارسی
+      - code: zh
+        tag: zh-CN
+        label: 中文
 server:
   port: ${API_PORT:8080}
 spring:
