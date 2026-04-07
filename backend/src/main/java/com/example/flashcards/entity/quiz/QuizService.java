@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.flashcards.common.exception.ForbiddenException;
 import com.example.flashcards.common.exception.ResourceNotFoundException;
 import com.example.flashcards.entity.flashcard.Flashcard;
 import com.example.flashcards.entity.flashcard.dto.FlashcardResponse;
@@ -32,7 +33,7 @@ public class QuizService implements IQuizService {
     @Override
     public QuizResponse getQuizById(long id) {
         Quiz quiz = quizRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Quiz", "Quiz with ID " + id + " not found."));
+            .orElseThrow(() -> new ResourceNotFoundException("Quiz", "error.quiz.notFound", new Object[]{id}));
         return mapToQuizResponse(quiz);
     }
 
@@ -55,10 +56,10 @@ public class QuizService implements IQuizService {
     @Transactional
     public QuizResponse createQuiz(long userId, QuizCreationRequest request) {
         User creator = userRepository.findById(userId)
-            .orElseThrow(() -> new ResourceNotFoundException("User", "User with ID " + userId + " not found."));
+            .orElseThrow(() -> new ResourceNotFoundException("User", "error.user.notFound", new Object[]{userId}));
 
         Subject subject = subjectRepository.findByName(request.subject())
-            .orElseThrow(() -> new ResourceNotFoundException("Subject", "Subject with name '" + request.subject() + "' not found."));
+            .orElseThrow(() -> new ResourceNotFoundException("Subject", "error.subject.nameNotFound", new Object[]{request.subject()}));
 
         Quiz quiz = new Quiz(request.title(), request.description(), creator, subject);
 
@@ -77,14 +78,14 @@ public class QuizService implements IQuizService {
     @Transactional
     public QuizResponse updateQuiz(long id, long userId, QuizCreationRequest request) {
         Quiz quiz = quizRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Quiz", "Quiz with ID " + id + " not found."));
+            .orElseThrow(() -> new ResourceNotFoundException("Quiz", "error.quiz.notFound", new Object[]{id}));
 
         if (quiz.getCreator().getUserId() != userId) {
-            throw new IllegalArgumentException("You are not the owner of this quiz.");
+            throw new ForbiddenException("error.quiz.notOwner", null);
         }
 
         Subject subject = subjectRepository.findByName(request.subject())
-            .orElseThrow(() -> new ResourceNotFoundException("Subject", "Subject with name '" + request.subject() + "' not found."));
+            .orElseThrow(() -> new ResourceNotFoundException("Subject", "error.subject.nameNotFound", new Object[]{request.subject()}));
 
         quiz.setTitle(request.title());
         quiz.setDescription(request.description());
@@ -106,10 +107,10 @@ public class QuizService implements IQuizService {
     @Transactional
     public void deleteQuiz(long id, long userId) {
         Quiz quiz = quizRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Quiz", "Quiz with ID " + id + " not found."));
-            
+            .orElseThrow(() -> new ResourceNotFoundException("Quiz", "error.quiz.notFound", new Object[]{id}));
+
         if (quiz.getCreator().getUserId() != userId) {
-            throw new IllegalArgumentException("You are not the owner of this quiz.");
+            throw new ForbiddenException("error.quiz.notOwner", null);
         }
         
         quizRepository.delete(quiz);

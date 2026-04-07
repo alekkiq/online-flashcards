@@ -1,3 +1,6 @@
+import i18n from "../i18n";
+import { LANGUAGES } from "../config";
+
 const API_BASE = "/api/v1";
 
 /**
@@ -7,12 +10,14 @@ const API_BASE = "/api/v1";
  * @returns {*} {success: boolean, data, error?: Error}
  */
 export async function fetchData(endpoint, options = {}) {
+  const currentLocale = LANGUAGES[i18n.language]?.locale || "en-UK";
   try {
     const url = `${API_BASE}/${endpoint}`;
     const response = await fetch(url, {
       ...options,
       headers: {
         "Content-Type": "application/json",
+        "Accept-Language": currentLocale,
         ...options.headers,
       },
     });
