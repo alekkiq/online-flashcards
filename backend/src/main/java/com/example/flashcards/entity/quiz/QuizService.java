@@ -60,13 +60,15 @@ public class QuizService implements IQuizService {
     @Override
     @Transactional
     public QuizResponse createQuiz(long userId, QuizCreationRequest request) {
+        String language = this.currentLanguageProvider.getCurrentLanguage();
+
         User creator = userRepository.findById(userId)
             .orElseThrow(() -> new ResourceNotFoundException("User", "error.user.notFound", new Object[]{userId}));
 
-        Subject subject = subjectRepository.findByCodeAndLanguage(request.subjectCode(), request.language())
+        Subject subject = subjectRepository.findByCodeAndLanguage(request.subjectCode(), language)
             .orElseThrow(() -> new ResourceNotFoundException("Subject", "error.subject.nameNotFound", new Object[]{request.subjectCode()}));
 
-        Quiz quiz = new Quiz(request.title(), request.description(), request.language(), creator, subject);
+        Quiz quiz = new Quiz(request.title(), request.description(), language, creator, subject);
 
         if (request.flashcards() != null) {
             request.flashcards().forEach(fc -> {
@@ -89,7 +91,9 @@ public class QuizService implements IQuizService {
             throw new ForbiddenException("error.quiz.notOwner", null);
         }
 
-        Subject subject = subjectRepository.findByCodeAndLanguage(request.subjectCode(), request.language())
+        String language = this.currentLanguageProvider.getCurrentLanguage();
+
+        Subject subject = subjectRepository.findByCodeAndLanguage(request.subjectCode(), language)
             .orElseThrow(() -> new ResourceNotFoundException("Subject", "error.subject.nameNotFound", new Object[]{request.subjectCode()}));
 
         quiz.setTitle(request.title());
