@@ -37,6 +37,7 @@ export default function MyQuizzes() {
           <QuizCard
             key={quiz.quizId}
             quiz={quiz}
+            showLanguage={true}
             onClick={() => navigate(`/quiz-details/${quiz.quizId}`)}
             onEdit={() => navigate(`/my-quizzes/details/${quiz.quizId}`)}
           />

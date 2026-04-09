@@ -1,8 +1,4 @@
-import { fetchData } from "/src/lib/fetchData";
-
-function getToken() {
-  return localStorage.getItem("token");
-}
+import { fetchData, getToken } from "/src/lib/fetchData";
 
 export async function getQuiz(id) {
   return fetchData(`quizzes/${id}`);

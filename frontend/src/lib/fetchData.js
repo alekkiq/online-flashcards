@@ -35,3 +35,7 @@ export async function fetchData(endpoint, options = {}) {
     return { success: false, error: error.message };
   }
 }
+
+export function getToken() {
+    return localStorage.getItem("token");
+}

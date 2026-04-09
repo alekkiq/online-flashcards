@@ -5,7 +5,7 @@ import { Button } from "./Button";
 import { Pencil, BookCopy } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-export function QuizCard({ quiz, onClick, onEdit, className = "" }) {
+export function QuizCard({ quiz, showLanguage = false, onClick, onEdit, className = "" }) {
   const cardCount = quiz?.cardCount;
   const creatorRole = quiz?.creatorRole ? String(quiz.creatorRole) : "STUDENT";
   const { t } = useTranslation();
@@ -18,13 +18,17 @@ export function QuizCard({ quiz, onClick, onEdit, className = "" }) {
         className
       )}
     >
-      <div className="p-4 flex flex-col gap-2 flex-1 justify-center">
+      <div className="p-4 relative flex flex-col gap-2 flex-1 justify-center">
         <h3 className="font-inter font-bold text-main text-lg sm:text-2xl leading-tight">
           {quiz.title}
         </h3>
 
         {quiz.description && (
           <p className="text-sm text-secondary line-clamp-2 mb-2">{quiz.description}</p>
+        )}
+
+        {showLanguage && quiz.language && (
+            <Badge textColor="text-primary" bgColor="bg-primary/10" className="absolute top-4 end-4">{quiz.language.toUpperCase()}</Badge>
         )}
 
         <div className="flex items-center gap-2 flex-wrap">
