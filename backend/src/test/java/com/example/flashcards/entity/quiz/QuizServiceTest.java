@@ -140,7 +140,7 @@ class QuizServiceTest {
             new FlashcardCreationRequest("Q1?", "A1"),
             new FlashcardCreationRequest("Q2?", "A2")
         );
-        QuizCreationRequest request = new QuizCreationRequest("New Quiz", "Desc", "en", flashcards, "math");
+        QuizCreationRequest request = new QuizCreationRequest("New Quiz", "Desc", flashcards, "math");
 
         when(this.userRepository.findById(1L)).thenReturn(Optional.of(creator));
         when(this.subjectRepository.findByCodeAndLanguage("math", this.currentLanguageProvider.getCurrentLanguage())).thenReturn(Optional.of(subject));
@@ -163,7 +163,7 @@ class QuizServiceTest {
         User creator = createTestUser();
         Subject subject = createTestSubject();
 
-        QuizCreationRequest request = new QuizCreationRequest("No Cards Quiz", "Desc", "en", null, "math");
+        QuizCreationRequest request = new QuizCreationRequest("No Cards Quiz", "Desc", null, "math");
 
         when(this.userRepository.findById(1L)).thenReturn(Optional.of(creator));
         when(this.subjectRepository.findByCodeAndLanguage("math", this.currentLanguageProvider.getCurrentLanguage())).thenReturn(Optional.of(subject));
@@ -184,7 +184,7 @@ class QuizServiceTest {
     void createQuiz_userNotFound_throwsException() {
         when(this.userRepository.findById(99L)).thenReturn(Optional.empty());
 
-        QuizCreationRequest request = new QuizCreationRequest("Quiz", "Desc", "en", null, "math");
+        QuizCreationRequest request = new QuizCreationRequest("Quiz", "Desc", null, "math");
         assertThrows(ResourceNotFoundException.class, () -> this.quizService.createQuiz(99L, request));
     }
 
@@ -195,7 +195,7 @@ class QuizServiceTest {
         when(this.userRepository.findById(1L)).thenReturn(Optional.of(creator));
         when(this.subjectRepository.findByCodeAndLanguage("nonexistent", "en")).thenReturn(Optional.empty());
 
-        QuizCreationRequest request = new QuizCreationRequest("Quiz", "Desc", "en", null, "nonexistent");
+        QuizCreationRequest request = new QuizCreationRequest("Quiz", "Desc", null, "nonexistent");
         assertThrows(ResourceNotFoundException.class, () -> this.quizService.createQuiz(1L, request));
     }
 
@@ -214,7 +214,7 @@ class QuizServiceTest {
         List<FlashcardCreationRequest> newFlashcards = List.of(
             new FlashcardCreationRequest("New Q?", "New A")
         );
-        QuizCreationRequest request = new QuizCreationRequest("Updated Quiz", "New Desc", "en", newFlashcards, "physics");
+        QuizCreationRequest request = new QuizCreationRequest("Updated Quiz", "New Desc", newFlashcards, "physics");
 
         when(this.quizRepository.findById(1L)).thenReturn(Optional.of(existingQuiz));
         when(this.subjectRepository.findByCodeAndLanguage("physics", "en")).thenReturn(Optional.of(newSubject));
@@ -232,7 +232,7 @@ class QuizServiceTest {
     void updateQuiz_quizNotFound_throwsException() {
         when(this.quizRepository.findById(99L)).thenReturn(Optional.empty());
 
-        QuizCreationRequest request = new QuizCreationRequest("Quiz", "Desc", "en", null, "math");
+        QuizCreationRequest request = new QuizCreationRequest("Quiz", "Desc", null, "math");
         assertThrows(ResourceNotFoundException.class, () -> this.quizService.updateQuiz(99L, 1L, request));
     }
 
@@ -246,7 +246,7 @@ class QuizServiceTest {
         when(this.quizRepository.findById(1L)).thenReturn(Optional.of(existingQuiz));
         when(this.subjectRepository.findByCodeAndLanguage("nonexistent", "en")).thenReturn(Optional.empty());
 
-        QuizCreationRequest request = new QuizCreationRequest("Quiz", "Desc", "en", null, "nonexistent");
+        QuizCreationRequest request = new QuizCreationRequest("Quiz", "Desc", null, "nonexistent");
         assertThrows(ResourceNotFoundException.class, () -> this.quizService.updateQuiz(1L, 1L, request));
     }
 

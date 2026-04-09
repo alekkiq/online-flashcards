@@ -135,7 +135,7 @@ class QuizControllerTest {
         List<FlashcardCreationRequest> flashcards = List.of(
             new FlashcardCreationRequest("Q1?", "A1")
         );
-        QuizCreationRequest request = new QuizCreationRequest("New Quiz", "Desc", "en", flashcards, "Math");
+        QuizCreationRequest request = new QuizCreationRequest("New Quiz", "Desc", flashcards, "Math");
         QuizResponse response = createTestQuizResponse();
 
         when(this.quizService.createQuiz(eq(1L), any(QuizCreationRequest.class))).thenReturn(response);
@@ -155,7 +155,7 @@ class QuizControllerTest {
     @Test
     @DisplayName("createQuiz(): unauthenticated returns forbidden")
     void createQuiz_unauthenticated_forbidden() throws Exception {
-        QuizCreationRequest request = new QuizCreationRequest("Quiz", "Desc", "en", null, "Math");
+        QuizCreationRequest request = new QuizCreationRequest("Quiz", "Desc", null, "Math");
 
         this.mockMvc.perform(post("/api/v1/quizzes")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -171,7 +171,7 @@ class QuizControllerTest {
         User teacher = createTeacher();
         CustomUserDetails userDetails = new CustomUserDetails(teacher);
 
-        QuizCreationRequest request = new QuizCreationRequest("Updated Quiz", "New Desc", "en", null, "Math");
+        QuizCreationRequest request = new QuizCreationRequest("Updated Quiz", "New Desc", null, "Math");
         QuizResponse response = new QuizResponse(
             1L, "Updated Quiz", "New Desc", "en", "teacher", "TEACHER", "Math", 0, List.of()
         );
@@ -196,7 +196,7 @@ class QuizControllerTest {
         User teacher = createTeacher();
         CustomUserDetails userDetails = new CustomUserDetails(teacher);
 
-        QuizCreationRequest request = new QuizCreationRequest("Quiz", "Desc", "en", null, "Math");
+        QuizCreationRequest request = new QuizCreationRequest("Quiz", "Desc", null, "Math");
 
         when(this.quizService.updateQuiz(eq(99L), eq(1L), any(QuizCreationRequest.class)))
             .thenThrow(new ResourceNotFoundException("Quiz", "Quiz with ID 99 not found."));
@@ -211,7 +211,7 @@ class QuizControllerTest {
     @Test
     @DisplayName("updateQuiz(): unauthenticated returns forbidden")
     void updateQuiz_unauthenticated_forbidden() throws Exception {
-        QuizCreationRequest request = new QuizCreationRequest("Quiz", "Desc", "en", null, "Math");
+        QuizCreationRequest request = new QuizCreationRequest("Quiz", "Desc", null, "Math");
 
         this.mockMvc.perform(put("/api/v1/quizzes/1")
                 .contentType(MediaType.APPLICATION_JSON)

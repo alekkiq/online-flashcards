@@ -309,7 +309,6 @@ class ClassroomServiceTest {
         Subject subject = subjectMathEn(1L);
         User owner = teacher(1L);
         Classroom classroom = classroom(1L, owner, subject, "JOIN01");
-        classroom.addUser(owner);
 
         mockUser(1L, owner);
         when(this.classroomRepository.findByJoinCode("JOIN01")).thenReturn(Optional.of(classroom));
