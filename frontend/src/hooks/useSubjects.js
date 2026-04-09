@@ -1,5 +1,6 @@
 import { useContext, useEffect } from "react";
 import { SubjectContext } from "../context/SubjectContext";
+import i18n from "../i18n";
 
 export function useSubjects() {
   const context = useContext(SubjectContext);
@@ -11,7 +12,7 @@ export function useSubjects() {
 
   useEffect(() => {
     fetchSubjects();
-  }, [fetchSubjects]);
+  }, [i18n.language, fetchSubjects]);
 
   return { subjects, isLoading, error };
 }

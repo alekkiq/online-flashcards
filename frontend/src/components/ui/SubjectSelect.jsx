@@ -1,6 +1,7 @@
 import * as React from "react";
 import { cn } from "/src/lib/utils";
 import { useSubjects } from "/src/hooks/useSubjects";
+import { useTranslation } from "react-i18next";
 
 /**
  * Reusable subject select dropdown.
@@ -12,8 +13,9 @@ import { useSubjects } from "/src/hooks/useSubjects";
  * @param {string} className - additional class names
  */
 export const SubjectSelect = React.forwardRef(
-  ({ value, onChange, hasError, valueKey = "name", className, ...props }, ref) => {
+  ({ value, onChange, hasError, valueKey = "code", className, ...props }, ref) => {
     const { subjects, isLoading } = useSubjects();
+    const { t } = useTranslation();
 
     const handleChange = (e) => {
       const val = e.target.value;
@@ -35,7 +37,7 @@ export const SubjectSelect = React.forwardRef(
         {...props}
       >
         <option value="" disabled>
-          {isLoading ? "Loading subjects..." : "Select a subject"}
+          {isLoading ? t("createQuiz.loadingSubjects") : t("createQuiz.selectSubject")}
         </option>
         {subjects.map((subject) => (
           <option key={subject.subjectId ?? subject.name} value={String(subject[valueKey])}>

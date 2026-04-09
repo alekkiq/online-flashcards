@@ -119,6 +119,8 @@
     "description": "Kuvaus",
     "descriptionPlaceholder": "Syötä kuvaus (valinnainen)",
     "subject": "Aihe",
+    "selectSubject": "Valitse aihe",
+    "loadingSubjects": "Ladataan aiheita...",
     "cards": "Kortit",
     "addCard": "+ Lisää kortti",
     "cancel": "Peruuta",

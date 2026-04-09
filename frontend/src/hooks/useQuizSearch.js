@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { useSearch } from "./useSearch";
 import { searchQuizzes } from "/src/api";
+import i18n from "../i18n";
 
 const quizFilterFn = (quiz, query) =>
   quiz.title.toLowerCase().includes(query) || quiz?.creatorUsername?.toLowerCase().includes(query);
@@ -23,12 +24,21 @@ export function useQuizSearch(searchParams, setSearchParams, selectedSubject) {
   };
 
   useEffect(() => {
+    let cancelled = false;
+
     const fetchQuizzes = async () => {
       const quizzes = await fetchQuizzesByQuery();
-      setItems(quizzes);
+      if (!cancelled) {
+        setItems(quizzes);
+      }
     };
+
     fetchQuizzes();
-  }, []);
+
+    return () => {
+      cancelled = true;
+    };
+  }, [i18n.language]);
 
   const filteredQuizzes = useMemo(
     () =>

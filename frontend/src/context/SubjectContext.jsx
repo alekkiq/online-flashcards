@@ -1,5 +1,6 @@
-import { createContext, useState, useCallback } from "react";
+import { createContext, useState, useCallback, useEffect } from "react";
 import { getSubjects } from "/src/api";
+import i18n from "../i18n";
 
 const SubjectContext = createContext(null);
 
@@ -13,7 +14,7 @@ const SubjectProvider = ({ children }) => {
    * Fetch all subjects. Skips if already fetched or currently loading.
    */
   const fetchSubjects = useCallback(async () => {
-    if (hasFetched || isLoading) return;
+    if (isLoading) return;
     setIsLoading(true);
     setError(null);
     try {
@@ -29,7 +30,13 @@ const SubjectProvider = ({ children }) => {
     } finally {
       setIsLoading(false);
     }
-  }, [hasFetched, isLoading]);
+  }, [isLoading]);
+
+  useEffect(() => {
+    setHasFetched(false);
+    setSubjects([]);
+    fetchSubjects();
+  }, [i18n.language, fetchSubjects]);
 
   return (
     <SubjectContext.Provider

@@ -17,7 +17,7 @@ export function useMyQuizzes() {
       title: quizData.title,
       description: quizData.description,
       flashcards: quizData.cards,
-      subject: quizData.subject,
+      subjectCode: quizData.subject,
     };
 
     const response = await createQuiz(data);

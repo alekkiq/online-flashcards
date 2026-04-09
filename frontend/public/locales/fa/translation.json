@@ -119,6 +119,8 @@
     "description": "توضیحات",
     "descriptionPlaceholder": "توضیحات را وارد کنید (اختیاری)",
     "subject": "موضوع",
+    "selectSubject": "انتخاب موضوع",
+    "loadingSubjects": "در حال بارگذاری موضوعات...",
     "cards": "کارت‌ها",
     "addCard": "+ افزودن کارت",
     "cancel": "لغو",
