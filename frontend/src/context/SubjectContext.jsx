@@ -1,42 +1,48 @@
-import { createContext, useState, useCallback, useEffect } from "react";
+import { createContext, useState, useEffect } from "react";
 import { getSubjects } from "/src/api";
-import i18n from "../i18n";
+import { useTranslation } from "react-i18next";
 
 const SubjectContext = createContext(null);
 
 const SubjectProvider = ({ children }) => {
+  const {i18n} = useTranslation();
   const [subjects, setSubjects] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [hasFetched, setHasFetched] = useState(false);
   const [error, setError] = useState(null);
 
   /**
    * Fetch all subjects. Skips if already fetched or currently loading.
    */
-  const fetchSubjects = useCallback(async () => {
-    if (isLoading) return;
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await getSubjects();
-      if (response.success) {
-        setSubjects(response.data.data);
-        setHasFetched(true);
-      } else {
-        setError(response.error);
-      }
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  }, [isLoading]);
-
   useEffect(() => {
-    setHasFetched(false);
-    setSubjects([]);
-    fetchSubjects();
-  }, [i18n.language, fetchSubjects]);
+     let cancelled = false;
+
+     const loadSubjects = async () => {
+         setIsLoading(true);
+         setError(null);
+
+         try {
+             const response = await getSubjects();
+
+             if (cancelled) return;
+
+             if (response.success) {
+                 setSubjects(response.data.data);
+             } else {
+                 setError(response.error);
+             }
+         } catch (err) {
+             if (!cancelled) setError(err.message);
+         } finally {
+             if (!cancelled) setIsLoading(false);
+         }
+     };
+
+     loadSubjects();
+
+     return () => {
+         cancelled = true;
+     }
+  }, [i18n.language]);
 
   return (
     <SubjectContext.Provider
@@ -44,7 +50,6 @@ const SubjectProvider = ({ children }) => {
         subjects,
         isLoading,
         error,
-        fetchSubjects,
       }}
     >
       {children}
