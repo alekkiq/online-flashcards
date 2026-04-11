@@ -11,6 +11,10 @@ import java.util.Optional;
 
 @Service
 public class UserService implements IUserService {
+    private static final String ENTITY_NAME = "User";
+    private static final String USER_WITH_ID = "User with ID ";
+    private static final String NOT_FOUND_SUFFIX = " not found.";
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -23,10 +27,14 @@ public class UserService implements IUserService {
     @Transactional
     public void updateEmail(Long userId, String newEmail) {
         User user = this.userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User", userId, "User with ID " + userId + " not found."));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        ENTITY_NAME,
+                        userId,
+                        USER_WITH_ID + userId + NOT_FOUND_SUFFIX
+                ));
 
         Optional<User> existing = this.userRepository.findByEmail(newEmail);
-        if (existing.isPresent() && !(existing.get().getUserId() == userId)) {
+        if (existing.isPresent() && existing.get().getUserId() != userId) {
             throw new DuplicateResourceException("User", "This email address is already in use by another account.");
         }
 
@@ -51,8 +59,11 @@ public class UserService implements IUserService {
     @Transactional
     public void updateUserRole(Long userId, UserRole newRole) {
         User user = this.userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User", userId,
-                        "User with ID " + userId + " not found."));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        ENTITY_NAME,
+                        userId,
+                        USER_WITH_ID + userId + NOT_FOUND_SUFFIX
+                ));
         user.setRole(newRole);
         this.userRepository.save(user);
     }
@@ -65,20 +76,31 @@ public class UserService implements IUserService {
     @Override
     public User getUserById(Long userId) {
         return this.userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User", userId, "User with ID " + userId + " not found."));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        ENTITY_NAME,
+                        userId,
+                        USER_WITH_ID + userId + NOT_FOUND_SUFFIX
+                ));
     }
 
     @Override
     public User getUserByUsername(String username) {
         return this.userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "User with username " + username + " not found."));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        ENTITY_NAME,
+                        "User with username " + username + NOT_FOUND_SUFFIX
+                ));
     }
 
     @Override
     @Transactional
     public void deleteUser(Long userId) {
         if (!this.userRepository.existsById(userId)) {
-            throw new ResourceNotFoundException("User", userId, "User with ID " + userId + " not found.");
+            throw new ResourceNotFoundException(
+                    ENTITY_NAME,
+                    userId,
+                    USER_WITH_ID + userId + NOT_FOUND_SUFFIX
+            );
         }
         this.userRepository.deleteById(userId);
     }
