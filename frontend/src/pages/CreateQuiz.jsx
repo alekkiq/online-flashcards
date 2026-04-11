@@ -98,7 +98,7 @@ export default function CreateQuiz() {
   return (
     <div className="max-w-5xl mx-auto py-8 px-4 md:px-0">
       <BackLink label={classroomId ? t("createQuiz.backToClassroom") : t("createQuiz.backToMyQuizzes")}/>
-      <div className="mb-8 text-center md:text-left">
+      <div className="mb-8 text-center md:text-start">
         <h1 className="font-serif text-4xl md:text-5xl font-bold text-main mb-2">
           {isEditMode ? t("createQuiz.editQuiz") : classroomId ? t("createQuiz.addQuizToClassroom") : t("createQuiz.createNewQuiz")}
         </h1>

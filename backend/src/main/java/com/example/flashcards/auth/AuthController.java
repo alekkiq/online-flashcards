@@ -4,19 +4,18 @@ import com.example.flashcards.auth.dto.AuthResponse;
 import com.example.flashcards.auth.dto.LoginRequest;
 import com.example.flashcards.auth.dto.UserRegistrationRequest;
 import com.example.flashcards.common.response.ApiResponse;
-import com.example.flashcards.security.JwtService;
 import com.example.flashcards.entity.user.User;
+import com.example.flashcards.security.JwtService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping( "/api/v1/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthController {
     private final AuthService authService;
     private final JwtService jwtService;
@@ -43,7 +42,7 @@ public class AuthController {
         AuthResponse response = AuthResponse.from(user, token);
 
         return ResponseEntity.ok(
-            ApiResponse.success(response, "Welcome.")
+                ApiResponse.success(response, "Welcome.")
         );
     }
 }
