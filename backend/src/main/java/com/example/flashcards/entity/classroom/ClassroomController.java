@@ -10,6 +10,7 @@ import com.example.flashcards.entity.learningmaterial.dto.LearningMaterialRespon
 import com.example.flashcards.entity.quiz.dto.QuizSeachResponse;
 import com.example.flashcards.security.CustomUserDetails;
 import jakarta.validation.Valid;
+import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Locale;
 
 @Validated
 @RestController
@@ -24,9 +26,11 @@ import java.util.List;
 public class ClassroomController {
 
     private final IClassroomService classroomService;
+    private final MessageSource messageSource;
 
-    public ClassroomController(IClassroomService classroomService) {
+    public ClassroomController(IClassroomService classroomService, MessageSource messageSource) {
         this.classroomService = classroomService;
+        this.messageSource = messageSource;
     }
 
     @GetMapping("/me")
@@ -57,14 +61,15 @@ public class ClassroomController {
     @PreAuthorize("hasRole('TEACHER')")
     public ResponseEntity<ApiResponse<ClassroomResponse>> createClassroom(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @Valid @RequestBody ClassroomCreateRequest request
+            @Valid @RequestBody ClassroomCreateRequest request,
+            Locale locale
     ) {
         Long userId = userDetails.getUserId();
         Classroom created = classroomService.createClassroom(userId, request);
 
         return ResponseEntity.ok(ApiResponse.success(
                 mapToClassroomResponse(created, userId),
-                "Classroom created successfully."
+                messageSource.getMessage("success.classroom.created", null, locale)
         ));
     }
 
@@ -72,54 +77,58 @@ public class ClassroomController {
     public ResponseEntity<ApiResponse<ClassroomResponse>> updateClassroom(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable Long classroomId,
-            @Valid @RequestBody ClassroomUpdateRequest request
+            @Valid @RequestBody ClassroomUpdateRequest request,
+            Locale locale
     ) {
         Long userId = userDetails.getUserId();
         Classroom updated = classroomService.updateClassroom(userId, classroomId, request);
 
         return ResponseEntity.ok(ApiResponse.success(
                 mapToClassroomResponse(updated, userId),
-                "Classroom updated successfully."
+                messageSource.getMessage("success.classroom.updated", null, locale)
         ));
     }
 
     @PostMapping("/join")
     public ResponseEntity<ApiResponse<ClassroomResponse>> joinByCode(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @RequestParam String code
+            @RequestParam String code,
+            Locale locale
     ) {
         Long userId = userDetails.getUserId();
         Classroom classroom = classroomService.joinByCode(userId, code);
 
         return ResponseEntity.ok(ApiResponse.success(
                 mapToClassroomResponse(classroom, userId),
-                "Joined classroom successfully."
+                messageSource.getMessage("success.classroom.joined", null, locale)
         ));
     }
 
     @PostMapping("/{classroomId}/leave")
     public ResponseEntity<ApiResponse<Void>> leaveClassroom(
             @AuthenticationPrincipal CustomUserDetails userDetails,
-            @PathVariable Long classroomId
+            @PathVariable Long classroomId,
+            Locale locale
     ) {
         Long userId = userDetails.getUserId();
         classroomService.leaveClassroom(userId, classroomId);
 
-        return ResponseEntity.ok(ApiResponse.success(null, "Left classroom successfully."));
+        return ResponseEntity.ok(ApiResponse.success(null, messageSource.getMessage("success.classroom.left", null, locale)));
     }
 
     @DeleteMapping("/{classroomId}/users/{userId}")
     public ResponseEntity<ApiResponse<ClassroomResponse>> removeUserFromClassroom(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable Long classroomId,
-            @PathVariable Long userId
+            @PathVariable Long userId,
+            Locale locale
     ) {
         Long ownerId = userDetails.getUserId();
         Classroom updated = classroomService.removeUserFromClassroom(ownerId, classroomId, userId);
 
         return ResponseEntity.ok(ApiResponse.success(
                 mapToClassroomResponse(updated, ownerId),
-                "User removed from classroom successfully."
+                messageSource.getMessage("success.classroom.userRemoved", null, locale)
         ));
     }
 
@@ -127,14 +136,15 @@ public class ClassroomController {
     public ResponseEntity<ApiResponse<ClassroomResponse>> addLearningMaterial(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable Long classroomId,
-            @Valid @RequestBody LearningMaterialCreationRequest request
+            @Valid @RequestBody LearningMaterialCreationRequest request,
+            Locale locale
     ) {
         Long userId = userDetails.getUserId();
         Classroom updated = classroomService.addLearningMaterial(userId, classroomId, request);
 
         return ResponseEntity.ok(ApiResponse.success(
                 mapToClassroomResponse(updated, userId),
-                "Learning material added successfully."
+                messageSource.getMessage("success.classroom.material.added", null, locale)
         ));
     }
 
@@ -142,14 +152,15 @@ public class ClassroomController {
     public ResponseEntity<ApiResponse<ClassroomResponse>> removeLearningMaterial(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable Long classroomId,
-            @PathVariable Long learningMaterialId
+            @PathVariable Long learningMaterialId,
+            Locale locale
     ) {
         Long userId = userDetails.getUserId();
         Classroom updated = classroomService.removeLearningMaterial(userId, classroomId, learningMaterialId);
 
         return ResponseEntity.ok(ApiResponse.success(
                 mapToClassroomResponse(updated, userId),
-                "Learning material removed successfully."
+                messageSource.getMessage("success.classroom.material.removed", null, locale)
         ));
     }
 
@@ -157,14 +168,15 @@ public class ClassroomController {
     public ResponseEntity<ApiResponse<ClassroomResponse>> addQuizToClassroom(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable Long classroomId,
-            @PathVariable Long quizId
+            @PathVariable Long quizId,
+            Locale locale
     ) {
         Long userId = userDetails.getUserId();
         Classroom updated = classroomService.addQuizToClassroom(userId, classroomId, quizId);
 
         return ResponseEntity.ok(ApiResponse.success(
                 mapToClassroomResponse(updated, userId),
-                "Quiz added to classroom successfully."
+                messageSource.getMessage("success.classroom.quiz.added", null, locale)
         ));
     }
 
@@ -172,14 +184,15 @@ public class ClassroomController {
     public ResponseEntity<ApiResponse<ClassroomResponse>> removeQuizFromClassroom(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable Long classroomId,
-            @PathVariable Long quizId
+            @PathVariable Long quizId,
+            Locale locale
     ) {
         Long userId = userDetails.getUserId();
         Classroom updated = classroomService.removeQuizFromClassroom(userId, classroomId, quizId);
 
         return ResponseEntity.ok(ApiResponse.success(
                 mapToClassroomResponse(updated, userId),
-                "Quiz removed from classroom successfully."
+                messageSource.getMessage("success.classroom.quiz.removed", null, locale)
         ));
     }
 
@@ -240,14 +253,15 @@ public class ClassroomController {
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable Long classroomId,
             @PathVariable Long learningMaterialId,
-            @Valid @RequestBody LearningMaterialCreationRequest request
+            @Valid @RequestBody LearningMaterialCreationRequest request,
+            Locale locale
     ) {
         Long userId = userDetails.getUserId();
         Classroom updated = classroomService.editLearningMaterial(userId, classroomId, learningMaterialId, request);
 
         return ResponseEntity.ok(ApiResponse.success(
                 mapToClassroomResponse(updated, userId),
-                "Learning material edited successfully."
+                messageSource.getMessage("success.classroom.material.edited", null, locale)
         ));
     }
 }

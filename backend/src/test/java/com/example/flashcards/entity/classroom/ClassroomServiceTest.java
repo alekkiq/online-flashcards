@@ -1,5 +1,6 @@
 package com.example.flashcards.entity.classroom;
 
+import com.example.flashcards.common.exception.InvalidRequestException;
 import com.example.flashcards.common.exception.ResourceNotFoundException;
 import com.example.flashcards.common.provider.CurrentLanguageProvider;
 import com.example.flashcards.entity.classroom.dto.ClassroomCreateRequest;
@@ -203,7 +204,7 @@ class ClassroomServiceTest {
         mockUser(1L, owner);
         mockSubject(1L, subject);
 
-        assertThrows(IllegalArgumentException.class, () -> this.classroomService.createClassroom(1L, request));
+        assertThrows(InvalidRequestException.class, () -> this.classroomService.createClassroom(1L, request));
     }
 
     @Test
@@ -218,7 +219,7 @@ class ClassroomServiceTest {
         mockSubject(1L, subject);
         when(this.classroomRepository.existsByJoinCode("TAKEN1")).thenReturn(true);
 
-        assertThrows(IllegalArgumentException.class, () -> this.classroomService.createClassroom(1L, request));
+        assertThrows(InvalidRequestException.class, () -> this.classroomService.createClassroom(1L, request));
     }
 
     @Test
@@ -272,7 +273,7 @@ class ClassroomServiceTest {
 
         mockClassroom(1L, classroom);
 
-        assertThrows(IllegalArgumentException.class, () -> this.classroomService.updateClassroom(99L, 1L, request));
+        assertThrows(InvalidRequestException.class, () -> this.classroomService.updateClassroom(99L, 1L, request));
     }
 
     @Test
@@ -365,7 +366,7 @@ class ClassroomServiceTest {
 
         mockClassroom(1L, classroom);
 
-        assertThrows(IllegalArgumentException.class, () -> this.classroomService.leaveClassroom(1L, 1L));
+        assertThrows(InvalidRequestException.class, () -> this.classroomService.leaveClassroom(1L, 1L));
     }
 
     @Test
@@ -402,7 +403,7 @@ class ClassroomServiceTest {
 
         mockClassroom(1L, classroom);
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(InvalidRequestException.class,
                 () -> this.classroomService.removeUserFromClassroom(99L, 1L, 2L));
     }
 
@@ -415,7 +416,7 @@ class ClassroomServiceTest {
 
         mockClassroom(1L, classroom);
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(InvalidRequestException.class,
                 () -> this.classroomService.removeUserFromClassroom(1L, 1L, 1L));
     }
 
@@ -449,7 +450,7 @@ class ClassroomServiceTest {
         when(this.classroomRepository.findById(1L)).thenReturn(Optional.of(classroom));
 
         LearningMaterialCreationRequest request = new LearningMaterialCreationRequest("Title", "Content");
-        assertThrows(IllegalArgumentException.class, () -> this.classroomService.addLearningMaterial(99L, 1L, request));
+        assertThrows(InvalidRequestException.class, () -> this.classroomService.addLearningMaterial(99L, 1L, request));
     }
 
     @Test
@@ -478,7 +479,7 @@ class ClassroomServiceTest {
 
         mockClassroom(1L, classroom);
 
-        assertThrows(IllegalArgumentException.class, () -> this.classroomService.removeLearningMaterial(99L, 1L, 1L));
+        assertThrows(InvalidRequestException.class, () -> this.classroomService.removeLearningMaterial(99L, 1L, 1L));
     }
 
     @Test
@@ -524,7 +525,7 @@ class ClassroomServiceTest {
 
         mockClassroom(1L, classroom);
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(InvalidRequestException.class,
                 () -> this.classroomService.addQuizToClassroom(99L, 1L, 10L));
     }
 
@@ -568,7 +569,7 @@ class ClassroomServiceTest {
 
         when(this.classroomRepository.findById(1L)).thenReturn(Optional.of(classroom));
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(InvalidRequestException.class,
                 () -> this.classroomService.removeQuizFromClassroom(99L, 1L, 10L));
     }
 }

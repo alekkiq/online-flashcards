@@ -3,12 +3,12 @@ package com.example.flashcards.entity.subject.dto;
 import jakarta.validation.constraints.NotBlank;
 
 public record SubjectCreationRequest(
-    @NotBlank(message = "Subject code is required")
+    @NotBlank(message = "{validation.subjectCode.required}")
     String code,
 
-    @NotBlank(message = "Subject name is required")
+    @NotBlank(message = "{validation.subjectName.required}")
     String name,
 
-    @NotBlank(message = "Language is required")
+    @NotBlank(message = "{validation.language.required}")
     String language
 ) {}

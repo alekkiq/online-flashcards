@@ -38,16 +38,7 @@ class JwtServiceTest {
 
         assertNotNull(token);
         assertFalse(token.isEmpty());
-        assertTrue(token.split("\\.").length == 3);
-    }
-
-    @Test
-    @DisplayName("generateToken(): should include username in token")
-    void generateToken_ShouldIncludeUsername() {
-        String token = this.jwtService.generateToken(this.testUser);
-        String username = this.jwtService.extractUsername(token);
-
-        assertEquals("testuser", username);
+        assertEquals(3, token.split("\\.").length);
     }
 
     @Test

@@ -5,7 +5,6 @@ import com.example.flashcards.config.SecurityConfig;
 import com.example.flashcards.config.TestSecurityConfig;
 import com.example.flashcards.entity.promotionrequest.dto.PromotionRequestCreationRequest;
 import com.example.flashcards.entity.promotionrequest.dto.PromotionRequestUpdateRequest;
-import com.example.flashcards.entity.subject.SubjectController;
 import com.example.flashcards.entity.user.User;
 import com.example.flashcards.security.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -80,7 +79,7 @@ class PromotionRequestControllerTest {
                 .content(this.objectMapper.writeValueAsString(creationRequest)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Promotion request created successfully"))
+            .andExpect(jsonPath("$.message").value("Promotion request created successfully."))
             .andExpect(jsonPath("$.data.status").value("PENDING"))
             .andExpect(jsonPath("$.data.message").value("I want to teach"));
 
@@ -108,10 +107,10 @@ class PromotionRequestControllerTest {
     @Test
     @DisplayName("getPendingRequests(): returns list of pending requests")
     void getPendingRequests() throws Exception {
-        User user1 = new User("tester1", "student@test.com", "password");;
+        User user1 = new User("tester1", "student@test.com", "password");
         user1.setUserId(1L);
 
-        User user2 = new User("tester2", "student2@test.com", "passwordz");;
+        User user2 = new User("tester2", "student2@test.com", "passwordz");
         user2.setUserId(2L);
 
         PromotionRequest request1 = new PromotionRequest("Request 1", user1);
@@ -176,7 +175,7 @@ class PromotionRequestControllerTest {
     @Test
     @DisplayName("updateRequest(): successfully approves request")
     void updateRequest_approve() throws Exception {
-        User user = new User("tester", "student@test.com", "password");;
+        User user = new User("tester", "student@test.com", "password");
         user.setUserId(1L);
 
         PromotionRequest request = new PromotionRequest("Request", user);
@@ -193,7 +192,7 @@ class PromotionRequestControllerTest {
                         .content(this.objectMapper.writeValueAsString(updateRequest)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.message").value("Promotion request updated successfully"))
+                .andExpect(jsonPath("$.message").value("Promotion request updated successfully."))
                 .andExpect(jsonPath("$.data.status").value("APPROVED"));
 
         verify(this.promotionRequestService, times(1)).approveRequest(1L);
@@ -203,7 +202,7 @@ class PromotionRequestControllerTest {
     @Test
     @DisplayName("updateRequest(): successfully rejects request")
     void updateRequest_reject() throws Exception {
-        User user = new User("tester", "student@test.com", "password");;
+        User user = new User("tester", "student@test.com", "password");
         user.setUserId(1L);
 
         PromotionRequest request = new PromotionRequest("Request", user);
@@ -220,7 +219,7 @@ class PromotionRequestControllerTest {
                 .content(this.objectMapper.writeValueAsString(updateRequest)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Promotion request updated successfully"))
+            .andExpect(jsonPath("$.message").value("Promotion request updated successfully."))
             .andExpect(jsonPath("$.data.status").value("REJECTED"));
 
         verify(this.promotionRequestService, times(1)).rejectRequest(1L);

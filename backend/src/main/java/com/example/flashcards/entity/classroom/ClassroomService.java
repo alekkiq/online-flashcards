@@ -1,5 +1,6 @@
 package com.example.flashcards.entity.classroom;
 
+import com.example.flashcards.common.exception.InvalidRequestException;
 import com.example.flashcards.common.exception.ResourceNotFoundException;
 import com.example.flashcards.common.provider.CurrentLanguageProvider;
 import com.example.flashcards.entity.classroom.dto.ClassroomCreateRequest;
@@ -29,6 +30,7 @@ public class ClassroomService implements IClassroomService {
     private final QuizRepository quizRepository;
     private final CurrentLanguageProvider currentLanguageProvider;
 
+    private static final String CLASSROOM_RESOURCE = "Classroom";
     private final SecureRandom random = new SecureRandom();
     private static final String CODE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
@@ -51,18 +53,20 @@ public class ClassroomService implements IClassroomService {
     public Classroom getClassroomById(Long classroomId, Long userId) {
         return this.classroomRepository.findByClassroomIdAndUsers_UserId(classroomId, userId)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "Classroom",
+                        CLASSROOM_RESOURCE,
                         classroomId,
-                        "Classroom with ID " + classroomId + " not found or you are not a member of it"
+                        "error.classroom.notMember",
+                        new Object[]{classroomId}
                 ));
     }
 
     private Classroom getClassroomEntityById(Long classroomId) {
         return this.classroomRepository.findById(classroomId)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "Classroom",
+                        CLASSROOM_RESOURCE,
                         classroomId,
-                        "Classroom with ID " + classroomId + " not found"
+                        "error.classroom.notFound",
+                        new Object[]{classroomId}
                 ));
     }
 
@@ -71,7 +75,8 @@ public class ClassroomService implements IClassroomService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "User",
                         userId,
-                        "User with ID " + userId + " not found"
+                        "error.user.notFound",
+                        new Object[]{userId}
                 ));
     }
 
@@ -80,7 +85,8 @@ public class ClassroomService implements IClassroomService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Subject",
                         subjectId,
-                        "Subject with ID " + subjectId + " not found"
+                        "error.subject.notFound",
+                        new Object[]{subjectId}
                 ));
     }
 
@@ -99,7 +105,7 @@ public class ClassroomService implements IClassroomService {
                 return code;
             }
         }
-        throw new IllegalStateException("Could not generate unique join code.");
+        throw new InvalidRequestException("error.classroom.joinCode.generate", null);
     }
 
     private String normalizeJoinCode(String input) {
@@ -126,17 +132,17 @@ public class ClassroomService implements IClassroomService {
         Subject subject = getSubjectById(request.subjectId());
 
         if (!subject.getLanguage().equals(language)) {
-            throw new IllegalArgumentException("Subject language does not match current language.");
+            throw new InvalidRequestException("error.classroom.subject.languageMismatch", null);
         }
 
         if (requestedCode == null) {
             joinCode = generateUniqueJoinCode(6);
         } else {
             if (requestedCode.length() < 6) {
-                throw new IllegalArgumentException("Join code must be at least 6 characters.");
+                throw new InvalidRequestException("error.classroom.joinCode.tooShort", null);
             }
             if (classroomRepository.existsByJoinCode(requestedCode)) {
-                throw new IllegalArgumentException("Join code is already in use.");
+                throw new InvalidRequestException("error.classroom.joinCode.inUse", null);
             }
             joinCode = requestedCode;
         }
@@ -161,7 +167,7 @@ public class ClassroomService implements IClassroomService {
         Classroom classroom = getClassroomEntityById(classroomId);
 
         if (classroom.getOwner() == null || !Objects.equals(classroom.getOwner().getUserId(), userId)) {
-            throw new IllegalArgumentException("You are not allowed to update this classroom.");
+            throw new InvalidRequestException("error.classroom.notOwner", null);
         }
 
         classroom.setTitle(request.title());
@@ -178,8 +184,9 @@ public class ClassroomService implements IClassroomService {
 
         Classroom classroom = this.classroomRepository.findByJoinCode(joinCode)
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        "Classroom",
-                        "Classroom with join code " + joinCode + " not found"
+                        CLASSROOM_RESOURCE,
+                        "error.classroom.joinCode.notFound",
+                        new Object[]{joinCode}
                 ));
 
         boolean alreadyMember = classroom.getUsers().stream()
@@ -199,7 +206,7 @@ public class ClassroomService implements IClassroomService {
         Classroom classroom = getClassroomEntityById(classroomId);
 
         if (classroom.getOwner() != null && Objects.equals(classroom.getOwner().getUserId(), userId)) {
-            throw new IllegalArgumentException("Owner cannot leave their own classroom.");
+            throw new InvalidRequestException("error.classroom.leave.owner", null);
         }
 
         classroom.getUsers().removeIf(u -> Objects.equals(u.getUserId(), userId));
@@ -212,11 +219,11 @@ public class ClassroomService implements IClassroomService {
         Classroom classroom = getClassroomEntityById(classroomId);
 
         if (classroom.getOwner() == null || !Objects.equals(classroom.getOwner().getUserId(), ownerId)) {
-            throw new IllegalArgumentException("Only the owner can remove users from this classroom.");
+            throw new InvalidRequestException("error.classroom.removeUser.notOwner", null);
         }
 
         if (Objects.equals(ownerId, targetUserId)) {
-            throw new IllegalArgumentException("Owner cannot remove themselves from the classroom.");
+            throw new InvalidRequestException("error.classroom.removeUser.self", null);
         }
 
         classroom.getUsers().removeIf(u -> Objects.equals(u.getUserId(), targetUserId));
@@ -230,7 +237,7 @@ public class ClassroomService implements IClassroomService {
         Classroom classroom = getClassroomEntityById(classroomId);
 
         if (classroom.getOwner() == null || !Objects.equals(classroom.getOwner().getUserId(), userId)) {
-            throw new IllegalArgumentException("You are not allowed to add learning material to this classroom.");
+            throw new InvalidRequestException("error.classroom.material.add.notOwner", null);
         }
 
         LearningMaterial learningMaterial = new LearningMaterial(
@@ -250,7 +257,7 @@ public class ClassroomService implements IClassroomService {
         Classroom classroom = getClassroomEntityById(classroomId);
 
         if (classroom.getOwner() == null || !Objects.equals(classroom.getOwner().getUserId(), userId)) {
-            throw new IllegalArgumentException("You are not allowed to remove learning material from this classroom.");
+            throw new InvalidRequestException("error.classroom.material.remove.notOwner", null);
         }
 
         classroom.getLearningMaterials().removeIf(lm -> Objects.equals(lm.getLearningMaterialId(), learningMaterialId));
@@ -263,7 +270,7 @@ public class ClassroomService implements IClassroomService {
         Classroom classroom = getClassroomEntityById(classroomId);
 
         if (classroom.getOwner() == null || !Objects.equals(classroom.getOwner().getUserId(), userId)) {
-            throw new IllegalArgumentException("You are not allowed to add quizzes to this classroom.");
+            throw new InvalidRequestException("error.classroom.quiz.add.notOwner", null);
         }
 
         boolean alreadyAdded = classroom.getQuizzes().stream()
@@ -277,7 +284,8 @@ public class ClassroomService implements IClassroomService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Quiz",
                         quizId,
-                        "Quiz with ID " + quizId + " not found"
+                        "error.quiz.notFound",
+                        new Object[]{quizId}
                 ));
 
         classroom.addQuiz(quiz);
@@ -290,7 +298,7 @@ public class ClassroomService implements IClassroomService {
         Classroom classroom = getClassroomEntityById(classroomId);
 
         if (classroom.getOwner() == null || !Objects.equals(classroom.getOwner().getUserId(), userId)) {
-            throw new IllegalArgumentException("You are not allowed to remove quizzes from this classroom.");
+            throw new InvalidRequestException("error.classroom.quiz.remove.notOwner", null);
         }
 
         classroom.getQuizzes().removeIf(q -> q.getQuizId() == quizId);
@@ -303,7 +311,7 @@ public class ClassroomService implements IClassroomService {
         Classroom classroom = getClassroomEntityById(classroomId);
 
         if (classroom.getOwner() == null || !Objects.equals(classroom.getOwner().getUserId(), userId)) {
-            throw new IllegalArgumentException("You are not allowed to edit learning material in this classroom.");
+            throw new InvalidRequestException("error.classroom.material.edit.notOwner", null);
         }
 
         LearningMaterial learningMaterial = classroom.getLearningMaterials().stream()
@@ -312,7 +320,8 @@ public class ClassroomService implements IClassroomService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "LearningMaterial",
                         learningMaterialId,
-                        "Learning material with ID " + learningMaterialId + " not found in this classroom."
+                        "error.classroom.material.notFound",
+                        new Object[]{learningMaterialId}
                 ));
 
         learningMaterial.setTitle(request.title());

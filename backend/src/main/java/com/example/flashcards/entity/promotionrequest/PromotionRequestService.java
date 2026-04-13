@@ -22,7 +22,7 @@ public class PromotionRequestService {
     @Transactional
     public PromotionRequest createRequest(Long userId, String message) {
         User user = this.userRepository.findById(userId)
-            .orElseThrow(() -> new ResourceNotFoundException("User", userId, "User with ID " + userId + "not found"));
+            .orElseThrow(() -> new ResourceNotFoundException("User", userId, "error.user.notFound", new Object[]{userId}));
 
         PromotionRequest request = new PromotionRequest();
         request.setUser(user);
@@ -35,7 +35,7 @@ public class PromotionRequestService {
     @Transactional
     public PromotionRequest approveRequest(Long promotionRequestId) {
         PromotionRequest request = this.promotionRequestRepository.findById(promotionRequestId)
-            .orElseThrow(() -> new ResourceNotFoundException("PromotionRequest", promotionRequestId, "Promotion request with ID " + promotionRequestId + " not found"));
+            .orElseThrow(() -> new ResourceNotFoundException("PromotionRequest", promotionRequestId, "error.promotionRequest.notFound", new Object[]{promotionRequestId}));
 
         request.setStatus(PromotionRequestStatus.APPROVED);
         request.setReviewedAt(LocalDateTime.now());
@@ -46,7 +46,7 @@ public class PromotionRequestService {
     @Transactional
     public PromotionRequest rejectRequest(Long promotionRequestId) {
         PromotionRequest request = this.promotionRequestRepository.findById(promotionRequestId)
-            .orElseThrow(() -> new ResourceNotFoundException("PromotionRequest", promotionRequestId, "Promotion request with ID " + promotionRequestId + " not found"));
+            .orElseThrow(() -> new ResourceNotFoundException("PromotionRequest", promotionRequestId, "error.promotionRequest.notFound", new Object[]{promotionRequestId}));
 
         request.setStatus(PromotionRequestStatus.REJECTED);
         request.setReviewedAt(LocalDateTime.now());

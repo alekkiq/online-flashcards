@@ -25,7 +25,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -76,8 +75,7 @@ class QuizResultControllerTest {
     }
 
     private QuizResult createTestQuizResult(User user, Quiz quiz, double score) {
-        QuizResult result = new QuizResult(score, LocalDateTime.now(), user, quiz);
-        return result;
+        return new QuizResult(score, LocalDateTime.now(), user, quiz);
     }
 
     // --- POST /api/v1/quiz-results ---
@@ -196,7 +194,7 @@ class QuizResultControllerTest {
                 .with(user(userDetails)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Quiz results fetched succesfully."))
+            .andExpect(jsonPath("$.message").value("Quiz results fetched successfully."))
             .andExpect(jsonPath("$.data").isArray())
             .andExpect(jsonPath("$.data.length()").value(2));
 

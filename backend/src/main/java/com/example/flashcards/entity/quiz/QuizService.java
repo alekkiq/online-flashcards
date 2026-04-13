@@ -21,6 +21,8 @@ import com.example.flashcards.entity.user.UserRepository;
 @Service
 public class QuizService implements IQuizService {
 
+    private static final String QUIZ_NOT_FOUND_KEY = "error.quiz.notFound";
+
     private final QuizRepository quizRepository;
     private final UserRepository userRepository;
     private final SubjectRepository subjectRepository;
@@ -36,7 +38,7 @@ public class QuizService implements IQuizService {
     @Override
     public QuizResponse getQuizById(long id) {
         Quiz quiz = quizRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Quiz", "error.quiz.notFound", new Object[]{id}));
+            .orElseThrow(() -> new ResourceNotFoundException("Quiz", QUIZ_NOT_FOUND_KEY, new Object[]{id}));
         return mapToQuizResponse(quiz);
     }
 
@@ -85,7 +87,7 @@ public class QuizService implements IQuizService {
     @Transactional
     public QuizResponse updateQuiz(long id, long userId, QuizCreationRequest request) {
         Quiz quiz = quizRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Quiz", "error.quiz.notFound", new Object[]{id}));
+            .orElseThrow(() -> new ResourceNotFoundException("Quiz", QUIZ_NOT_FOUND_KEY, new Object[]{id}));
 
         if (quiz.getCreator().getUserId() != userId) {
             throw new ForbiddenException("error.quiz.notOwner", null);
@@ -116,7 +118,7 @@ public class QuizService implements IQuizService {
     @Transactional
     public void deleteQuiz(long id, long userId) {
         Quiz quiz = quizRepository.findById(id)
-            .orElseThrow(() -> new ResourceNotFoundException("Quiz", "error.quiz.notFound", new Object[]{id}));
+            .orElseThrow(() -> new ResourceNotFoundException("Quiz", QUIZ_NOT_FOUND_KEY, new Object[]{id}));
 
         if (quiz.getCreator().getUserId() != userId) {
             throw new ForbiddenException("error.quiz.notOwner", null);

@@ -3,7 +3,6 @@ package com.example.flashcards.entity.subject;
 import com.example.flashcards.common.exception.DuplicateResourceException;
 import com.example.flashcards.common.exception.ResourceNotFoundException;
 import com.example.flashcards.common.provider.CurrentLanguageProvider;
-import com.example.flashcards.entity.subject.dto.SubjectResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +10,8 @@ import java.util.List;
 
 @Service
 public class SubjectService implements ISubjectService {
+    private static final String SUBJECT_RESOURCE = "Subject";
+
     private final SubjectRepository subjectRepository;
     private final CurrentLanguageProvider currentLanguageProvider;
 
@@ -32,9 +33,10 @@ public class SubjectService implements ISubjectService {
     public Subject getSubjectById(Long subjectId) {
         return this.subjectRepository.findById(subjectId)
             .orElseThrow(() -> new ResourceNotFoundException(
-                "Subject",
+                SUBJECT_RESOURCE,
                 subjectId,
-                "Subject with ID " + subjectId + " not found."
+                "error.subject.notFound",
+                new Object[]{subjectId}
             ));
     }
 
@@ -43,8 +45,9 @@ public class SubjectService implements ISubjectService {
         String language = currentLanguageProvider.getCurrentLanguage();
         return this.subjectRepository.findByCodeAndLanguage(code, language)
             .orElseThrow(() -> new ResourceNotFoundException(
-                "Subject",
-                "Subject not found."
+                SUBJECT_RESOURCE,
+                "error.subject.nameNotFound",
+                new Object[]{code}
             ));
     }
 
@@ -53,8 +56,9 @@ public class SubjectService implements ISubjectService {
     public Subject createSubject(Subject subject) {
         if (this.subjectRepository.existsByCodeAndLanguage(subject.getCode(), subject.getLanguage())) {
             throw new DuplicateResourceException(
-                "Subject",
-                "A subject with code '" + subject.getCode() + "' already exists for language '" + subject.getLanguage() + "'."
+                SUBJECT_RESOURCE,
+                "error.subject.duplicate",
+                new Object[]{subject.getCode()}
             );
         }
         return this.subjectRepository.save(subject);
@@ -65,9 +69,10 @@ public class SubjectService implements ISubjectService {
     public Subject updateSubject(Long subjectId, Subject subject) {
         Subject existingSubject = this.subjectRepository.findById(subjectId)
             .orElseThrow(() -> new ResourceNotFoundException(
-                "Subject",
+                SUBJECT_RESOURCE,
                 subjectId,
-                "Subject with ID " + subjectId + " not found."
+                "error.subject.notFound",
+                new Object[]{subjectId}
             ));
 
         boolean keyChanged =
@@ -76,8 +81,9 @@ public class SubjectService implements ISubjectService {
 
         if (keyChanged && this.subjectRepository.existsByCodeAndLanguage(subject.getCode(), subject.getLanguage())) {
             throw new DuplicateResourceException(
-                "Subject",
-                "A subject with code '" + subject.getCode() + "' already exists for language '" + subject.getLanguage() + "'."
+                SUBJECT_RESOURCE,
+                "error.subject.duplicate",
+                new Object[]{subject.getCode()}
             );
         }
 
@@ -93,9 +99,10 @@ public class SubjectService implements ISubjectService {
     public void deleteSubject(Long subjectId) {
         if (!this.subjectRepository.existsById(subjectId)) {
             throw new ResourceNotFoundException(
-                "Subject",
+                SUBJECT_RESOURCE,
                 subjectId,
-                "Subject with ID " + subjectId + " not found."
+                "error.subject.notFound",
+                new Object[]{subjectId}
             );
         }
         this.subjectRepository.deleteById(subjectId);

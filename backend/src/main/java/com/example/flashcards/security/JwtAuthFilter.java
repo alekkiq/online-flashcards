@@ -62,6 +62,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 }
             }
         } catch (Exception e) {
+            // Invalid JWT token — skip authentication and let the request proceed unauthenticated
         }
 
         filterChain.doFilter(request, response);

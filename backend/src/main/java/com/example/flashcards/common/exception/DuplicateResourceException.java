@@ -8,6 +8,11 @@ public class DuplicateResourceException extends ApiException {
         this.resourceName = resourceName;
     }
 
+    public DuplicateResourceException(String resourceName, String messageKey, Object[] args) {
+        super(messageKey, args);
+        this.resourceName = resourceName;
+    }
+
     public String getResourceName() {
         return this.resourceName;
     }

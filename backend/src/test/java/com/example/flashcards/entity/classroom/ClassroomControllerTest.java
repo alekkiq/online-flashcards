@@ -7,7 +7,6 @@ import com.example.flashcards.entity.classroom.dto.ClassroomCreateRequest;
 import com.example.flashcards.entity.classroom.dto.ClassroomUpdateRequest;
 import com.example.flashcards.entity.learningmaterial.LearningMaterial;
 import com.example.flashcards.entity.learningmaterial.dto.LearningMaterialCreationRequest;
-import com.example.flashcards.entity.quiz.Quiz;
 import com.example.flashcards.entity.subject.Subject;
 import com.example.flashcards.entity.user.User;
 import com.example.flashcards.entity.user.UserRole;

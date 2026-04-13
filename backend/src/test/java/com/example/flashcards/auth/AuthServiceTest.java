@@ -6,7 +6,6 @@ import com.example.flashcards.common.exception.DuplicateResourceException;
 import com.example.flashcards.common.exception.UnauthorizedException;
 import com.example.flashcards.entity.user.User;
 import com.example.flashcards.entity.user.UserRepository;
-import com.example.flashcards.entity.user.UserService;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -201,9 +200,6 @@ class AuthServiceTest {
     @Test
     @DisplayName("login(): username is case-sensitive")
     void login_usernameIsCaseSensitive() {
-        String hashedPassword = this.passwordEncoder.encode("password123");
-        User user = new User("TestUser", "test@test.com", hashedPassword);
-
         when(this.userRepository.findByUsername("testuser")).thenReturn(Optional.empty());
 
         LoginRequest request = new LoginRequest("testuser", "password123");

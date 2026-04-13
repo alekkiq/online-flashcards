@@ -1,6 +1,7 @@
 package com.example.flashcards.entity.user;
 
 import com.example.flashcards.common.exception.DuplicateResourceException;
+import com.example.flashcards.common.exception.InvalidRequestException;
 import com.example.flashcards.common.exception.ResourceNotFoundException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -124,7 +125,7 @@ class UserServiceTest {
 
         when(this.userRepository.findById(3L)).thenReturn(Optional.of(user));
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(InvalidRequestException.class,
                 () -> this.userService.updatePassword(3L, "wrongPassword", "newPassword"));
         verify(this.userRepository, never()).save(any());
     }

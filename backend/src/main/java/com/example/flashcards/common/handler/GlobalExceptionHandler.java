@@ -3,7 +3,6 @@ package com.example.flashcards.common.handler;
 import com.example.flashcards.common.exception.*;
 import com.example.flashcards.common.response.ApiError;
 import com.example.flashcards.common.response.ApiResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +20,11 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @Autowired
-    private MessageSource messageSource;
+    private final MessageSource messageSource;
+
+    public GlobalExceptionHandler(MessageSource messageSource) {
+        this.messageSource = messageSource;
+    }
 
     private String resolve(ApiException ex, Locale locale) {
         if (ex.getMessageKey() != null) {
@@ -86,6 +88,12 @@ public class GlobalExceptionHandler {
             details
         );
 
+        return ResponseEntity.badRequest().body(ApiResponse.failure(error));
+    }
+
+    @ExceptionHandler(InvalidRequestException.class)
+    public ResponseEntity<ApiResponse<Void>> handleInvalidRequest(InvalidRequestException ex, Locale locale) {
+        ApiError error = new ApiError(HttpStatus.BAD_REQUEST, resolve(ex, locale));
         return ResponseEntity.badRequest().body(ApiResponse.failure(error));
     }
 
