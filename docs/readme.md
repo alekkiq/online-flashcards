@@ -112,10 +112,11 @@ Authenticated users have a **profile page** where they can:
 
 ### Code Quality
 
-| Technology   | Purpose          |
-| ------------ | ---------------- |
-| **ESLint 9** | Frontend linting |
-| **Prettier** | Code formatting  |
+| Technology        | Purpose                             |
+| ----------------- | ----------------------------------- |
+| **ESLint 9**      | Frontend linting                    |
+| **Prettier**      | Code formatting                     |
+| **SonarQube**     | Static code analysis & quality gate |
 
 ## CI/CD PIPELINE
 
