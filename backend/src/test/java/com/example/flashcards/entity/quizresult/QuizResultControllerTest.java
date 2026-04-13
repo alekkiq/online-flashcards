@@ -69,8 +69,8 @@ class QuizResultControllerTest {
     private Quiz createTestQuiz() {
         User creator = new User("teacher", "teacher@test.com", "password");
         creator.setUserId(2L);
-        Subject subject = new Subject("Math");
-        Quiz quiz = new Quiz("Quiz Title", "Desc", creator, subject);
+        Subject subject = new Subject("math", "Mathematics", "en");
+        Quiz quiz = new Quiz("Quiz Title", "Desc", "en", creator, subject);
         quiz.setQuizId(10L);
         return quiz;
     }
@@ -196,7 +196,7 @@ class QuizResultControllerTest {
                 .with(user(userDetails)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Quiz results fetched succesfully."))
+            .andExpect(jsonPath("$.message").value("Quiz results fetched successfully."))
             .andExpect(jsonPath("$.data").isArray())
             .andExpect(jsonPath("$.data.length()").value(2));
 

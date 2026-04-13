@@ -49,8 +49,8 @@ class QuizResultServiceTest {
     private Quiz createTestQuiz() {
         User creator = new User("teacher", "teacher@test.com", "password");
         creator.setUserId(2L);
-        Subject subject = new Subject("Math");
-        Quiz quiz = new Quiz("Quiz Title", "Desc", creator, subject);
+        Subject subject = new Subject("math", "Mathematics", "en");
+        Quiz quiz = new Quiz("Quiz Title", "Desc", "en", creator, subject);
         quiz.setQuizId(10L);
         return quiz;
     }

@@ -372,6 +372,64 @@ Languages marked `isRtl: true` in `src/config/languages.js` (currently Farsi) re
 
 ![Database Schema](./diagrams/db-diagram.png)
 
+---
+
+## STATISTICAL CODE REVIEW (SonarQube)
+
+### Tool Used
+
+Code quality analysis was performed using SonarQube. The analysis was run locally against the backend using Maven and JaCoCo coverage reports.
+
+### Summary of Metrics
+
+The SonarQube analysis produced the following results:
+
+- Quality Gate: Passed
+- Security: 0 issues (A)
+- Reliability: 0 issues (A)
+- Maintainability: 28 issues (A)
+- Coverage: 43.4%
+- Duplications: 0.0%
+- Security Hotspots: 1
+
+Most of the detected issues were related to maintainability, such as duplicated string literals, unused imports, and minor code style improvements.
+
+### Findings
+
+SonarQube detected:
+
+- duplicated string literals such as `"not found"` and `"User with ID"`
+- unused imports in controllers and tests
+- generic exception usage
+- empty statements in tests
+- non-serializable field warning in `CustomUserDetails`
+- duplicated test logic
+- minor readability issues
+
+No critical bugs or vulnerabilities were detected.
+
+### Improvements Made
+
+Based on the SonarQube analysis, the following improvements were implemented:
+
+- removed unused imports
+- replaced repeated literals with constants in service classes
+- cleaned minor readability issues
+- simplified one comparison in `UserService`
+- re-ran backend tests and SonarQube analysis after the fixes
+
+After these changes, the backend tests passed successfully and the SonarQube analysis completed successfully.
+
+### Evidence
+
+SonarQube dashboard and issue list were used as evidence. The analysis includes:
+
+- Issues tab (maintainability findings)
+- Measures tab (coverage, duplication, ratings)
+- Quality Gate status (Passed)
+
+Analysis was executed using Maven Sonar plugin and JaCoCo coverage reports.
+
 ## SPRINT REPORTS
 
 [Sprint Report Directory](./sprint_report)

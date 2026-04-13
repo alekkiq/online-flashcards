@@ -27,8 +27,10 @@ public class QuizResultService implements IQuizResultService {
     @Override
     @Transactional
     public QuizResult createQuizResult(long userId, long quizId, double scorePercentage) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "User with ID " + userId + " not found."));
-        Quiz quiz = quizRepository.findById(quizId).orElseThrow(() -> new ResourceNotFoundException("Quiz", "Quiz with ID " + quizId + " not found."));
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new ResourceNotFoundException("User", userId, "error.user.notFound", new Object[]{userId}));
+        Quiz quiz = quizRepository.findById(quizId)
+            .orElseThrow(() -> new ResourceNotFoundException("Quiz", quizId, "error.quiz.notFound", new Object[]{quizId}));
 
         QuizResult result = new QuizResult(scorePercentage, null, user, quiz);
         return quizResultRepository.save(result);
@@ -36,15 +38,18 @@ public class QuizResultService implements IQuizResultService {
 
     @Override
     public List<QuizResult> getQuizResultByQuizAndUser(Long userId, Long quizId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "User with ID " + userId + " not found."));
-        Quiz quiz = quizRepository.findById(quizId).orElseThrow(() -> new ResourceNotFoundException("Quiz", "Quiz with ID " + quizId + " not found."));
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new ResourceNotFoundException("User", userId, "error.user.notFound", new Object[]{userId}));
+        Quiz quiz = quizRepository.findById(quizId)
+            .orElseThrow(() -> new ResourceNotFoundException("Quiz", quizId, "error.quiz.notFound", new Object[]{quizId}));
 
         return quizResultRepository.findByQuizAndUser(quiz, user);
     }
 
     @Override
     public List<QuizResult> getQuizResultByUser(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User", "User with ID " + userId + " not found."));
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new ResourceNotFoundException("User", userId, "error.user.notFound", new Object[]{userId}));
         return quizResultRepository.findByUser(user);
     }
 }

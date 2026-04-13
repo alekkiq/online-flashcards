@@ -5,19 +5,19 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record ClassroomCreateRequest(
-        @NotBlank(message = "Title is required.")
-        @Size(max = 255, message = "Title must be at most 255 characters.")
+        @NotBlank(message = "validation.title.required")
+        @Size(max = 255, message = "validation.title.maxLength")
         String title,
 
-        @Size(max = 255, message = "Description must be at most 255 characters.")
+        @Size(max = 255, message = "validation.description.maxLength")
         String description,
 
-        @Size(max = 255, message = "Note must be at most 255 characters.")
+        @Size(max = 255, message = "validation.note.maxLength")
         String note,
 
         String joinCode,
 
-        @NotNull(message = "SubjectId is required.")
+        @NotNull(message = "validation.subjectId.required")
         Long subjectId
 ) {
 }

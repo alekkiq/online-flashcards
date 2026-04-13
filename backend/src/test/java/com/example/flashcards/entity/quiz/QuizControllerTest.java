@@ -69,7 +69,7 @@ class QuizControllerTest {
 
     private QuizResponse createTestQuizResponse() {
         return new QuizResponse(
-            1L, "Quiz Title", "Quiz Desc", "teacher", "TEACHER", "Math", 1,
+            1L, "Quiz Title", "Quiz Desc", "en", "teacher", "TEACHER", "Math", 1,
             List.of(new FlashcardResponse(1L, "Q1?", "A1"))
         );
     }
@@ -109,8 +109,8 @@ class QuizControllerTest {
     @Test
     @DisplayName("searchQuizzes(): returns list of quizzes")
     void searchQuizzes_success() throws Exception {
-        QuizSeachResponse r1 = new QuizSeachResponse(1L, "Quiz 1", "Desc 1", "teacher", "TEACHER", "Math", 2);
-        QuizSeachResponse r2 = new QuizSeachResponse(2L, "Quiz 2", "Desc 2", "teacher", "TEACHER", "Physics", 3);
+        QuizSeachResponse r1 = new QuizSeachResponse(1L, "Quiz 1", "Desc 1", "en", "teacher", "TEACHER", "Math", 2);
+        QuizSeachResponse r2 = new QuizSeachResponse(2L, "Quiz 2", "Desc 2", "en", "teacher", "TEACHER", "Physics", 3);
 
         when(this.quizService.searchQuizzes()).thenReturn(List.of(r1, r2));
 
@@ -135,7 +135,7 @@ class QuizControllerTest {
         List<FlashcardCreationRequest> flashcards = List.of(
             new FlashcardCreationRequest("Q1?", "A1")
         );
-        QuizCreationRequest request = new QuizCreationRequest("New Quiz", "Desc", flashcards, "Math");
+        QuizCreationRequest request = new QuizCreationRequest("New Quiz", "Desc", "en", flashcards, "Math");
         QuizResponse response = createTestQuizResponse();
 
         when(this.quizService.createQuiz(eq(1L), any(QuizCreationRequest.class))).thenReturn(response);
@@ -155,7 +155,7 @@ class QuizControllerTest {
     @Test
     @DisplayName("createQuiz(): unauthenticated returns forbidden")
     void createQuiz_unauthenticated_forbidden() throws Exception {
-        QuizCreationRequest request = new QuizCreationRequest("Quiz", "Desc", null, "Math");
+        QuizCreationRequest request = new QuizCreationRequest("Quiz", "Desc", "en", null, "Math");
 
         this.mockMvc.perform(post("/api/v1/quizzes")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -171,9 +171,9 @@ class QuizControllerTest {
         User teacher = createTeacher();
         CustomUserDetails userDetails = new CustomUserDetails(teacher);
 
-        QuizCreationRequest request = new QuizCreationRequest("Updated Quiz", "New Desc", null, "Math");
+        QuizCreationRequest request = new QuizCreationRequest("Updated Quiz", "New Desc", "en", null, "Math");
         QuizResponse response = new QuizResponse(
-            1L, "Updated Quiz", "New Desc", "teacher", "TEACHER", "Math", 0, List.of()
+            1L, "Updated Quiz", "New Desc", "en", "teacher", "TEACHER", "Math", 0, List.of()
         );
 
         when(this.quizService.updateQuiz(eq(1L), eq(1L), any(QuizCreationRequest.class))).thenReturn(response);
@@ -196,7 +196,7 @@ class QuizControllerTest {
         User teacher = createTeacher();
         CustomUserDetails userDetails = new CustomUserDetails(teacher);
 
-        QuizCreationRequest request = new QuizCreationRequest("Quiz", "Desc", null, "Math");
+        QuizCreationRequest request = new QuizCreationRequest("Quiz", "Desc", "en", null, "Math");
 
         when(this.quizService.updateQuiz(eq(99L), eq(1L), any(QuizCreationRequest.class)))
             .thenThrow(new ResourceNotFoundException("Quiz", "Quiz with ID 99 not found."));
@@ -211,7 +211,7 @@ class QuizControllerTest {
     @Test
     @DisplayName("updateQuiz(): unauthenticated returns forbidden")
     void updateQuiz_unauthenticated_forbidden() throws Exception {
-        QuizCreationRequest request = new QuizCreationRequest("Quiz", "Desc", null, "Math");
+        QuizCreationRequest request = new QuizCreationRequest("Quiz", "Desc", "en", null, "Math");
 
         this.mockMvc.perform(put("/api/v1/quizzes/1")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -264,7 +264,7 @@ class QuizControllerTest {
 
         QuizResponse r1 = createTestQuizResponse();
         QuizResponse r2 = new QuizResponse(
-            2L, "Quiz 2", "Desc 2", "teacher", "TEACHER", "Math", 0, List.of()
+            2L, "Quiz 2", "Desc 2", "en", "teacher", "TEACHER", "Math", 0, List.of()
         );
 
         when(this.quizService.getQuizzesByUser(1L)).thenReturn(List.of(r1, r2));

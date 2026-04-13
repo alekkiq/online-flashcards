@@ -6,6 +6,7 @@ import com.example.flashcards.entity.flashcard.dto.FlashcardCreationRequest;
 public record QuizCreationRequest(
     String title,
     String description,
+    String language,
     List<FlashcardCreationRequest> flashcards,
-    String subject
+    String subjectCode
 ) {}

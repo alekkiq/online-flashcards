@@ -1,7 +1,9 @@
 package com.example.flashcards.entity.quiz;
 
 import java.util.List;
+import java.util.Locale;
 
+import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
@@ -21,9 +23,11 @@ import jakarta.validation.Valid;
 public class QuizController {
 
     private final QuizService quizService;
+    private final MessageSource messageSource;
 
-    public QuizController(QuizService quizService) {
+    public QuizController(QuizService quizService, MessageSource messageSource) {
         this.quizService = quizService;
+        this.messageSource = messageSource;
     }
 
     /**
@@ -39,7 +43,6 @@ public class QuizController {
 
     /**
      * search quizzes.
-     * @param title optional title filter
      * @return list of matching quizzes
      */
     @GetMapping("/search")
@@ -57,10 +60,11 @@ public class QuizController {
     @PostMapping
     public ResponseEntity<ApiResponse<QuizResponse>> createQuiz(
         @AuthenticationPrincipal CustomUserDetails userDetails,
-        @Valid @RequestBody QuizCreationRequest request
+        @Valid @RequestBody QuizCreationRequest request,
+        Locale locale
     ) {
         QuizResponse response = quizService.createQuiz(userDetails.getUserId(), request);
-        return ResponseEntity.ok(ApiResponse.success(response, "Quiz created successfully."));
+        return ResponseEntity.ok(ApiResponse.success(response, messageSource.getMessage("success.quiz.created", null, locale)));
     }
 
     /**
@@ -74,10 +78,11 @@ public class QuizController {
     public ResponseEntity<ApiResponse<QuizResponse>> updateQuiz(
         @PathVariable long id,
         @AuthenticationPrincipal CustomUserDetails userDetails,
-        @Valid @RequestBody QuizCreationRequest request
+        @Valid @RequestBody QuizCreationRequest request,
+        Locale locale
     ) {
         QuizResponse response = quizService.updateQuiz(id, userDetails.getUserId(), request);
-        return ResponseEntity.ok(ApiResponse.success(response, "Quiz updated successfully."));
+        return ResponseEntity.ok(ApiResponse.success(response, messageSource.getMessage("success.quiz.updated", null, locale)));
     }
 
     /**
@@ -87,10 +92,11 @@ public class QuizController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> deleteQuiz(
         @PathVariable long id,
-        @AuthenticationPrincipal CustomUserDetails userDetails
+        @AuthenticationPrincipal CustomUserDetails userDetails,
+        Locale locale
     ) {
         quizService.deleteQuiz(id, userDetails.getUserId());
-        return ResponseEntity.ok(ApiResponse.success(null, "Quiz deleted successfully."));
+        return ResponseEntity.ok(ApiResponse.success(null, messageSource.getMessage("success.quiz.deleted", null, locale)));
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.example.flashcards.entity.user;
 
 import com.example.flashcards.common.exception.DuplicateResourceException;
+import com.example.flashcards.common.exception.InvalidRequestException;
 import com.example.flashcards.common.exception.ResourceNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,8 @@ import java.util.Optional;
 
 @Service
 public class UserService implements IUserService {
+    private static final String ENTITY_NAME = "User";
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -23,11 +26,16 @@ public class UserService implements IUserService {
     @Transactional
     public void updateEmail(Long userId, String newEmail) {
         User user = this.userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User", userId, "User with ID " + userId + " not found."));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        ENTITY_NAME,
+                        userId,
+                        "error.user.notFound",
+                        new Object[]{userId}
+                ));
 
         Optional<User> existing = this.userRepository.findByEmail(newEmail);
-        if (existing.isPresent() && !(existing.get().getUserId() == userId)) {
-            throw new DuplicateResourceException("User", "This email address is already in use by another account.");
+        if (existing.isPresent() && existing.get().getUserId() != userId) {
+            throw new DuplicateResourceException("User", "error.user.email.inUse", null);
         }
 
         user.setEmail(newEmail);
@@ -40,7 +48,7 @@ public class UserService implements IUserService {
         User user = getUserById(userId);
 
         if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
-            throw new IllegalArgumentException("Current password is incorrect.");
+            throw new InvalidRequestException("error.user.password.incorrect", null);
         }
 
         user.setPassword(passwordEncoder.encode(newPassword));
@@ -51,8 +59,12 @@ public class UserService implements IUserService {
     @Transactional
     public void updateUserRole(Long userId, UserRole newRole) {
         User user = this.userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User", userId,
-                        "User with ID " + userId + " not found."));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        ENTITY_NAME,
+                        userId,
+                        "error.user.notFound",
+                        new Object[]{userId}
+                ));
         user.setRole(newRole);
         this.userRepository.save(user);
     }
@@ -65,20 +77,34 @@ public class UserService implements IUserService {
     @Override
     public User getUserById(Long userId) {
         return this.userRepository.findById(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User", userId, "User with ID " + userId + " not found."));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        ENTITY_NAME,
+                        userId,
+                        "error.user.notFound",
+                        new Object[]{userId}
+                ));
     }
 
     @Override
     public User getUserByUsername(String username) {
         return this.userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "User with username " + username + " not found."));
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        ENTITY_NAME,
+                        "error.user.notFound",
+                        new Object[]{username}
+                ));
     }
 
     @Override
     @Transactional
     public void deleteUser(Long userId) {
         if (!this.userRepository.existsById(userId)) {
-            throw new ResourceNotFoundException("User", userId, "User with ID " + userId + " not found.");
+            throw new ResourceNotFoundException(
+                    ENTITY_NAME,
+                    userId,
+                    "error.user.notFound",
+                    new Object[]{userId}
+            );
         }
         this.userRepository.deleteById(userId);
     }

@@ -7,6 +7,7 @@ public record QuizResponse(
     long quizId,
     String title,
     String description,
+    String language,
     String creatorUsername,
     String creatorRole,
     String subjectName,

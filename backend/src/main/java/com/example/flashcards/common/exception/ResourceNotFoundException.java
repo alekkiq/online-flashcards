@@ -16,6 +16,18 @@ public class ResourceNotFoundException extends ApiException {
         this.resourceId = null;
     }
 
+    public ResourceNotFoundException(String resourceName, Long id, String messageKey, Object[] args) {
+        super(messageKey, args);
+        this.resourceName = resourceName;
+        this.resourceId = id;
+    }
+
+    public ResourceNotFoundException(String resourceName, String messageKey, Object[] args) {
+        super(messageKey, args);
+        this.resourceName = resourceName;
+        this.resourceId = null;
+    }
+
     public String getResourceName() {
         return this.resourceName;
     }

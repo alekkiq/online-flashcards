@@ -4,26 +4,32 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
 import Backend from "i18next-http-backend";
-import LanguageDetector from "i18next-browser-languagedetector";
 
-// extract language from browser object
-const browserLanguage = (navigator.language || "en").split('-')[0];
+const LOCALE_STORAGE_KEY = "locale";
 
-// set the default language to use
 const supportedLanguages = Object.keys(LANGUAGES);
-const defaultLanguage = supportedLanguages.includes(browserLanguage) ? browserLanguage : "en";
+const browserLanguage = (navigator.language || "en").split("-")[0];
+
+const savedLanguage = localStorage.getItem(LOCALE_STORAGE_KEY);
+const defaultLanguage =
+  (supportedLanguages.includes(savedLanguage) && savedLanguage) ||
+  (supportedLanguages.includes(browserLanguage) && browserLanguage) ||
+  "en";
 
 i18n
   .use(Backend)
-  .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     fallbackLng: "en",
     lng: defaultLanguage,
     debug: true,
     interpolation: {
-      escapeValue: false, // not needed for react as it escapes by default
+      escapeValue: false,
     },
   });
+
+i18n.on("languageChanged", (lng) => {
+  localStorage.setItem(LOCALE_STORAGE_KEY, lng);
+});
 
 export default i18n;

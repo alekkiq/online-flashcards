@@ -21,6 +21,9 @@ public class Quiz {
     @Column(nullable = true, length = 255)
     private String description;
 
+    @Column(nullable = false, length = 10)
+    private String language;
+
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Flashcard> flashcards = new ArrayList<>();
 
@@ -35,9 +38,10 @@ public class Quiz {
     protected Quiz() {
     }
 
-    public Quiz(String title, String description, User creator, Subject subject) {
+    public Quiz(String title, String description, String language, User creator, Subject subject) {
         this.title = title;
         this.description = description;
+        this.language = language;
         this.creator = creator;
         this.subject = subject;
     }
@@ -52,6 +56,10 @@ public class Quiz {
 
     public String getDescription() {
         return this.description;
+    }
+
+    public String getLanguage() {
+        return this.language;
     }
 
     public List<Flashcard> getFlashcards() {
@@ -76,6 +84,10 @@ public class Quiz {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     public void setCreator(User creator) {
