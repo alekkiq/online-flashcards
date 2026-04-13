@@ -306,7 +306,7 @@ Railway services communicate over a **private internal network**. The frontend N
 
 Each service must have its environment variables configured in the Railway dashboard — the same variables that appear in the `.env` file locally (database credentials, `JWT_SECRET`, `JWT_EXPIRATION`, `BACKEND_URL`, etc.).
 
-## Localization (i18n)
+## Frontend Localization (i18n)
 
 The app uses [i18next](https://www.i18next.com/) with `react-i18next` for internationalization.
 
@@ -361,6 +361,124 @@ The `LanguageSwitcher` component (`src/components/ui/LanguageSwitcher.jsx`) rend
 ### RTL support
 
 Languages marked `isRtl: true` in `src/config/languages.js` (currently Farsi) require RTL layout handling in CSS. This flag is available app-wide via the `LANGUAGES` config so components can conditionally apply RTL styles.
+
+## BACKEND LOCALIZATION (i18n)
+
+The backend implements **server-side message localization** using Spring's built-in i18n framework. This enables the API to return error messages, validation messages, and other user-facing strings in the user's preferred language based on their **Accept-Language** HTTP header.
+
+
+#### LocaleResolver Configuration
+
+The backend uses **Spring's `AcceptHeaderLocaleResolver`** to automatically parse the **Accept-Language** header and determine the user's locale:
+
+
+**Supported languages** are configured in `application.yaml`:
+```yaml
+app:
+  i18n:
+    default-language: en
+    supported-languages:
+      - code: en
+        tag: en-UK
+        label: English
+      - code: fi
+        tag: fi-FI
+        label: Suomi
+      - code: fa
+        tag: fa-IR
+        label: فارسی
+      - code: zh
+        tag: zh-CN
+        label: 中文
+```
+
+- If the user's language matches a supported language, **that language is used**.
+- If not, the **default language (English)** is used.
+
+### Message Properties Files
+
+Error messages and other localizable strings are stored in **property files** in the `backend/src/main/resources/` directory:
+
+| File                     | Language           | Coverage                   |
+| ------------------------ | ------------------ | -------------------------- |
+| `messages.properties`    | English (default)  | All supported message keys |
+| `messages_en.properties` | English (fallback) | English-specific messages  |
+| `messages_fi.properties` | Finnish            | Finnish translations       |
+| `messages_fa.properties` | Farsi              | Farsi translations         |
+| `messages_zh.properties` | Chinese            | Chinese translations       |
+
+Each file contains **key-value pairs** organized by domain. For example, from `messages.properties`:
+
+```properties
+# Auth errors
+error.auth.username.taken=This username is already taken. Please choose another one.
+error.auth.email.duplicate=An account with this email already exists.
+error.auth.invalid.credentials=Invalid username or password.
+
+# Quiz errors
+error.quiz.notFound=Quiz with ID {0} not found.
+error.quiz.notOwner=You are not the owner of this quiz.
+
+# Classroom errors
+error.classroom.joinCode.tooShort=Join code must be at least 6 characters.
+error.classroom.notOwner=You are not allowed to update this classroom.
+```
+
+#### Message Parameters (Placeholders)
+
+Messages can include **placeholders** like `{0}`, `{1}`, etc., for dynamic values:
+
+```properties
+error.user.notFound=User with ID {0} not found.
+error.subject.nameNotFound=Subject with name ''{0}'' not found.
+```
+
+These are filled in at runtime based on the arguements:
+
+```java
+throw new ResourceNotFoundException("User", userId, "error.user.notFound", new Object[]{userId});
+```
+
+### Locale-Aware Exception Handling
+
+The backend's **global exception handler** automatically resolves error messages in the user's language using Spring's `MessageSource` bean. Spring **automatically injects the `Locale`** parameter (resolved from the `Accept-Language` header) into handler methods.
+
+### Exception Classes with Message Keys
+
+All custom exceptions inherit from `ApiException` and store a **message key** (not the message itself) plus optional parameters:
+
+```java
+public abstract class ApiException extends RuntimeException {
+    private final String messageKey;
+    private final Object[] args;
+
+    public ApiException(String messageKey, Object[] args) {
+        super(messageKey);
+        this.messageKey = messageKey;
+        this.args = args;  // Parameters for {0}, {1}, etc.
+    }
+}
+```
+### API Response Structure
+
+When an error is thrown, the API returns a **localized JSON response**:
+
+```json
+{
+  "success": false,
+  "data": null,
+  "error": {
+    "status": 404,
+    "message": "Quiz with ID 123 not found."
+  }
+}
+```
+
+The **message is already translated** based on the client's `Accept-Language` header, so no frontend translation is needed for backend errors.
+
+
+---
+
 
 ## ARCHITECTURE DESIGN
 
