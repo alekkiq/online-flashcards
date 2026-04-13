@@ -496,7 +496,7 @@ INSERT INTO subjects (code, name, language) VALUES ('math', 'ریاضیات', 'f
 INSERT INTO subjects (code, name, language) VALUES ('math', '数学', 'zh');
 ```
 If a language doesn't exist the application falls back to English.
-The schema and diagram below demonstrate how the Row Method was utilized:
+The schema and diagram in the next section display how the Row Method was utilized.
 
 ## ARCHITECTURE DESIGN
 
