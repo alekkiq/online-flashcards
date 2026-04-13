@@ -366,11 +366,11 @@ Languages marked `isRtl: true` in `src/config/languages.js` (currently Farsi) re
 
 ### ER Diagram
 
-![Entity Relationship Diagram](./diagrams/er-diagram.png)
+![Entity Relationship Diagram](./diagrams/er-diagram-l10n.png)
 
 ### Database schema
 
-![Database Schema](./diagrams/db-diagram.png)
+![Database Schema](./diagrams/db-diagram-l10n.png)
 
 ## SPRINT REPORTS
 
