@@ -196,7 +196,7 @@ class QuizResultControllerTest {
                 .with(user(userDetails)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Quiz results fetched succesfully."))
+            .andExpect(jsonPath("$.message").value("Quiz results fetched successfully."))
             .andExpect(jsonPath("$.data").isArray())
             .andExpect(jsonPath("$.data.length()").value(2));
 

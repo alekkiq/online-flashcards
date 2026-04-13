@@ -124,7 +124,7 @@ class UserServiceTest {
 
         when(this.userRepository.findById(3L)).thenReturn(Optional.of(user));
 
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(com.example.flashcards.common.exception.InvalidRequestException.class,
                 () -> this.userService.updatePassword(3L, "wrongPassword", "newPassword"));
         verify(this.userRepository, never()).save(any());
     }

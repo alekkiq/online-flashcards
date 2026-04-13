@@ -80,7 +80,7 @@ class PromotionRequestControllerTest {
                 .content(this.objectMapper.writeValueAsString(creationRequest)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Promotion request created successfully"))
+            .andExpect(jsonPath("$.message").value("Promotion request created successfully."))
             .andExpect(jsonPath("$.data.status").value("PENDING"))
             .andExpect(jsonPath("$.data.message").value("I want to teach"));
 
@@ -193,7 +193,7 @@ class PromotionRequestControllerTest {
                         .content(this.objectMapper.writeValueAsString(updateRequest)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.message").value("Promotion request updated successfully"))
+                .andExpect(jsonPath("$.message").value("Promotion request updated successfully."))
                 .andExpect(jsonPath("$.data.status").value("APPROVED"));
 
         verify(this.promotionRequestService, times(1)).approveRequest(1L);
@@ -220,7 +220,7 @@ class PromotionRequestControllerTest {
                 .content(this.objectMapper.writeValueAsString(updateRequest)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Promotion request updated successfully"))
+            .andExpect(jsonPath("$.message").value("Promotion request updated successfully."))
             .andExpect(jsonPath("$.data.status").value("REJECTED"));
 
         verify(this.promotionRequestService, times(1)).rejectRequest(1L);
