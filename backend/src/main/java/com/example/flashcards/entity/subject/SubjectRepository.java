@@ -3,10 +3,12 @@ package com.example.flashcards.entity.subject;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface SubjectRepository extends JpaRepository<Subject, Long> {
-    Optional<Subject> findByName(String name);
-    boolean existsByName(String name);
+    Optional<Subject> findByCodeAndLanguage(String code, String language);
+    boolean existsByCodeAndLanguage(String code, String language);
+    List<Subject> findAllByLanguage(String language);
 }

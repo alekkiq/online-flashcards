@@ -1,6 +1,7 @@
 package com.example.flashcards.entity.quiz;
 
 import com.example.flashcards.common.exception.ResourceNotFoundException;
+import com.example.flashcards.common.provider.CurrentLanguageProvider;
 import com.example.flashcards.entity.flashcard.Flashcard;
 import com.example.flashcards.entity.flashcard.dto.FlashcardCreationRequest;
 import com.example.flashcards.entity.quiz.dto.QuizCreationRequest;
@@ -30,6 +31,8 @@ class QuizServiceTest {
     private SubjectRepository subjectRepository;
     private QuizService quizService;
 
+    private CurrentLanguageProvider currentLanguageProvider;
+
     @BeforeAll
     static void initAll() {
         System.out.println("QuizService test start");
@@ -40,7 +43,9 @@ class QuizServiceTest {
         this.quizRepository = Mockito.mock(QuizRepository.class);
         this.userRepository = Mockito.mock(UserRepository.class);
         this.subjectRepository = Mockito.mock(SubjectRepository.class);
-        this.quizService = new QuizService(this.quizRepository, this.userRepository, this.subjectRepository);
+        this.currentLanguageProvider = Mockito.mock(CurrentLanguageProvider.class);
+        this.quizService = new QuizService(this.quizRepository, this.userRepository, this.subjectRepository, this.currentLanguageProvider);
+        when(this.currentLanguageProvider.getCurrentLanguage()).thenReturn("en");
     }
 
     private User createTestUser() {
@@ -51,13 +56,13 @@ class QuizServiceTest {
     }
 
     private Subject createTestSubject() {
-        Subject subject = new Subject("Math");
+        Subject subject = new Subject("math", "Mathematics", "en");
         subject.setSubjectId(10L);
         return subject;
     }
 
     private Quiz createTestQuiz(User creator, Subject subject) {
-        Quiz quiz = new Quiz("Quiz Title", "Quiz Desc", creator, subject);
+        Quiz quiz = new Quiz("Quiz Title", "Quiz Desc", "en", creator, subject);
         quiz.setQuizId(1L);
         Flashcard fc = new Flashcard("Q1?", "A1", quiz);
         fc.setFlashcardId(1L);
@@ -81,7 +86,7 @@ class QuizServiceTest {
         assertEquals(1L, result.quizId());
         assertEquals("Quiz Title", result.title());
         assertEquals("teacher", result.creatorUsername());
-        assertEquals("Math", result.subjectName());
+        assertEquals("Mathematics", result.subjectName());
         assertEquals(1, result.cardCount());
         assertEquals(1, result.flashcards().size());
     }
@@ -101,10 +106,10 @@ class QuizServiceTest {
         User creator = createTestUser();
         Subject subject = createTestSubject();
         Quiz quiz1 = createTestQuiz(creator, subject);
-        Quiz quiz2 = new Quiz("Quiz 2", "Desc 2", creator, subject);
+        Quiz quiz2 = new Quiz("Quiz 2", "Desc 2", "en", creator, subject);
         quiz2.setQuizId(2L);
 
-        when(this.quizRepository.getAllQuizzes()).thenReturn(List.of(quiz1, quiz2));
+        when(this.quizRepository.findAllByLanguage("en")).thenReturn(List.of(quiz1, quiz2));
 
         List<QuizSeachResponse> result = this.quizService.searchQuizzes();
 
@@ -135,10 +140,10 @@ class QuizServiceTest {
             new FlashcardCreationRequest("Q1?", "A1"),
             new FlashcardCreationRequest("Q2?", "A2")
         );
-        QuizCreationRequest request = new QuizCreationRequest("New Quiz", "Desc", flashcards, "Math");
+        QuizCreationRequest request = new QuizCreationRequest("New Quiz", "Desc", flashcards, "math");
 
         when(this.userRepository.findById(1L)).thenReturn(Optional.of(creator));
-        when(this.subjectRepository.findByName("Math")).thenReturn(Optional.of(subject));
+        when(this.subjectRepository.findByCodeAndLanguage("math", this.currentLanguageProvider.getCurrentLanguage())).thenReturn(Optional.of(subject));
         when(this.quizRepository.save(any(Quiz.class))).thenAnswer(i -> {
             Quiz saved = i.getArgument(0);
             saved.setQuizId(1L);
@@ -158,10 +163,10 @@ class QuizServiceTest {
         User creator = createTestUser();
         Subject subject = createTestSubject();
 
-        QuizCreationRequest request = new QuizCreationRequest("No Cards Quiz", "Desc", null, "Math");
+        QuizCreationRequest request = new QuizCreationRequest("No Cards Quiz", "Desc", null, "math");
 
         when(this.userRepository.findById(1L)).thenReturn(Optional.of(creator));
-        when(this.subjectRepository.findByName("Math")).thenReturn(Optional.of(subject));
+        when(this.subjectRepository.findByCodeAndLanguage("math", this.currentLanguageProvider.getCurrentLanguage())).thenReturn(Optional.of(subject));
         when(this.quizRepository.save(any(Quiz.class))).thenAnswer(i -> {
             Quiz saved = i.getArgument(0);
             saved.setQuizId(1L);
@@ -179,7 +184,7 @@ class QuizServiceTest {
     void createQuiz_userNotFound_throwsException() {
         when(this.userRepository.findById(99L)).thenReturn(Optional.empty());
 
-        QuizCreationRequest request = new QuizCreationRequest("Quiz", "Desc", null, "Math");
+        QuizCreationRequest request = new QuizCreationRequest("Quiz", "Desc", null, "math");
         assertThrows(ResourceNotFoundException.class, () -> this.quizService.createQuiz(99L, request));
     }
 
@@ -188,9 +193,9 @@ class QuizServiceTest {
     void createQuiz_subjectNotFound_throwsException() {
         User creator = createTestUser();
         when(this.userRepository.findById(1L)).thenReturn(Optional.of(creator));
-        when(this.subjectRepository.findByName("Nonexistent")).thenReturn(Optional.empty());
+        when(this.subjectRepository.findByCodeAndLanguage("nonexistent", "en")).thenReturn(Optional.empty());
 
-        QuizCreationRequest request = new QuizCreationRequest("Quiz", "Desc", null, "Nonexistent");
+        QuizCreationRequest request = new QuizCreationRequest("Quiz", "Desc", null, "nonexistent");
         assertThrows(ResourceNotFoundException.class, () -> this.quizService.createQuiz(1L, request));
     }
 
@@ -203,16 +208,16 @@ class QuizServiceTest {
         Subject subject = createTestSubject();
         Quiz existingQuiz = createTestQuiz(creator, subject);
 
-        Subject newSubject = new Subject("Physics");
+        Subject newSubject = new Subject("physics", "Physics", "en");
         newSubject.setSubjectId(20L);
 
         List<FlashcardCreationRequest> newFlashcards = List.of(
             new FlashcardCreationRequest("New Q?", "New A")
         );
-        QuizCreationRequest request = new QuizCreationRequest("Updated Quiz", "New Desc", newFlashcards, "Physics");
+        QuizCreationRequest request = new QuizCreationRequest("Updated Quiz", "New Desc", newFlashcards, "physics");
 
         when(this.quizRepository.findById(1L)).thenReturn(Optional.of(existingQuiz));
-        when(this.subjectRepository.findByName("Physics")).thenReturn(Optional.of(newSubject));
+        when(this.subjectRepository.findByCodeAndLanguage("physics", "en")).thenReturn(Optional.of(newSubject));
         when(this.quizRepository.save(any(Quiz.class))).thenAnswer(i -> i.getArgument(0));
 
         QuizResponse result = this.quizService.updateQuiz(1L, 1L, request);
@@ -227,7 +232,7 @@ class QuizServiceTest {
     void updateQuiz_quizNotFound_throwsException() {
         when(this.quizRepository.findById(99L)).thenReturn(Optional.empty());
 
-        QuizCreationRequest request = new QuizCreationRequest("Quiz", "Desc", null, "Math");
+        QuizCreationRequest request = new QuizCreationRequest("Quiz", "Desc", null, "math");
         assertThrows(ResourceNotFoundException.class, () -> this.quizService.updateQuiz(99L, 1L, request));
     }
 
@@ -239,9 +244,9 @@ class QuizServiceTest {
         Quiz existingQuiz = createTestQuiz(creator, subject);
 
         when(this.quizRepository.findById(1L)).thenReturn(Optional.of(existingQuiz));
-        when(this.subjectRepository.findByName("Nonexistent")).thenReturn(Optional.empty());
+        when(this.subjectRepository.findByCodeAndLanguage("nonexistent", "en")).thenReturn(Optional.empty());
 
-        QuizCreationRequest request = new QuizCreationRequest("Quiz", "Desc", null, "Nonexistent");
+        QuizCreationRequest request = new QuizCreationRequest("Quiz", "Desc", null, "nonexistent");
         assertThrows(ResourceNotFoundException.class, () -> this.quizService.updateQuiz(1L, 1L, request));
     }
 
@@ -280,7 +285,7 @@ class QuizServiceTest {
         User creator = createTestUser();
         Subject subject = createTestSubject();
         Quiz quiz1 = createTestQuiz(creator, subject);
-        Quiz quiz2 = new Quiz("Quiz 2", "Desc 2", creator, subject);
+        Quiz quiz2 = new Quiz("Quiz 2", "Desc 2", "en", creator, subject);
         quiz2.setQuizId(2L);
 
         when(this.quizRepository.findByCreator_UserId(1L)).thenReturn(List.of(quiz1, quiz2));

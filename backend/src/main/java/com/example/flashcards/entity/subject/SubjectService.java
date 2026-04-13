@@ -2,6 +2,7 @@ package com.example.flashcards.entity.subject;
 
 import com.example.flashcards.common.exception.DuplicateResourceException;
 import com.example.flashcards.common.exception.ResourceNotFoundException;
+import com.example.flashcards.common.provider.CurrentLanguageProvider;
 import com.example.flashcards.entity.subject.dto.SubjectResponse;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -11,33 +12,50 @@ import java.util.List;
 @Service
 public class SubjectService implements ISubjectService {
     private final SubjectRepository subjectRepository;
+    private final CurrentLanguageProvider currentLanguageProvider;
 
-    public SubjectService(SubjectRepository subjectRepository) {
+    public SubjectService(
+        SubjectRepository subjectRepository,
+        CurrentLanguageProvider currentLanguageProvider
+    ) {
         this.subjectRepository = subjectRepository;
+        this.currentLanguageProvider = currentLanguageProvider;
     }
 
     @Override
     public List<Subject> getAllSubjects() {
-        return this.subjectRepository.findAll();
+        String language = currentLanguageProvider.getCurrentLanguage();
+        return this.subjectRepository.findAllByLanguage(language);
     }
 
     @Override
     public Subject getSubjectById(Long subjectId) {
         return this.subjectRepository.findById(subjectId)
-                .orElseThrow(() -> new ResourceNotFoundException("Subject", subjectId, "Subject with ID " + subjectId + " not found."));
+            .orElseThrow(() -> new ResourceNotFoundException(
+                "Subject",
+                subjectId,
+                "Subject with ID " + subjectId + " not found."
+            ));
     }
 
     @Override
-    public Subject getSubjectByName(String name) {
-        return this.subjectRepository.findByName(name)
-                .orElseThrow(() -> new ResourceNotFoundException("Subject", "Subject with name '" + name + "' not found."));
+    public Subject getSubjectByCode(String code) {
+        String language = currentLanguageProvider.getCurrentLanguage();
+        return this.subjectRepository.findByCodeAndLanguage(code, language)
+            .orElseThrow(() -> new ResourceNotFoundException(
+                "Subject",
+                "Subject not found."
+            ));
     }
 
     @Override
     @Transactional
     public Subject createSubject(Subject subject) {
-        if (this.subjectRepository.existsByName(subject.getName())) {
-            throw new DuplicateResourceException("Subject", "A subject with name '" + subject.getName() + "' already exists.");
+        if (this.subjectRepository.existsByCodeAndLanguage(subject.getCode(), subject.getLanguage())) {
+            throw new DuplicateResourceException(
+                "Subject",
+                "A subject with code '" + subject.getCode() + "' already exists for language '" + subject.getLanguage() + "'."
+            );
         }
         return this.subjectRepository.save(subject);
     }
@@ -46,15 +64,26 @@ public class SubjectService implements ISubjectService {
     @Transactional
     public Subject updateSubject(Long subjectId, Subject subject) {
         Subject existingSubject = this.subjectRepository.findById(subjectId)
-                .orElseThrow(() -> new ResourceNotFoundException("Subject", subjectId, "Subject with ID " + subjectId + " not found."));
+            .orElseThrow(() -> new ResourceNotFoundException(
+                "Subject",
+                subjectId,
+                "Subject with ID " + subjectId + " not found."
+            ));
 
-        if (!existingSubject.getName().equals(subject.getName())
-                && this.subjectRepository.existsByName(subject.getName())) {
-            throw new DuplicateResourceException("Subject", "A subject with name '" + subject.getName() + "' already exists.");
+        boolean keyChanged =
+            !existingSubject.getCode().equals(subject.getCode()) ||
+            !existingSubject.getLanguage().equals(subject.getLanguage());
+
+        if (keyChanged && this.subjectRepository.existsByCodeAndLanguage(subject.getCode(), subject.getLanguage())) {
+            throw new DuplicateResourceException(
+                "Subject",
+                "A subject with code '" + subject.getCode() + "' already exists for language '" + subject.getLanguage() + "'."
+            );
         }
 
-        // field updates
+        existingSubject.setCode(subject.getCode());
         existingSubject.setName(subject.getName());
+        existingSubject.setLanguage(subject.getLanguage());
 
         return this.subjectRepository.save(existingSubject);
     }
@@ -63,7 +92,11 @@ public class SubjectService implements ISubjectService {
     @Transactional
     public void deleteSubject(Long subjectId) {
         if (!this.subjectRepository.existsById(subjectId)) {
-            throw new ResourceNotFoundException("Subject", subjectId, "Subject with ID " + subjectId + " not found.");
+            throw new ResourceNotFoundException(
+                "Subject",
+                subjectId,
+                "Subject with ID " + subjectId + " not found."
+            );
         }
         this.subjectRepository.deleteById(subjectId);
     }

@@ -119,6 +119,8 @@
     "description": "描述",
     "descriptionPlaceholder": "输入描述（可选）",
     "subject": "科目",
+    "selectSubject": "选择科目",
+    "loadingSubjects": "加载科目...",
     "cards": "卡片",
     "addCard": "+ 添加卡片",
     "cancel": "取消",

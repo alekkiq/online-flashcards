@@ -28,6 +28,9 @@ public class Classroom {
     @Column(nullable = true, length = 255)
     private String joinCode;
 
+    @Column(nullable = false, length = 10)
+    private String language;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
@@ -57,11 +60,12 @@ public class Classroom {
 
     protected Classroom() {}
 
-    public Classroom(String title, String description, String note, String joinCode, User owner, Subject subject) {
+    public Classroom(String title, String description, String note, String joinCode, String language, User owner, Subject subject) {
         this.title = title;
         this.description = description;
         this.note = note;
         this.joinCode = joinCode;
+        this.language = language;
         this.owner = owner;
         this.subject = subject;
     }
@@ -84,6 +88,10 @@ public class Classroom {
 
     public String getJoinCode() {
         return this.joinCode;
+    }
+
+    public String getLanguage() {
+        return this.language;
     }
 
     public User getOwner() {
@@ -124,6 +132,10 @@ public class Classroom {
 
     public void setJoinCode(String joinCode) {
         this.joinCode = joinCode;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     public void setOwner(User owner) {

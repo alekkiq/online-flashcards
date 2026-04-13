@@ -119,6 +119,8 @@
     "description": "Description",
     "descriptionPlaceholder": "Enter description (optional)",
     "subject": "Subject",
+    "selectSubject": "Select a subject",
+    "loadingSubjects": "Loading subjects...",
     "cards": "Cards",
     "addCard": "+ Add Card",
     "cancel": "Cancel",

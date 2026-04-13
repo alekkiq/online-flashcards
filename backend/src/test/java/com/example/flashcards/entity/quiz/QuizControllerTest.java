@@ -69,7 +69,7 @@ class QuizControllerTest {
 
     private QuizResponse createTestQuizResponse() {
         return new QuizResponse(
-            1L, "Quiz Title", "Quiz Desc", "teacher", "TEACHER", "Math", 1,
+            1L, "Quiz Title", "Quiz Desc", "en", "teacher", "TEACHER", "Math", 1,
             List.of(new FlashcardResponse(1L, "Q1?", "A1"))
         );
     }
@@ -109,8 +109,8 @@ class QuizControllerTest {
     @Test
     @DisplayName("searchQuizzes(): returns list of quizzes")
     void searchQuizzes_success() throws Exception {
-        QuizSeachResponse r1 = new QuizSeachResponse(1L, "Quiz 1", "Desc 1", "teacher", "TEACHER", "Math", 2);
-        QuizSeachResponse r2 = new QuizSeachResponse(2L, "Quiz 2", "Desc 2", "teacher", "TEACHER", "Physics", 3);
+        QuizSeachResponse r1 = new QuizSeachResponse(1L, "Quiz 1", "Desc 1", "en", "teacher", "TEACHER", "Math", 2);
+        QuizSeachResponse r2 = new QuizSeachResponse(2L, "Quiz 2", "Desc 2", "en", "teacher", "TEACHER", "Physics", 3);
 
         when(this.quizService.searchQuizzes()).thenReturn(List.of(r1, r2));
 
@@ -173,7 +173,7 @@ class QuizControllerTest {
 
         QuizCreationRequest request = new QuizCreationRequest("Updated Quiz", "New Desc", null, "Math");
         QuizResponse response = new QuizResponse(
-            1L, "Updated Quiz", "New Desc", "teacher", "TEACHER", "Math", 0, List.of()
+            1L, "Updated Quiz", "New Desc", "en", "teacher", "TEACHER", "Math", 0, List.of()
         );
 
         when(this.quizService.updateQuiz(eq(1L), eq(1L), any(QuizCreationRequest.class))).thenReturn(response);
@@ -264,7 +264,7 @@ class QuizControllerTest {
 
         QuizResponse r1 = createTestQuizResponse();
         QuizResponse r2 = new QuizResponse(
-            2L, "Quiz 2", "Desc 2", "teacher", "TEACHER", "Math", 0, List.of()
+            2L, "Quiz 2", "Desc 2", "en", "teacher", "TEACHER", "Math", 0, List.of()
         );
 
         when(this.quizService.getQuizzesByUser(1L)).thenReturn(List.of(r1, r2));

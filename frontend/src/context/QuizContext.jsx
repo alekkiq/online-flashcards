@@ -37,6 +37,7 @@ const QuizProvider = ({ children }) => {
         ]);
 
         if (!quizData.success) {
+          setError(quizData.error);
           return null;
         }
 

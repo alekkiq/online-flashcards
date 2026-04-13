@@ -45,6 +45,10 @@ public class Flashcard {
         return this.quiz;
     }
 
+    public String getLanguage() {
+        return this.quiz != null ? this.quiz.getLanguage() : null;
+    }
+
     public void setFlashcardId(long flashcardId) {
         this.flashcardId = flashcardId;
     }

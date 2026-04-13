@@ -1,17 +1,12 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { SubjectContext } from "../context/SubjectContext";
 
 export function useSubjects() {
-  const context = useContext(SubjectContext);
-  if (!context) {
-    throw new Error("useSubjects must be used within a SubjectProvider");
-  }
+    const context = useContext(SubjectContext);
 
-  const { subjects, isLoading, error, fetchSubjects } = context;
+    if (!context) {
+        throw new Error("useSubjects must be used within a SubjectProvider");
+    }
 
-  useEffect(() => {
-    fetchSubjects();
-  }, [fetchSubjects]);
-
-  return { subjects, isLoading, error };
+    return context;
 }

@@ -7,5 +7,5 @@ public record QuizCreationRequest(
     String title,
     String description,
     List<FlashcardCreationRequest> flashcards,
-    String subject
+    String subjectCode
 ) {}

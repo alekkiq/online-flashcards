@@ -23,64 +23,54 @@ public class SubjectController {
     }
 
     /**
-     * Get all subjects.
-     * @return the list of all subjects
+     * Get all subjects in the current language.
      */
     @GetMapping
     public ResponseEntity<ApiResponse<List<SubjectResponse>>> getAllSubjects() {
         List<Subject> subjects = this.subjectService.getAllSubjects();
         List<SubjectResponse> response = subjects.stream()
-                .map(subject -> SubjectResponse.from(subject.getSubjectId(), subject.getName()))
-                .toList();
+            .map(SubjectResponse::from)
+            .toList();
 
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
     /**
      * Get a subject by its ID.
-     * @param subjectId the ID of the subject to retrieve
-     * @return the subject with the specified ID
      */
     @GetMapping("/{subjectId}")
     public ResponseEntity<ApiResponse<SubjectResponse>> getSubjectById(@PathVariable Long subjectId) {
         Subject subject = this.subjectService.getSubjectById(subjectId);
-        SubjectResponse response = SubjectResponse.from(subject.getSubjectId(), subject.getName());
-
-        return ResponseEntity.ok(ApiResponse.success(response));
+        return ResponseEntity.ok(ApiResponse.success(SubjectResponse.from(subject)));
     }
 
     /**
-     * Get a subject by its name.
-     * @param name the name of the subject to retrieve
-     * @return the subject with the specified name
+     * Get a subject by its stable code.
      */
-    @GetMapping("/name/{name}")
-    public ResponseEntity<ApiResponse<SubjectResponse>> getSubjectByName(@Valid @PathVariable String name) {
-        Subject subject = this.subjectService.getSubjectByName(name);
-        SubjectResponse response = SubjectResponse.from(subject.getSubjectId(), subject.getName());
-
-        return ResponseEntity.ok(ApiResponse.success(response));
+    @GetMapping("/code/{code}")
+    public ResponseEntity<ApiResponse<SubjectResponse>> getSubjectByCode(@PathVariable String code) {
+        Subject subject = this.subjectService.getSubjectByCode(code);
+        return ResponseEntity.ok(ApiResponse.success(SubjectResponse.from(subject)));
     }
 
     /**
      * Create a new subject. (Admin only)
-     * @param request the subject creation request containing the subject name
-     * @return the created subject
      */
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<ApiResponse<SubjectResponse>> createSubject(@Valid @RequestBody SubjectCreationRequest request) {
-        Subject subject = new Subject(request.name());
+    public ResponseEntity<ApiResponse<SubjectResponse>> createSubject(
+        @Valid @RequestBody SubjectCreationRequest request
+    ) {
+        Subject subject = new Subject(request.code(), request.name(), request.language());
         Subject createdSubject = this.subjectService.createSubject(subject);
-        SubjectResponse response = SubjectResponse.from(createdSubject.getSubjectId(), createdSubject.getName());
 
-        return ResponseEntity.ok(ApiResponse.success(response, "Subject created successfully."));
+        return ResponseEntity.ok(
+            ApiResponse.success(SubjectResponse.from(createdSubject), "Subject created successfully.")
+        );
     }
 
     /**
      * Update an existing subject. (Admin only)
-     * @param subjectId the ID of the subject to update
-     * @param request the subject update request containing the new subject name
      */
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{subjectId}")
@@ -88,16 +78,16 @@ public class SubjectController {
         @PathVariable Long subjectId,
         @Valid @RequestBody SubjectUpdateRequest request
     ) {
-        Subject subject = new Subject(request.name());
+        Subject subject = new Subject(request.code(), request.name(), request.language());
         Subject updatedSubject = this.subjectService.updateSubject(subjectId, subject);
-        SubjectResponse response = SubjectResponse.from(updatedSubject.getSubjectId(), updatedSubject.getName());
 
-        return ResponseEntity.ok(ApiResponse.success(response, "Subject updated successfully."));
+        return ResponseEntity.ok(
+            ApiResponse.success(SubjectResponse.from(updatedSubject), "Subject updated successfully.")
+        );
     }
 
     /**
      * Delete a subject by its ID. (Admin only)
-     * @param subjectId the ID of the subject to delete
      */
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{subjectId}")
