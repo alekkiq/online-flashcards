@@ -61,10 +61,10 @@ class SubjectControllerTest {
     @Test
     @DisplayName("getAllSubjects(): returns list of subjects")
     void getAllSubjects() throws Exception {
-        Subject subject1 = new Subject("Mathematics");
+        Subject subject1 = new Subject("math", "Mathematics", "en");
         subject1.setSubjectId(1L);
 
-        Subject subject2 = new Subject("Physics");
+        Subject subject2 = new Subject("physics", "Physics", "en");
         subject2.setSubjectId(2L);
 
         when(this.subjectService.getAllSubjects()).thenReturn(List.of(subject1, subject2));
@@ -75,8 +75,8 @@ class SubjectControllerTest {
             .andExpect(jsonPath("$.success").value(true))
             .andExpect(jsonPath("$.data").isArray())
             .andExpect(jsonPath("$.data.length()").value(2))
-            .andExpect(jsonPath("$.data[0].name").value("Mathematics"))
-            .andExpect(jsonPath("$.data[1].name").value("Physics"));
+            .andExpect(jsonPath("$.data[0].code").value("math"))
+            .andExpect(jsonPath("$.data[1].code").value("physics"));
 
         verify(this.subjectService, times(1)).getAllSubjects();
     }
@@ -84,7 +84,7 @@ class SubjectControllerTest {
     @Test
     @DisplayName("getSubjectById(): returns subject by ID")
     void getSubjectById() throws Exception {
-        Subject subject = new Subject("Chemistry");
+        Subject subject = new Subject("chemistry", "Chemistry", "en");
         subject.setSubjectId(5L);
 
         when(this.subjectService.getSubjectById(5L)).thenReturn(subject);
@@ -93,7 +93,7 @@ class SubjectControllerTest {
                 .with(user("user").roles("STUDENT")))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.data.name").value("Chemistry"));
+            .andExpect(jsonPath("$.data.code").value("chemistry"));
 
         verify(this.subjectService, times(1)).getSubjectById(5L);
     }
@@ -112,43 +112,43 @@ class SubjectControllerTest {
     }
 
     @Test
-    @DisplayName("getSubjectByName(): returns subject by name")
+    @DisplayName("getSubjectByCode(): returns subject by code")
     void getSubjectByName() throws Exception {
-        Subject subject = new Subject("Biology");
+        Subject subject = new Subject("biology", "Biology", "en");
         subject.setSubjectId(3L);
 
-        when(this.subjectService.getSubjectByName("Biology")).thenReturn(subject);
+        when(this.subjectService.getSubjectByCode("biology")).thenReturn(subject);
 
-        this.mockMvc.perform(get("/api/v1/subjects/name/Biology")
+        this.mockMvc.perform(get("/api/v1/subjects/code/biology")
                 .with(user("user").roles("STUDENT")))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.data.name").value("Biology"));
+            .andExpect(jsonPath("$.data.code").value("biology"));
 
-        verify(this.subjectService, times(1)).getSubjectByName("Biology");
+        verify(this.subjectService, times(1)).getSubjectByCode("biology");
     }
 
     @Test
-    @DisplayName("getSubjectByName(): subject not found throws exception")
-    void getSubjectByName_subjectNotFound_throwsException() throws Exception {
-        when(this.subjectService.getSubjectByName("NonExistent"))
+    @DisplayName("getSubjectByCode(): subject not found throws exception")
+    void getSubjectByCode_subjectNotFound_throwsException() throws Exception {
+        when(this.subjectService.getSubjectByCode("non-existent"))
             .thenThrow(new ResourceNotFoundException("Subject", "Subject not found"));
 
-        this.mockMvc.perform(get("/api/v1/subjects/name/NonExistent")
+        this.mockMvc.perform(get("/api/v1/subjects/code/non-existent")
                 .with(user("user").roles("STUDENT")))
             .andExpect(status().isNotFound());
 
-        verify(this.subjectService, times(1)).getSubjectByName("NonExistent");
+        verify(this.subjectService, times(1)).getSubjectByCode("non-existent");
     }
 
     @Test
     @DisplayName("createSubject(): successfully creates subject")
     @WithMockUser(authorities = "ROLE_ADMIN")
     void createSubject() throws Exception {
-        Subject subject = new Subject("History");
+        Subject subject = new Subject("history", "History", "en");
         subject.setSubjectId(7L);
 
-        SubjectCreationRequest request = new SubjectCreationRequest("History");
+        SubjectCreationRequest request = new SubjectCreationRequest("history", "History", "en");
 
         when(this.subjectService.createSubject(any(Subject.class))).thenReturn(subject);
 
@@ -159,7 +159,7 @@ class SubjectControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
             .andExpect(jsonPath("$.message").value("Subject created successfully."))
-            .andExpect(jsonPath("$.data.name").value("History"));
+            .andExpect(jsonPath("$.data.code").value("history"));
 
         verify(this.subjectService, times(1)).createSubject(any(Subject.class));
     }
@@ -167,7 +167,7 @@ class SubjectControllerTest {
     @Test
     @DisplayName("createSubject(): forbidden without ADMIN role")
     void createSubject_withoutAdminRole_forbidden() throws Exception {
-        SubjectCreationRequest request = new SubjectCreationRequest("History");
+        SubjectCreationRequest request = new SubjectCreationRequest("history", "History", "en");
 
         this.mockMvc.perform(post("/api/v1/subjects")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -180,7 +180,7 @@ class SubjectControllerTest {
     @Test
     @DisplayName("createSubject(): fails with duplicate subject name")
     void createSubject_duplicateName_throwsException() throws Exception {
-        SubjectCreationRequest request = new SubjectCreationRequest("Mathematics");
+        SubjectCreationRequest request = new SubjectCreationRequest("math", "Mathematics", "en");
 
         when(this.subjectService.createSubject(any(Subject.class)))
             .thenThrow(new DuplicateResourceException("Subject", "Subject already exists"));
@@ -195,9 +195,9 @@ class SubjectControllerTest {
     }
 
     @Test
-    @DisplayName("createSubject(): fails with blank name")
+    @DisplayName("createSubject(): fails with blank values")
     void createSubject_blankName_badRequest() throws Exception {
-        SubjectCreationRequest request = new SubjectCreationRequest("");
+        SubjectCreationRequest request = new SubjectCreationRequest("", "History", "en");
 
         this.mockMvc.perform(post("/api/v1/subjects")
                 .with(user("admin").roles("ADMIN"))
@@ -212,10 +212,10 @@ class SubjectControllerTest {
     @DisplayName("updateSubject(): successfully updates subject")
     @WithMockUser(authorities = "ROLE_ADMIN")
     void updateSubject() throws Exception {
-        Subject subject = new Subject("Updated Math");
+        Subject subject = new Subject("advanced-math", "Advanced Mathematics", "en");
         subject.setSubjectId(10L);
 
-        SubjectUpdateRequest request = new SubjectUpdateRequest("Updated Math");
+        SubjectUpdateRequest request = new SubjectUpdateRequest("advanced-math", "Advanced Mathematics", "en");
 
         when(this.subjectService.updateSubject(eq(10L), any(Subject.class))).thenReturn(subject);
 
@@ -226,7 +226,7 @@ class SubjectControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
             .andExpect(jsonPath("$.message").value("Subject updated successfully."))
-            .andExpect(jsonPath("$.data.name").value("Updated Math"));
+            .andExpect(jsonPath("$.data.code").value("advanced-math"));
 
         verify(this.subjectService, times(1)).updateSubject(eq(10L), any(Subject.class));
     }
@@ -234,7 +234,7 @@ class SubjectControllerTest {
     @Test
     @DisplayName("updateSubject(): forbidden without ADMIN role")
     void updateSubject_withoutAdminRole_forbidden() throws Exception {
-        SubjectUpdateRequest request = new SubjectUpdateRequest("Updated Math");
+        SubjectUpdateRequest request = new SubjectUpdateRequest("advanced-math", "Advanced Mathematics", "en");
 
         this.mockMvc.perform(put("/api/v1/subjects/10")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -247,7 +247,7 @@ class SubjectControllerTest {
     @Test
     @DisplayName("updateSubject(): subject not found throws exception")
     void updateSubject_subjectNotFound_throwsException() throws Exception {
-        SubjectUpdateRequest request = new SubjectUpdateRequest("Updated Name");
+        SubjectUpdateRequest request = new SubjectUpdateRequest("non-existent", "Non-Existent Subject", "en");
 
         when(this.subjectService.updateSubject(eq(99L), any(Subject.class)))
             .thenThrow(new ResourceNotFoundException("Subject", "Subject not found"));

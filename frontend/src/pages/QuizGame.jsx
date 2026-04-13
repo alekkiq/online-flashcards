@@ -20,6 +20,7 @@ export default function QuizGame() {
     progress,
     resetGameState,
     loading,
+    error,
     isQuizFinished,
     saveQuizAttempt,
     score,
@@ -85,6 +86,16 @@ export default function QuizGame() {
 
   const currentCard = getCurrentCard();
   const totalCards = currentQuiz?.flashcards?.length || 0;
+
+  if (error) {
+    return (
+      <div className="max-w-7xl mx-auto mt-8 px-4">
+        <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm">
+          {error}
+        </div>
+      </div>
+    );
+  }
 
   if (!currentQuiz || !currentCard || loading) {
     return <PageLoader />;

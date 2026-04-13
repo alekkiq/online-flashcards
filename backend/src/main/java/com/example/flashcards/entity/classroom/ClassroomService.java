@@ -1,6 +1,7 @@
 package com.example.flashcards.entity.classroom;
 
 import com.example.flashcards.common.exception.ResourceNotFoundException;
+import com.example.flashcards.common.provider.CurrentLanguageProvider;
 import com.example.flashcards.entity.classroom.dto.ClassroomCreateRequest;
 import com.example.flashcards.entity.classroom.dto.ClassroomUpdateRequest;
 import com.example.flashcards.entity.learningmaterial.LearningMaterial;
@@ -26,6 +27,7 @@ public class ClassroomService implements IClassroomService {
     private final UserRepository userRepository;
     private final SubjectRepository subjectRepository;
     private final QuizRepository quizRepository;
+    private final CurrentLanguageProvider currentLanguageProvider;
 
     private final SecureRandom random = new SecureRandom();
     private static final String CODE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -34,12 +36,14 @@ public class ClassroomService implements IClassroomService {
             ClassroomRepository classroomRepository,
             UserRepository userRepository,
             SubjectRepository subjectRepository,
-            QuizRepository quizRepository
+            QuizRepository quizRepository,
+            CurrentLanguageProvider currentLanguageProvider
     ) {
         this.classroomRepository = classroomRepository;
         this.userRepository = userRepository;
         this.subjectRepository = subjectRepository;
         this.quizRepository = quizRepository;
+        this.currentLanguageProvider = currentLanguageProvider;
     }
 
     @Override
@@ -115,10 +119,15 @@ public class ClassroomService implements IClassroomService {
     @Transactional
     public Classroom createClassroom(Long userId, ClassroomCreateRequest request) {
         User owner = getUserById(userId);
-        Subject subject = getSubjectById(request.subjectId());
-
         String requestedCode = normalizeJoinCode(request.joinCode());
         String joinCode;
+
+        String language = currentLanguageProvider.getCurrentLanguage();
+        Subject subject = getSubjectById(request.subjectId());
+
+        if (!subject.getLanguage().equals(language)) {
+            throw new IllegalArgumentException("Subject language does not match current language.");
+        }
 
         if (requestedCode == null) {
             joinCode = generateUniqueJoinCode(6);
@@ -137,6 +146,7 @@ public class ClassroomService implements IClassroomService {
                 request.description(),
                 request.note(),
                 joinCode,
+                language,
                 owner,
                 subject
         );

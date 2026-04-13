@@ -76,9 +76,9 @@ class ClassroomControllerTest {
     }
 
     private Classroom createTestClassroom(User owner) {
-        Subject subject = new Subject("Math");
+        Subject subject = new Subject("math", "Mathematics", "en");
         subject.setSubjectId(10L);
-        Classroom classroom = new Classroom("Test Class", "Description", "Note", "ABC123", owner, subject);
+        Classroom classroom = new Classroom("Test Class", "Description", "Note", "ABC123", "en", owner, subject);
         classroom.setClassroomId(1L);
         classroom.addUser(owner);
         return classroom;
@@ -205,9 +205,9 @@ class ClassroomControllerTest {
         User teacher = createTeacher();
         CustomUserDetails userDetails = new CustomUserDetails(teacher);
 
-        Subject subject = new Subject("Math");
+        Subject subject = new Subject("math", "Mathematics", "en");
         subject.setSubjectId(10L);
-        Classroom updated = new Classroom("Updated Title", "New Desc", "New Note", "ABC123", teacher, subject);
+        Classroom updated = new Classroom("Updated Title", "New Desc", "New Note", "ABC123", "en", teacher, subject);
         updated.setClassroomId(1L);
         updated.addUser(teacher);
 

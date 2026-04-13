@@ -17,7 +17,7 @@ public record ClassroomCreateRequest(
 
         String joinCode,
 
-        @NotNull(message = "SubjectId is required.")
+        @NotNull(message = "Subject is required.")
         Long subjectId
 ) {
 }
