@@ -494,7 +494,7 @@ INSERT INTO subjects (code, name, language) VALUES ('math', 'Mathematics', 'en')
 INSERT INTO subjects (code, name, language) VALUES ('math', 'Matematiikka', 'fi');
 INSERT INTO subjects (code, name, language) VALUES ('math', 'ریاضیات', 'fa');
 INSERT INTO subjects (code, name, language) VALUES ('math', '数学', 'zh');
-
+```
 If a language doesn't exist the application falls back to English.
 The schema and diagram below demonstrate how the Row Method was utilized:
 
