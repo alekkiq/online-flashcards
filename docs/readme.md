@@ -477,9 +477,26 @@ When an error is thrown, the API returns a **localized JSON response**:
 
 The **message is already translated** based on the client's `Accept-Language` header, so no frontend translation is needed for backend errors.
 
+---
 
 ---
 
+## DATABASE CONTENT LOCALIZATION (Row Method)
+
+User-generated content is localized using the **Row Method** where each entity stores **one row per language** with a `language` column.
+
+### Example
+
+**Subjects table**:
+
+```sql
+INSERT INTO subjects (code, name, language) VALUES ('math', 'Mathematics', 'en');
+INSERT INTO subjects (code, name, language) VALUES ('math', 'Matematiikka', 'fi');
+INSERT INTO subjects (code, name, language) VALUES ('math', 'ریاضیات', 'fa');
+INSERT INTO subjects (code, name, language) VALUES ('math', '数学', 'zh');
+
+If a language doesn't exist the application falls back to English.
+The schema and diagram below demonstrate how the Row Method was utilized:
 
 ## ARCHITECTURE DESIGN
 
