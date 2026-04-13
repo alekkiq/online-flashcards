@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import org.springframework.context.NoSuchMessageException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -73,12 +74,26 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ApiResponse.failure(error));
     }
 
+    @ExceptionHandler(InvalidRequestException.class)
+    public ResponseEntity<ApiResponse<Void>> handleInvalidRequest(InvalidRequestException ex, Locale locale) {
+        ApiError error = new ApiError(HttpStatus.BAD_REQUEST, resolve(ex, locale));
+        return ResponseEntity.badRequest().body(ApiResponse.failure(error));
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Void>> handleValidation(MethodArgumentNotValidException ex, Locale locale) {
         Map<String, Object> details = new HashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach(error ->
-                details.put(error.getField(), error.getDefaultMessage())
-        );
+        ex.getBindingResult().getFieldErrors().forEach(fieldError -> {
+            String msg = fieldError.getDefaultMessage();
+            if (msg != null) {
+                try {
+                    msg = messageSource.getMessage(msg, null, locale);
+                } catch (NoSuchMessageException ignored) {
+                    // keep original message if key not found
+                }
+            }
+            details.put(fieldError.getField(), msg);
+        });
 
         ApiError error = new ApiError(
             HttpStatus.BAD_REQUEST,

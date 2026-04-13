@@ -35,7 +35,8 @@ public class SubjectService implements ISubjectService {
             .orElseThrow(() -> new ResourceNotFoundException(
                 ENTITY_NAME,
                 subjectId,
-                "Subject with ID " + subjectId + " not found."
+                "error.subject.notFound",
+                new Object[]{subjectId}
             ));
     }
 
@@ -44,8 +45,9 @@ public class SubjectService implements ISubjectService {
         String language = currentLanguageProvider.getCurrentLanguage();
         return this.subjectRepository.findByCodeAndLanguage(code, language)
             .orElseThrow(() -> new ResourceNotFoundException(
-                "Subject",
-                "Subject not found."
+                ENTITY_NAME,
+                "error.subject.notFound",
+                new Object[]{code}
             ));
     }
 
@@ -54,8 +56,9 @@ public class SubjectService implements ISubjectService {
     public Subject createSubject(Subject subject) {
         if (this.subjectRepository.existsByCodeAndLanguage(subject.getCode(), subject.getLanguage())) {
             throw new DuplicateResourceException(
-                "Subject",
-                "A subject with code '" + subject.getCode() + "' already exists for language '" + subject.getLanguage() + "'."
+                ENTITY_NAME,
+                "error.subject.codeDuplicate",
+                new Object[]{subject.getCode(), subject.getLanguage()}
             );
         }
         return this.subjectRepository.save(subject);
@@ -68,7 +71,8 @@ public class SubjectService implements ISubjectService {
             .orElseThrow(() -> new ResourceNotFoundException(
                 ENTITY_NAME,
                 subjectId,
-                "Subject with ID " + subjectId + " not found."
+                "error.subject.notFound",
+                new Object[]{subjectId}
             ));
 
         boolean keyChanged =
@@ -77,8 +81,9 @@ public class SubjectService implements ISubjectService {
 
         if (keyChanged && this.subjectRepository.existsByCodeAndLanguage(subject.getCode(), subject.getLanguage())) {
             throw new DuplicateResourceException(
-                "Subject",
-                "A subject with code '" + subject.getCode() + "' already exists for language '" + subject.getLanguage() + "'."
+                ENTITY_NAME,
+                "error.subject.codeDuplicate",
+                new Object[]{subject.getCode(), subject.getLanguage()}
             );
         }
 
@@ -96,7 +101,8 @@ public class SubjectService implements ISubjectService {
             throw new ResourceNotFoundException(
                 ENTITY_NAME,
                 subjectId,
-                "Subject with ID " + subjectId + " not found."
+                "error.subject.notFound",
+                new Object[]{subjectId}
             );
         }
         this.subjectRepository.deleteById(subjectId);

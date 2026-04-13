@@ -24,11 +24,11 @@ public class AuthService implements IAuthService {
     @Transactional
     public User register(UserRegistrationRequest request) {
         if (this.userRepository.existsByUsername(request.username())) {
-            throw new DuplicateResourceException("User", "This username is already taken. Please choose another one.");
+            throw new DuplicateResourceException("User", "error.auth.username.taken", null);
         }
 
         if (this.userRepository.existsByEmail(request.email())) {
-            throw new DuplicateResourceException("User", "An account with this email already exists.");
+            throw new DuplicateResourceException("User", "error.auth.email.duplicate", null);
         }
 
         String hashedPassword = this.passwordEncoder.encode(request.password());
@@ -46,10 +46,10 @@ public class AuthService implements IAuthService {
     @Transactional
     public User login(LoginRequest request) {
         User user = this.userRepository.findByUsername(request.username())
-                .orElseThrow(() -> new UnauthorizedException("Invalid username or password"));
+                .orElseThrow(() -> new UnauthorizedException("error.auth.invalid.credentials", null));
 
         if (!this.passwordEncoder.matches(request.password(), user.getPassword())) {
-            throw new UnauthorizedException("Invalid username or password");
+            throw new UnauthorizedException("error.auth.invalid.credentials", null);
         }
 
         return user;

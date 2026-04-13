@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public record PromotionRequestCreationRequest(
-    @NotBlank(message = "Message is required")
-    @Size(max = 500, message = "Message must not exceed 500 characters")
+    @NotBlank(message = "validation.promotionRequest.message.required")
+    @Size(max = 500, message = "validation.promotionRequest.message.maxLength")
     String message
 ) {}

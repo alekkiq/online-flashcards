@@ -7,6 +7,7 @@ import com.example.flashcards.entity.user.dto.PasswordUpdateRequest;
 import com.example.flashcards.entity.user.dto.RoleUpdateRequest;
 import com.example.flashcards.entity.user.dto.UserResponse;
 import jakarta.validation.Valid;
+import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,15 +15,18 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Locale;
 
 @Validated
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserController {
     private final UserService userService;
+    private final MessageSource messageSource;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, MessageSource messageSource) {
         this.userService = userService;
+        this.messageSource = messageSource;
     }
 
     /**
@@ -71,7 +75,8 @@ public class UserController {
     @PutMapping("/me/email")
     public ResponseEntity<ApiResponse<UserResponse>> updateEmail(
         @AuthenticationPrincipal CustomUserDetails userDetails,
-        @RequestBody @Valid EmailUpdateRequest request
+        @RequestBody @Valid EmailUpdateRequest request,
+        Locale locale
     ) {
         this.userService.updateEmail(userDetails.getUserId(), request.email());
         User user = this.userService.getUserById(userDetails.getUserId());
@@ -84,7 +89,7 @@ public class UserController {
         );
 
         return ResponseEntity.ok(
-            ApiResponse.success(response, "Email updated successfully.")
+            ApiResponse.success(response, messageSource.getMessage("success.email.updated", null, locale))
         );
     }
 
@@ -96,7 +101,8 @@ public class UserController {
     @PutMapping("/me/password")
     public ResponseEntity<ApiResponse<Void>> updatePassword(
         @AuthenticationPrincipal CustomUserDetails userDetails,
-        @RequestBody @Valid PasswordUpdateRequest request
+        @RequestBody @Valid PasswordUpdateRequest request,
+        Locale locale
     ) {
         this.userService.updatePassword(
             userDetails.getUserId(),
@@ -105,7 +111,7 @@ public class UserController {
         );
 
         return ResponseEntity.ok(
-            ApiResponse.success(null, "Password updated successfully.")
+            ApiResponse.success(null, messageSource.getMessage("success.password.updated", null, locale))
         );
     }
 
@@ -118,7 +124,8 @@ public class UserController {
     @PutMapping("/{userId}/role")
     public ResponseEntity<ApiResponse<UserResponse>> updateUserRole(
         @PathVariable Long userId,
-        @RequestBody @Valid RoleUpdateRequest request
+        @RequestBody @Valid RoleUpdateRequest request,
+        Locale locale
     ) {
         this.userService.updateUserRole(userId, request.role());
         User user = this.userService.getUserById(userId);
@@ -131,7 +138,7 @@ public class UserController {
         );
 
         return ResponseEntity.ok(
-            ApiResponse.success(response, "User role updated successfully.")
+            ApiResponse.success(response, messageSource.getMessage("success.role.updated", null, locale))
         );
     }
 
@@ -142,11 +149,11 @@ public class UserController {
      */
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{userId}")
-    public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable Long userId) {
+    public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable Long userId, Locale locale) {
         this.userService.deleteUser(userId);
 
         return ResponseEntity.ok(
-            ApiResponse.success(null, "User deleted successfully.")
+            ApiResponse.success(null, messageSource.getMessage("success.user.deleted", null, locale))
         );
     }
 }

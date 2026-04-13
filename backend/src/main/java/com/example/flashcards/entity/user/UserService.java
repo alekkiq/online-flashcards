@@ -1,6 +1,7 @@
 package com.example.flashcards.entity.user;
 
 import com.example.flashcards.common.exception.DuplicateResourceException;
+import com.example.flashcards.common.exception.InvalidRequestException;
 import com.example.flashcards.common.exception.ResourceNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,8 +13,6 @@ import java.util.Optional;
 @Service
 public class UserService implements IUserService {
     private static final String ENTITY_NAME = "User";
-    private static final String USER_WITH_ID = "User with ID ";
-    private static final String NOT_FOUND_SUFFIX = " not found.";
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -30,12 +29,13 @@ public class UserService implements IUserService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         ENTITY_NAME,
                         userId,
-                        USER_WITH_ID + userId + NOT_FOUND_SUFFIX
+                        "error.user.notFound",
+                        new Object[]{userId}
                 ));
 
         Optional<User> existing = this.userRepository.findByEmail(newEmail);
         if (existing.isPresent() && existing.get().getUserId() != userId) {
-            throw new DuplicateResourceException("User", "This email address is already in use by another account.");
+            throw new DuplicateResourceException("User", "error.user.email.inUse", null);
         }
 
         user.setEmail(newEmail);
@@ -48,7 +48,7 @@ public class UserService implements IUserService {
         User user = getUserById(userId);
 
         if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
-            throw new IllegalArgumentException("Current password is incorrect.");
+            throw new InvalidRequestException("error.user.password.incorrect", null);
         }
 
         user.setPassword(passwordEncoder.encode(newPassword));
@@ -62,7 +62,8 @@ public class UserService implements IUserService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         ENTITY_NAME,
                         userId,
-                        USER_WITH_ID + userId + NOT_FOUND_SUFFIX
+                        "error.user.notFound",
+                        new Object[]{userId}
                 ));
         user.setRole(newRole);
         this.userRepository.save(user);
@@ -79,7 +80,8 @@ public class UserService implements IUserService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         ENTITY_NAME,
                         userId,
-                        USER_WITH_ID + userId + NOT_FOUND_SUFFIX
+                        "error.user.notFound",
+                        new Object[]{userId}
                 ));
     }
 
@@ -88,7 +90,8 @@ public class UserService implements IUserService {
         return this.userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         ENTITY_NAME,
-                        "User with username " + username + NOT_FOUND_SUFFIX
+                        "error.user.notFound",
+                        new Object[]{username}
                 ));
     }
 
@@ -99,7 +102,8 @@ public class UserService implements IUserService {
             throw new ResourceNotFoundException(
                     ENTITY_NAME,
                     userId,
-                    USER_WITH_ID + userId + NOT_FOUND_SUFFIX
+                    "error.user.notFound",
+                    new Object[]{userId}
             );
         }
         this.userRepository.deleteById(userId);

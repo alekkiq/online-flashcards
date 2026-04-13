@@ -4,6 +4,6 @@ import com.example.flashcards.entity.promotionrequest.PromotionRequestStatus;
 import jakarta.validation.constraints.NotNull;
 
 public record PromotionRequestUpdateRequest(
-    @NotNull(message = "Status is required")
+    @NotNull(message = "validation.promotionRequest.status.required")
     PromotionRequestStatus status
 ) {}
