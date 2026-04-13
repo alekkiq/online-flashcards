@@ -41,7 +41,7 @@ export default function CreateQuiz() {
     defaultValues: {
       title: "",
       description: "",
-      subject: "",
+      subjectCode: "",
       cards: [
         { question: "", answer: "" },
         { question: "", answer: "" },
@@ -62,7 +62,7 @@ export default function CreateQuiz() {
         reset({
           title: quizToEdit.title,
           description: quizToEdit.description || "",
-          subject: quizToEdit.subjectName || "",
+          subjectCode: quizToEdit.subject.code || "",
           cards: quizToEdit.flashcards || [{ question: "", answer: "" }],
         });
       }
@@ -130,7 +130,7 @@ export default function CreateQuiz() {
 
             <FormField label={t("createQuiz.subject")} error={errors.subject?.message}>
               <Controller
-                name="subject"
+                name="subjectCode"
                 control={control}
                 render={({ field }) => (
                   <SubjectSelect

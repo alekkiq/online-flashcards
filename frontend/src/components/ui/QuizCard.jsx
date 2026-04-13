@@ -32,9 +32,9 @@ export function QuizCard({ quiz, showLanguage = false, onClick, onEdit, classNam
         )}
 
         <div className="flex items-center gap-2 flex-wrap">
-          {quiz.subjectName && (
+          {quiz.subject && (
             <Badge textColor="text-primary" bgColor="bg-primary/10">
-              {quiz.subjectName}
+              {quiz.subject.name}
             </Badge>
           )}
           {cardCount !== undefined && (

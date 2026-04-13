@@ -2,6 +2,7 @@ package com.example.flashcards.entity.quiz.dto;
 
 import java.util.List;
 import com.example.flashcards.entity.flashcard.dto.FlashcardResponse;
+import com.example.flashcards.entity.subject.Subject;
 
 public record QuizResponse(
     long quizId,
@@ -10,7 +11,7 @@ public record QuizResponse(
     String language,
     String creatorUsername,
     String creatorRole,
-    String subjectName,
+    Subject subject,
     int cardCount,
     List<FlashcardResponse> flashcards
 ) {}

@@ -17,7 +17,7 @@ export function useMyQuizzes() {
       title: quizData.title,
       description: quizData.description,
       flashcards: quizData.cards,
-      subjectCode: quizData.subject,
+      subjectCode: quizData.subjectCode,
     };
 
     const response = await createQuiz(data);
@@ -35,7 +35,7 @@ export function useMyQuizzes() {
       title: quizData.title,
       description: quizData.description,
       flashcards: quizData.cards,
-      subject: quizData.subject,
+      subjectCode: quizData.subjectCode,
     };
 
     const response = await updateQuiz(id, data);
@@ -43,7 +43,15 @@ export function useMyQuizzes() {
       setError(response.error);
       return;
     }
-    setUserQuizzes(userQuizzes.map((quiz) => (quiz.quizId === id ? response.data.data : quiz)));
+
+    const updated = response.data.data;
+    const numericId = Number(id);
+
+    setUserQuizzes((prev) =>
+        prev.map((quiz) => (quiz.quizId === numericId ? updated : quiz))
+    );
+
+    return updated;
   };
 
   return {

@@ -10,7 +10,7 @@ export const quizSchema = (t) =>
       .string()
       .max(255, t("validation.descriptionMax255"))
       .optional(),
-    subject: z.string().min(1, t("validation.subjectRequired")),
+    subjectCode: z.string().min(1, t("validation.subjectRequired")),
     cards: z
       .array(
         z.object({

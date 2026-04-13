@@ -146,7 +146,7 @@ public class QuizService implements IQuizService {
             quiz.getLanguage(),
             quiz.getCreator().getUsername(),
             quiz.getCreator().getRole().name(),
-            quiz.getSubject().getName(), 
+            quiz.getSubject(),
             quiz.getFlashcards().size(),
             cardResponses
         );
