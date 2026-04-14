@@ -86,7 +86,7 @@ class QuizServiceTest {
         assertEquals(1L, result.quizId());
         assertEquals("Quiz Title", result.title());
         assertEquals("teacher", result.creatorUsername());
-        assertEquals("Mathematics", result.subjectName());
+        assertEquals("math", result.subject().getCode());
         assertEquals(1, result.cardCount());
         assertEquals(1, result.flashcards().size());
     }
@@ -224,7 +224,7 @@ class QuizServiceTest {
 
         assertEquals("Updated Quiz", result.title());
         assertEquals("New Desc", result.description());
-        assertEquals("Physics", result.subjectName());
+        assertEquals("physics", result.subject().getCode());
     }
 
     @Test

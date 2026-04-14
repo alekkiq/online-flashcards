@@ -8,6 +8,7 @@ import com.example.flashcards.entity.flashcard.dto.FlashcardResponse;
 import com.example.flashcards.entity.quiz.dto.QuizCreationRequest;
 import com.example.flashcards.entity.quiz.dto.QuizResponse;
 import com.example.flashcards.entity.quiz.dto.QuizSeachResponse;
+import com.example.flashcards.entity.subject.Subject;
 import com.example.flashcards.entity.user.User;
 import com.example.flashcards.entity.user.UserRole;
 import com.example.flashcards.security.*;
@@ -69,7 +70,7 @@ class QuizControllerTest {
 
     private QuizResponse createTestQuizResponse() {
         return new QuizResponse(
-            1L, "Quiz Title", "Quiz Desc", "en", "teacher", "TEACHER", "Math", 1,
+            1L, "Quiz Title", "Quiz Desc", "en", "teacher", "TEACHER", new Subject("math", "Mathematics", "en"), 1,
             List.of(new FlashcardResponse(1L, "Q1?", "A1"))
         );
     }
@@ -171,9 +172,9 @@ class QuizControllerTest {
         User teacher = createTeacher();
         CustomUserDetails userDetails = new CustomUserDetails(teacher);
 
-        QuizCreationRequest request = new QuizCreationRequest("Updated Quiz", "New Desc", null, "Math");
+        QuizCreationRequest request = new QuizCreationRequest("Updated Quiz", "New Desc", null, "math");
         QuizResponse response = new QuizResponse(
-            1L, "Updated Quiz", "New Desc", "en", "teacher", "TEACHER", "Math", 0, List.of()
+            1L, "Updated Quiz", "New Desc", "en", "teacher", "TEACHER", new Subject("math", "Mathematics", "en"), 0, List.of()
         );
 
         when(this.quizService.updateQuiz(eq(1L), eq(1L), any(QuizCreationRequest.class))).thenReturn(response);
@@ -264,7 +265,7 @@ class QuizControllerTest {
 
         QuizResponse r1 = createTestQuizResponse();
         QuizResponse r2 = new QuizResponse(
-            2L, "Quiz 2", "Desc 2", "en", "teacher", "TEACHER", "Math", 0, List.of()
+            2L, "Quiz 2", "Desc 2", "en", "teacher", "TEACHER", new Subject("math", "Mathematics", "en"), 0, List.of()
         );
 
         when(this.quizService.getQuizzesByUser(1L)).thenReturn(List.of(r1, r2));
