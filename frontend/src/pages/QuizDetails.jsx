@@ -46,7 +46,7 @@ export default function QuizDetails() {
                 </p>
                 {currentQuiz?.creatorRole && (
                   <Badge textColor="text-white" bgColor="bg-primary">
-                    {currentQuiz?.creatorRole}
+                    {t(`quizCard.roles.${currentQuiz.creatorRole}`, { defaultValue: currentQuiz.creatorRole })}
                   </Badge>
                 )}
               </div>
