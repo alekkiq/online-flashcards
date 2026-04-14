@@ -273,7 +273,12 @@
   },
   "quizCard": {
     "cards": "{{count}} cards",
-    "edit": "Edit"
+    "edit": "Edit",
+    "roles": {
+      "STUDENT": "Student",
+      "TEACHER": "Teacher",
+      "ADMIN": "Admin"
+    }
   },
   "classroomCard": {
     "member": "member",

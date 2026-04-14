@@ -273,7 +273,12 @@
   },
   "quizCard": {
     "cards": "{{count}} 张卡片",
-    "edit": "编辑"
+    "edit": "编辑",
+    "roles": {
+      "STUDENT": "学生",
+      "TEACHER": "教师",
+      "ADMIN": "管理员"
+    }
   },
   "classroomCard": {
     "member": "成员",

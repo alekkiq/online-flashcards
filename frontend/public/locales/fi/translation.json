@@ -273,7 +273,12 @@
   },
   "quizCard": {
     "cards": "{{count}} korttia",
-    "edit": "Muokkaa"
+    "edit": "Muokkaa",
+    "roles": {
+      "STUDENT": "Opiskelija",
+      "TEACHER": "Opettaja",
+      "ADMIN": "Ylläpitäjä"
+    }
   },
   "classroomCard": {
     "member": "jäsen",

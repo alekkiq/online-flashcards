@@ -273,7 +273,12 @@
   },
   "quizCard": {
     "cards": "{{count}} کارت",
-    "edit": "ویرایش"
+    "edit": "ویرایش",
+    "roles": {
+      "STUDENT": "دانش‌آموز",
+      "TEACHER": "معلم",
+      "ADMIN": "مدیر"
+    }
   },
   "classroomCard": {
     "member": "عضو",

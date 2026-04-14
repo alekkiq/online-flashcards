@@ -70,7 +70,7 @@ export function QuizCard({ quiz, showLanguage = false, onClick, onEdit, classNam
             </div>
             {creatorRole && (
               <Badge textColor="text-white" bgColor="bg-primary">
-                {creatorRole}
+                {t(`quizCard.roles.${creatorRole}`, { defaultValue: creatorRole })}
               </Badge>
             )}
           </div>
