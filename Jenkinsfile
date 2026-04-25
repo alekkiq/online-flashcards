@@ -74,15 +74,10 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                script {
-                    // Read SONAR_TOKEN from .env file
-                    def envContent = readFile('.env')
-                    def sonarTokenLine = envContent.split('\n').find { it.startsWith('SONAR_TOKEN=') }
-                    def sonarToken = sonarTokenLine.split('=', 2)[1].trim()
-
+                withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
                     withSonarQubeEnv('SonarQubeServer') {
                         dir('backend') {
-                            bat "set SONAR_TOKEN=${sonarToken} && \"${tool 'SonarScanner'}\\bin\\sonar-scanner\""
+                            bat "set SONAR_TOKEN=%SONAR_TOKEN% && \"${tool 'SonarScanner'}\\bin\\sonar-scanner\""
                         }
                     }
                 }
