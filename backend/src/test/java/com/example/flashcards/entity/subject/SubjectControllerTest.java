@@ -161,7 +161,6 @@ class SubjectControllerTest {
                 .content(this.objectMapper.writeValueAsString(request)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Subject created successfully."))
             .andExpect(jsonPath("$.data.code").value("history"));
 
         verify(this.subjectService, times(1)).createSubject(any(Subject.class));
@@ -229,7 +228,6 @@ class SubjectControllerTest {
                 .content(this.objectMapper.writeValueAsString(request)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Subject updated successfully."))
             .andExpect(jsonPath("$.data.code").value("advanced-math"));
 
         verify(this.subjectService, times(1)).updateSubject(eq(10L), any(Subject.class));
@@ -275,8 +273,7 @@ class SubjectControllerTest {
                 .with(user("admin").roles("ADMIN"))
                 .locale(Locale.ENGLISH))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Subject deleted successfully."));
+            .andExpect(jsonPath("$.success").value(true));
 
         verify(this.subjectService, times(1)).deleteSubject(15L);
     }

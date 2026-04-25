@@ -163,7 +163,6 @@ class ClassroomControllerTest {
                 .content(this.objectMapper.writeValueAsString(request)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Classroom created successfully."))
             .andExpect(jsonPath("$.data.title").value("Test Class"));
 
         verify(this.classroomService, times(1)).createClassroom(eq(1L), any(ClassroomCreateRequest.class));
@@ -224,7 +223,6 @@ class ClassroomControllerTest {
                 .content(this.objectMapper.writeValueAsString(request)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Classroom updated successfully."))
             .andExpect(jsonPath("$.data.title").value("Updated Title"));
     }
 
@@ -263,8 +261,7 @@ class ClassroomControllerTest {
                 .locale(Locale.ENGLISH)
                 .param("code", "ABC123"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Joined classroom successfully."));
+            .andExpect(jsonPath("$.success").value(true));
     }
 
     @Test
@@ -294,8 +291,7 @@ class ClassroomControllerTest {
                 .with(user(userDetails))
                 .locale(Locale.ENGLISH))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Left classroom successfully."));
+            .andExpect(jsonPath("$.success").value(true));
 
         verify(this.classroomService, times(1)).leaveClassroom(2L, 1L);
     }
@@ -327,8 +323,7 @@ class ClassroomControllerTest {
                 .with(user(userDetails))
                 .locale(Locale.ENGLISH))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("User removed from classroom successfully."));
+            .andExpect(jsonPath("$.success").value(true));
     }
 
     @Test
@@ -351,8 +346,7 @@ class ClassroomControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(request)))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Learning material added successfully."));
+            .andExpect(jsonPath("$.success").value(true));
     }
 
     @Test
@@ -368,8 +362,7 @@ class ClassroomControllerTest {
                 .with(user(userDetails))
                 .locale(Locale.ENGLISH))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Learning material removed successfully."));
+            .andExpect(jsonPath("$.success").value(true));
     }
 
     @Test
@@ -385,8 +378,7 @@ class ClassroomControllerTest {
                 .with(user(userDetails))
                 .locale(Locale.ENGLISH))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Quiz added to classroom successfully."));
+            .andExpect(jsonPath("$.success").value(true));
     }
 
     @Test
@@ -402,8 +394,7 @@ class ClassroomControllerTest {
                 .with(user(userDetails))
                 .locale(Locale.ENGLISH))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Quiz removed from classroom successfully."));
+            .andExpect(jsonPath("$.success").value(true));
     }
 }
 

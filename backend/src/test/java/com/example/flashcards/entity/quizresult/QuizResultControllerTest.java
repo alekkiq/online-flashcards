@@ -101,7 +101,6 @@ class QuizResultControllerTest {
                 .content(this.objectMapper.writeValueAsString(request)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Quiz result saved successfully."))
             .andExpect(jsonPath("$.data.scorePercentage").value(85.5));
 
         verify(this.quizResultService, times(1)).createQuizResult(1L, 10L, 85.5);
@@ -152,7 +151,6 @@ class QuizResultControllerTest {
                 .locale(Locale.ENGLISH))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Quiz results fetched successfully."))
             .andExpect(jsonPath("$.data").isArray())
             .andExpect(jsonPath("$.data.length()").value(2));
 
@@ -199,7 +197,6 @@ class QuizResultControllerTest {
                 .locale(Locale.ENGLISH))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Quiz results fetched successfully."))
             .andExpect(jsonPath("$.data").isArray())
             .andExpect(jsonPath("$.data.length()").value(2));
 

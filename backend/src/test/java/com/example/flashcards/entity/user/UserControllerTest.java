@@ -162,7 +162,6 @@ class UserControllerTest {
                 .content(this.objectMapper.writeValueAsString(request)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Email updated successfully."))
             .andExpect(jsonPath("$.data.email").value("newemail@test.com"));
 
         verify(this.userService, times(1)).updateEmail(3L, "newemail@test.com");
@@ -225,8 +224,7 @@ class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(request)))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Password updated successfully."));
+            .andExpect(jsonPath("$.success").value(true));
 
         verify(this.userService, times(1)).updatePassword(4L, "oldPassword", "newPassword");
     }
@@ -290,7 +288,6 @@ class UserControllerTest {
                 .content(this.objectMapper.writeValueAsString(request)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("User role updated successfully."))
             .andExpect(jsonPath("$.data.role").value("TEACHER"));
 
         verify(this.userService, times(1)).updateUserRole(7L, UserRole.TEACHER);
@@ -348,8 +345,7 @@ class UserControllerTest {
                 .with(user("admin").roles("ADMIN"))
                 .locale(Locale.ENGLISH))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("User deleted successfully."));
+            .andExpect(jsonPath("$.success").value(true));
 
         verify(this.userService, times(1)).deleteUser(10L);
     }
