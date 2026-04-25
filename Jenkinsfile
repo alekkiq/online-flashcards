@@ -77,7 +77,7 @@ pipeline {
                 withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
                     withSonarQubeEnv('SonarQubeServer') {
                         dir('backend') {
-                            bat "set SONAR_TOKEN=%SONAR_TOKEN% && \"${tool 'SonarScanner'}\\bin\\sonar-scanner\""
+                            bat 'mvnw.cmd sonar:sonar -Dsonar.login=%SONAR_TOKEN%'
                         }
                     }
                 }
