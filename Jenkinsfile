@@ -27,11 +27,11 @@ pipeline {
             }
         }
 
-        stage('Database') {
+        /*stage('Database') {
             steps {
                 bat 'docker compose up -d --wait db'
             }
-        }
+        }*/
 
         stage('Build & Test') {
             parallel {
