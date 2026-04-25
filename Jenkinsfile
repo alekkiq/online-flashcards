@@ -74,9 +74,11 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQubeServer') {
-                    dir('backend') {
-                        bat "\"${tool 'SonarScanner'}\\bin\\sonar-scanner\""
+                withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                    withSonarQubeEnv('SonarQubeServer') {
+                        dir('backend') {
+                            bat "set SONAR_TOKEN=%SONAR_TOKEN% && \"${tool 'SonarScanner'}\\bin\\sonar-scanner\""
+                        }
                     }
                 }
             }
