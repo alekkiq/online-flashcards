@@ -10,7 +10,8 @@ services:
       - db_data:/var/lib/mysql
     restart: unless-stopped
     healthcheck:
-      test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
+      #test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       start_period: 60s
       interval: 10s
       timeout: 5s
