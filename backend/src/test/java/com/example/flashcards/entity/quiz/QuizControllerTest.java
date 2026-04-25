@@ -3,6 +3,7 @@ package com.example.flashcards.entity.quiz;
 import com.example.flashcards.common.exception.ResourceNotFoundException;
 import com.example.flashcards.config.SecurityConfig;
 import com.example.flashcards.config.TestSecurityConfig;
+import com.example.flashcards.config.LocaleConfig;
 import com.example.flashcards.entity.flashcard.dto.FlashcardCreationRequest;
 import com.example.flashcards.entity.flashcard.dto.FlashcardResponse;
 import com.example.flashcards.entity.quiz.dto.QuizCreationRequest;
@@ -26,6 +27,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Locale;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -46,7 +48,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         }
     )
 )
-@Import(TestSecurityConfig.class)
+@Import({TestSecurityConfig.class, LocaleConfig.class})
 class QuizControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -143,6 +145,7 @@ class QuizControllerTest {
 
         this.mockMvc.perform(post("/api/v1/quizzes")
                 .with(user(userDetails))
+                .locale(Locale.ENGLISH)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(request)))
             .andExpect(status().isOk())
@@ -181,6 +184,7 @@ class QuizControllerTest {
 
         this.mockMvc.perform(put("/api/v1/quizzes/1")
                 .with(user(userDetails))
+                .locale(Locale.ENGLISH)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(request)))
             .andExpect(status().isOk())
@@ -231,7 +235,8 @@ class QuizControllerTest {
         doNothing().when(this.quizService).deleteQuiz(1L, 1L);
 
         this.mockMvc.perform(delete("/api/v1/quizzes/1")
-                .with(user(userDetails)))
+                .with(user(userDetails))
+                .locale(Locale.ENGLISH))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
             .andExpect(jsonPath("$.message").value("Quiz deleted successfully."));

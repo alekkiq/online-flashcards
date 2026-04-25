@@ -21,8 +21,10 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.flashcards.config.LocaleConfig;
 
 import java.util.List;
+import java.util.Locale;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -43,7 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         }
     )
 )
-@Import(TestSecurityConfig.class)
+@Import({TestSecurityConfig.class, LocaleConfig.class})
 class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -155,6 +157,7 @@ class UserControllerTest {
 
         this.mockMvc.perform(put("/api/v1/users/me/email")
                 .with(user(userDetails))
+                .locale(Locale.ENGLISH)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(request)))
             .andExpect(status().isOk())
@@ -218,6 +221,7 @@ class UserControllerTest {
 
         this.mockMvc.perform(put("/api/v1/users/me/password")
                 .with(user(userDetails))
+                .locale(Locale.ENGLISH)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(request)))
             .andExpect(status().isOk())
@@ -281,6 +285,7 @@ class UserControllerTest {
 
         this.mockMvc.perform(put("/api/v1/users/7/role")
                 .with(user("admin").roles("ADMIN"))
+                .locale(Locale.ENGLISH)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(request)))
             .andExpect(status().isOk())
@@ -340,7 +345,8 @@ class UserControllerTest {
         doNothing().when(this.userService).deleteUser(10L);
 
         this.mockMvc.perform(delete("/api/v1/users/10")
-                .with(user("admin").roles("ADMIN")))
+                .with(user("admin").roles("ADMIN"))
+                .locale(Locale.ENGLISH))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
             .andExpect(jsonPath("$.message").value("User deleted successfully."));

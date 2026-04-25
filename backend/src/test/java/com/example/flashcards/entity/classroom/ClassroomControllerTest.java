@@ -1,6 +1,7 @@
 package com.example.flashcards.entity.classroom;
 
 import com.example.flashcards.common.exception.ResourceNotFoundException;
+import com.example.flashcards.config.LocaleConfig;
 import com.example.flashcards.config.SecurityConfig;
 import com.example.flashcards.config.TestSecurityConfig;
 import com.example.flashcards.entity.classroom.dto.ClassroomCreateRequest;
@@ -25,6 +26,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Locale;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -45,7 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         }
     )
 )
-@Import(TestSecurityConfig.class)
+@Import({TestSecurityConfig.class, LocaleConfig.class})
 class ClassroomControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -156,6 +158,7 @@ class ClassroomControllerTest {
 
         this.mockMvc.perform(post("/api/v1/classrooms")
                 .with(user(userDetails))
+                .locale(Locale.ENGLISH)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(request)))
             .andExpect(status().isOk())
@@ -216,6 +219,7 @@ class ClassroomControllerTest {
 
         this.mockMvc.perform(put("/api/v1/classrooms/1")
                 .with(user(userDetails))
+                .locale(Locale.ENGLISH)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(request)))
             .andExpect(status().isOk())
@@ -256,6 +260,7 @@ class ClassroomControllerTest {
 
         this.mockMvc.perform(post("/api/v1/classrooms/join")
                 .with(user(userDetails))
+                .locale(Locale.ENGLISH)
                 .param("code", "ABC123"))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
@@ -286,7 +291,8 @@ class ClassroomControllerTest {
         doNothing().when(this.classroomService).leaveClassroom(2L, 1L);
 
         this.mockMvc.perform(post("/api/v1/classrooms/1/leave")
-                .with(user(userDetails)))
+                .with(user(userDetails))
+                .locale(Locale.ENGLISH))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
             .andExpect(jsonPath("$.message").value("Left classroom successfully."));
@@ -318,7 +324,8 @@ class ClassroomControllerTest {
         when(this.classroomService.removeUserFromClassroom(1L, 1L, 2L)).thenReturn(classroom);
 
         this.mockMvc.perform(delete("/api/v1/classrooms/1/users/2")
-                .with(user(userDetails)))
+                .with(user(userDetails))
+                .locale(Locale.ENGLISH))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
             .andExpect(jsonPath("$.message").value("User removed from classroom successfully."));
@@ -340,6 +347,7 @@ class ClassroomControllerTest {
 
         this.mockMvc.perform(post("/api/v1/classrooms/1/learning-materials")
                 .with(user(userDetails))
+                .locale(Locale.ENGLISH)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(request)))
             .andExpect(status().isOk())
@@ -357,7 +365,8 @@ class ClassroomControllerTest {
         when(this.classroomService.removeLearningMaterial(1L, 1L, 5L)).thenReturn(classroom);
 
         this.mockMvc.perform(delete("/api/v1/classrooms/1/learning-materials/5")
-                .with(user(userDetails)))
+                .with(user(userDetails))
+                .locale(Locale.ENGLISH))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
             .andExpect(jsonPath("$.message").value("Learning material removed successfully."));
@@ -373,7 +382,8 @@ class ClassroomControllerTest {
         when(this.classroomService.addQuizToClassroom(1L, 1L, 10L)).thenReturn(classroom);
 
         this.mockMvc.perform(post("/api/v1/classrooms/1/quizzes/10")
-                .with(user(userDetails)))
+                .with(user(userDetails))
+                .locale(Locale.ENGLISH))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
             .andExpect(jsonPath("$.message").value("Quiz added to classroom successfully."));
@@ -389,7 +399,8 @@ class ClassroomControllerTest {
         when(this.classroomService.removeQuizFromClassroom(1L, 1L, 10L)).thenReturn(classroom);
 
         this.mockMvc.perform(delete("/api/v1/classrooms/1/quizzes/10")
-                .with(user(userDetails)))
+                .with(user(userDetails))
+                .locale(Locale.ENGLISH))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
             .andExpect(jsonPath("$.message").value("Quiz removed from classroom successfully."));
