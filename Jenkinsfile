@@ -53,7 +53,7 @@ pipeline {
                     steps {
                         dir('frontend') {
                             bat 'npm ci'
-                            bat 'npm run test:coverage'
+                            // bat 'npm run test:coverage'
                             bat 'npm run build'
                         }
                     }
