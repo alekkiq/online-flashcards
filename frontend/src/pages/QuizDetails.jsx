@@ -32,7 +32,7 @@ export default function QuizDetails() {
               <h1 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-main">
                 {currentQuiz.title}
               </h1>
-              <Badge size="md">{currentQuiz.subjectName}</Badge>
+              <Badge size="md">{currentQuiz.subject.name}</Badge>
             </div>
             <p className="font-inter text-sm md:text-lg text-secondary max-w-2xl">
               {currentQuiz.description}
