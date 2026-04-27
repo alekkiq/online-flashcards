@@ -196,6 +196,12 @@ post {
 
 ---
 
+## STATIC CODE ANALYSIS
+
+The Jenkins pipeline runs **SonarQube** analysis on the backend after the build and test stages. It reports on code quality metrics such as bugs, vulnerabilities, code smells, and test coverage. Configuration is defined in `backend/sonar-project.properties`.
+
+---
+
 ## DOCKER SETUP
 
 ### Docker Images
