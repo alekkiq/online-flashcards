@@ -514,6 +514,17 @@ The schema and diagram in the next section display how the Row Method was utiliz
 
 ![Database Schema](./diagrams/db-diagram-l10n.png)
 
+## QUALITY ASSURANCE
+
+The project includes two QA evaluations conducted during development:
+
+- **User Acceptance Testing (UAT)** — real users tested the application against defined acceptance criteria to validate functionality and usability.
+- **Heuristic Evaluation (Nielsen's 10 Usability Heuristics)** — the UI was evaluated against Nielsen's heuristics to identify usability issues.
+
+The full reports are available in [`docs/QA/`](./QA).
+
+---
+
 ## SPRINT REPORTS
 
 [Sprint Report Directory](./sprint_report)
