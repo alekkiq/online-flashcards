@@ -13,12 +13,12 @@
     "heroTitleMade": "آسان",
     "heroTitleEasy": "شده",
     "searchQuizzes": "جستجوی آزمون‌ها",
-    "heroDescription1": "In vulputate cursus sem ac consectetur. Nam nec ex scelerisque, blandit neque sit amet.",
-    "heroDescription2": "Morbi efficitur augue in odio posuere, vel lacinia purus auctor. Donec finibus non odio sed pellentesque.",
+    "heroDescription1": "هر موضوعی را با فلش‌کارت‌های تعاملی تسلط بگیرید. با سرعت خودتان مطالعه کنید و پیشرفتتان را دنبال کنید.",
+    "heroDescription2": "به هزاران دانش‌آموز و معلم بپیوندید که مجموعه‌های آزمون را برای هر موضوعی ایجاد و به اشتراک می‌گذارند.",
     "findTitle": "پیدا کنید",
     "communityMade": "ساخته جامعه",
     "quizzes": "آزمون‌ها",
-    "findDescription": "In vulputate cursus sem ac consectetur. Nam nec ex scelerisque, blandit neque sit amet.",
+    "findDescription": "مجموعه‌های آزمون ساخته‌شده توسط جامعه را در طیف گسترده‌ای از موضوعات مرور کنید.",
     "createTitle": "بسازید",
     "yourOwn": "آزمون خودتان را",
     "registerNow": "همین حالا ثبت‌نام کنید",
@@ -104,7 +104,8 @@
     "placeholder": "جستجوی آزمون‌ها...",
     "subject": "موضوع",
     "all": "همه",
-    "searchResultsFor": "نتایج جستجو برای «{{query}}»:"
+    "searchResultsFor": "نتایج جستجو برای «{{query}}»:",
+    "noQuizzesFound": "هیچ آزمونی برای «{{query}}» یافت نشد."
   },
   "createQuiz": {
     "backToClassroom": "بازگشت به کلاس",
@@ -147,7 +148,10 @@
     "iDontKnow": "نمی‌دانم",
     "iKnow": "می‌دانم",
     "previous": "قبلی",
-    "next": "بعدی"
+    "next": "بعدی",
+    "clickToFlip": "برای برگرداندن کلیک کنید",
+    "keyboardFlip": "برگردان",
+    "keyboardNavigate": "ناوبری"
   },
   "results": {
     "quizComplete": "آزمون تمام شد!",

@@ -13,12 +13,12 @@
     "heroTitleMade": "made",
     "heroTitleEasy": "easy",
     "searchQuizzes": "Search Quizzes",
-    "heroDescription1": "In vulputate cursus sem ac consectetur. Nam nec ex scelerisque, blandit neque sit amet.",
-    "heroDescription2": "Morbi efficitur augue in odio posuere, vel lacinia purus auctor. Donec finibus non odio sed pellentesque.",
+    "heroDescription1": "Master any subject with interactive flashcards. Study at your own pace and track your progress.",
+    "heroDescription2": "Join thousands of students and teachers creating and sharing quiz sets for every subject.",
     "findTitle": "Find",
     "communityMade": "community made",
     "quizzes": "quizzes",
-    "findDescription": "In vulputate cursus sem ac consectetur. Nam nec ex scelerisque, blandit neque sit amet.",
+    "findDescription": "Browse community-created quiz sets across a wide range of subjects and topics.",
     "createTitle": "Create",
     "yourOwn": "your own",
     "registerNow": "Register Now",
@@ -104,7 +104,8 @@
     "placeholder": "Search for quizzes...",
     "subject": "Subject",
     "all": "All",
-    "searchResultsFor": "Search results for \"{{query}}\":"
+    "searchResultsFor": "Search results for \"{{query}}\":",
+    "noQuizzesFound": "No quizzes found for \"{{query}}\"."
   },
   "createQuiz": {
     "backToClassroom": "Back to classroom",
@@ -147,7 +148,10 @@
     "iDontKnow": "I don't know this",
     "iKnow": "I know this",
     "previous": "PREVIOUS",
-    "next": "NEXT"
+    "next": "NEXT",
+    "clickToFlip": "Click to flip",
+    "keyboardFlip": "flip",
+    "keyboardNavigate": "navigate"
   },
   "results": {
     "quizComplete": "Quiz Complete!",

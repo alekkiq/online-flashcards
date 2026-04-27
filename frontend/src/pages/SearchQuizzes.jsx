@@ -44,6 +44,9 @@ export default function SearchQuizzes() {
       {searchQuery && (
         <p className="text-main font-bold mb-6">{t("searchQuizzes.searchResultsFor", { query: searchQuery })}</p>
       )}
+      {searchQuery && filteredQuizzes.length === 0 && (
+        <p className="text-secondary mt-4">{t("searchQuizzes.noQuizzesFound", { query: searchQuery })}</p>
+      )}
       <div className="flex flex-col gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
         {filteredQuizzes.map((quiz) => (
           <QuizCard

@@ -1,5 +1,6 @@
 import { Badge } from "./Badge";
 import { Avatar } from "./Avatar";
+import { useTranslation } from "react-i18next";
 
 /**
  * displays a color-coded badge based on percentage score
@@ -8,6 +9,7 @@ import { Avatar } from "./Avatar";
  * @param {string} [props.date] - ISO date string or parseable date
  */
 export function ScoreBadge({ percentage, date }) {
+  const { t } = useTranslation();
   const getBadgeColors = () => {
     if (percentage >= 80) return { bg: "bg-green-500/30", text: "text-green-900" };
     if (percentage >= 50) return { bg: "bg-yellow-500/30", text: "text-yellow-900" };
@@ -30,7 +32,7 @@ export function ScoreBadge({ percentage, date }) {
         <span className="absolute m-auto text-center inset-0 h-fit">{percentage}%</span>
       </Badge>
       <div className="flex flex-col">
-        <p className="font-serif text-lg font-bold text-main">Correct</p>
+        <p className="font-serif text-lg font-bold text-main">{t("results.correct")}</p>
         <p className="font-serif text-md font-semibold text-secondary">{formattedDate}</p>
       </div>
     </div>

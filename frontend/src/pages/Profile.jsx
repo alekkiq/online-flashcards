@@ -37,7 +37,7 @@ export default function Profile() {
   };
 
   return (
-    <div className="mx-auto max-w-5xl">
+    <div className="mx-auto max-w-5xl py-8">
       <div className="mt-10">
         <h1 className="font-serif text-3xl md:text-5xl font-black text-main">{t("profile.title")}</h1>
         <p className="mt-2 text-secondary">{t("profile.subtitle")}</p>

@@ -13,12 +13,12 @@
     "heroTitleMade": "tehty",
     "heroTitleEasy": "helpoksi",
     "searchQuizzes": "Etsi visoja",
-    "heroDescription1": "In vulputate cursus sem ac consectetur. Nam nec ex scelerisque, blandit neque sit amet.",
-    "heroDescription2": "Morbi efficitur augue in odio posuere, vel lacinia purus auctor. Donec finibus non odio sed pellentesque.",
+    "heroDescription1": "Hallitse mikä tahansa aihe interaktiivisilla muistikorteilla. Opiskele omaan tahtiisi ja seuraa edistymistäsi.",
+    "heroDescription2": "Liity tuhansien opiskelijoiden ja opettajien joukkoon, jotka luovat ja jakavat visasettejä kaikista aiheista.",
     "findTitle": "Löydä",
     "communityMade": "yhteisön luomia",
     "quizzes": "visoja",
-    "findDescription": "In vulputate cursus sem ac consectetur. Nam nec ex scelerisque, blandit neque sit amet.",
+    "findDescription": "Selaa yhteisön luomia visasettejä laajasta aiheiden ja aihepiirien valikoimasta.",
     "createTitle": "Luo",
     "yourOwn": "omia",
     "registerNow": "Rekisteröidy nyt",
@@ -104,7 +104,8 @@
     "placeholder": "Etsi visoja...",
     "subject": "Aihe",
     "all": "Kaikki",
-    "searchResultsFor": "Hakutulokset haulle \"{{query}}\":"
+    "searchResultsFor": "Hakutulokset haulle \"{{query}}\":",
+    "noQuizzesFound": "Ei visoja haulle \"{{query}}\"."
   },
   "createQuiz": {
     "backToClassroom": "Takaisin luokkahuoneeseen",
@@ -147,7 +148,10 @@
     "iDontKnow": "En tiedä tätä",
     "iKnow": "Tiedän tämän",
     "previous": "EDELLINEN",
-    "next": "SEURAAVA"
+    "next": "SEURAAVA",
+    "clickToFlip": "Klikkaa kääntääksesi",
+    "keyboardFlip": "käännä",
+    "keyboardNavigate": "navigoi"
   },
   "results": {
     "quizComplete": "Visa suoritettu!",

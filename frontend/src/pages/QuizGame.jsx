@@ -38,9 +38,9 @@ export default function QuizGame() {
     scoreRef.current = score;
   }, [score]);
 
-  const handleFlip = () => {
+  const handleFlip = useCallback(() => {
     if (!isNavigating) setIsFlipped((prev) => !prev);
-  };
+  }, [isNavigating]);
 
   const navigateCard = useCallback(
     (direction) => {
@@ -83,6 +83,35 @@ export default function QuizGame() {
       return () => clearTimeout(timer);
     }
   }, [slideDirection, currentCardIndex]);
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+      switch (e.key) {
+        case " ":
+        case "Enter":
+          e.preventDefault();
+          handleFlip();
+          break;
+        case "ArrowLeft":
+          e.preventDefault();
+          navigateCard("prev");
+          break;
+        case "ArrowRight":
+          e.preventDefault();
+          navigateCard("next");
+          break;
+        case "1":
+          if (!isAnswered && !isNavigating) advanceProgress(true);
+          break;
+        case "2":
+          if (!isAnswered && !isNavigating) advanceProgress(false);
+          break;
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleFlip, navigateCard, advanceProgress, isAnswered, isNavigating]);
 
   const currentCard = getCurrentCard();
   const totalCards = currentQuiz?.flashcards?.length || 0;
@@ -188,6 +217,26 @@ export default function QuizGame() {
               >
                 <ArrowRight />
               </Button>
+            </div>
+          </div>
+          <div className="hidden md:flex flex-col items-center gap-2 text-xs text-secondary/60 mt-6">
+            <div className="flex items-center gap-1.5">
+              <kbd className="px-2 py-0.5 rounded border border-secondary/20 bg-secondary/5 font-mono text-secondary/70">Space</kbd>
+              <kbd className="px-2 py-0.5 rounded border border-secondary/20 bg-secondary/5 font-mono text-secondary/70">Enter</kbd>
+              <span>— {t("quizGame.keyboardFlip")}</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <kbd className="px-2 py-0.5 rounded border border-secondary/20 bg-secondary/5 font-mono text-secondary/70">←</kbd>
+              <kbd className="px-2 py-0.5 rounded border border-secondary/20 bg-secondary/5 font-mono text-secondary/70">→</kbd>
+              <span>— {t("quizGame.keyboardNavigate")}</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <kbd className="px-2 py-0.5 rounded border border-secondary/20 bg-secondary/5 font-mono text-secondary/70">1</kbd>
+              <span>— {t("quizGame.iKnow")}</span>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <kbd className="px-2 py-0.5 rounded border border-secondary/20 bg-secondary/5 font-mono text-secondary/70">2</kbd>
+              <span>— {t("quizGame.iDontKnow")}</span>
             </div>
           </div>
         </div>

@@ -13,12 +13,12 @@
     "heroTitleMade": "变得",
     "heroTitleEasy": "简单",
     "searchQuizzes": "搜索测验",
-    "heroDescription1": "In vulputate cursus sem ac consectetur. Nam nec ex scelerisque, blandit neque sit amet.",
-    "heroDescription2": "Morbi efficitur augue in odio posuere, vel lacinia purus auctor. Donec finibus non odio sed pellentesque.",
+    "heroDescription1": "通过互动闪卡掌握任何学科。按照自己的节奏学习并跟踪进度。",
+    "heroDescription2": "加入数千名学生和教师，共同创建和分享各学科的题库。",
     "findTitle": "发现",
     "communityMade": "社区制作的",
     "quizzes": "测验",
-    "findDescription": "In vulputate cursus sem ac consectetur. Nam nec ex scelerisque, blandit neque sit amet.",
+    "findDescription": "浏览社区创建的各种学科和主题的题库。",
     "createTitle": "创建",
     "yourOwn": "你自己的",
     "registerNow": "立即注册",
@@ -104,7 +104,8 @@
     "placeholder": "搜索测验...",
     "subject": "科目",
     "all": "全部",
-    "searchResultsFor": "\"{{query}}\" 的搜索结果："
+    "searchResultsFor": "\"{{query}}\" 的搜索结果：",
+    "noQuizzesFound": "未找到 \"{{query}}\" 的测验。"
   },
   "createQuiz": {
     "backToClassroom": "返回课堂",
@@ -147,7 +148,10 @@
     "iDontKnow": "我不知道",
     "iKnow": "我知道",
     "previous": "上一张",
-    "next": "下一张"
+    "next": "下一张",
+    "clickToFlip": "点击翻转",
+    "keyboardFlip": "翻转",
+    "keyboardNavigate": "导航"
   },
   "results": {
     "quizComplete": "测验完成！",
