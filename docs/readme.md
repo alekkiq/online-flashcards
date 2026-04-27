@@ -193,6 +193,7 @@ post {
 | **JaCoCo**          | Publishes backend code coverage        |
 | **HTML Publisher**  | Publishes the frontend coverage report |
 | **Docker Pipeline** | Docker integration for building images |
+| **SonarQube Scanner** | Runs SonarQube analysis from the pipeline |
 
 ---
 
