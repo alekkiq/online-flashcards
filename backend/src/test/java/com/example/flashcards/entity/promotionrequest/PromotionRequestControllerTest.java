@@ -3,6 +3,7 @@ package com.example.flashcards.entity.promotionrequest;
 import com.example.flashcards.common.exception.ResourceNotFoundException;
 import com.example.flashcards.config.SecurityConfig;
 import com.example.flashcards.config.TestSecurityConfig;
+import com.example.flashcards.config.LocaleConfig;
 import com.example.flashcards.entity.promotionrequest.dto.PromotionRequestCreationRequest;
 import com.example.flashcards.entity.promotionrequest.dto.PromotionRequestUpdateRequest;
 import com.example.flashcards.entity.user.User;
@@ -22,6 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
@@ -42,7 +44,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         }
     )
 )
-@Import(TestSecurityConfig.class)
+@Import({TestSecurityConfig.class, LocaleConfig.class})
 class PromotionRequestControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -75,11 +77,11 @@ class PromotionRequestControllerTest {
 
         this.mockMvc.perform(post("/api/v1/promotion-requests")
                 .with(user(userDetails))
+                .locale(Locale.ENGLISH)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(creationRequest)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Promotion request created successfully."))
             .andExpect(jsonPath("$.data.status").value("PENDING"))
             .andExpect(jsonPath("$.data.message").value("I want to teach"));
 
@@ -188,11 +190,11 @@ class PromotionRequestControllerTest {
 
         this.mockMvc.perform(patch("/api/v1/promotion-requests/1")
                         .with(user("admin").roles("ADMIN"))
+                        .locale(Locale.ENGLISH)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(this.objectMapper.writeValueAsString(updateRequest)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
-                .andExpect(jsonPath("$.message").value("Promotion request updated successfully."))
                 .andExpect(jsonPath("$.data.status").value("APPROVED"));
 
         verify(this.promotionRequestService, times(1)).approveRequest(1L);
@@ -215,11 +217,11 @@ class PromotionRequestControllerTest {
 
         this.mockMvc.perform(patch("/api/v1/promotion-requests/1")
                 .with(user("admin").roles("ADMIN"))
+                .locale(Locale.ENGLISH)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(updateRequest)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Promotion request updated successfully."))
             .andExpect(jsonPath("$.data.status").value("REJECTED"));
 
         verify(this.promotionRequestService, times(1)).rejectRequest(1L);

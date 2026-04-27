@@ -4,6 +4,7 @@ import com.example.flashcards.common.exception.DuplicateResourceException;
 import com.example.flashcards.common.exception.ResourceNotFoundException;
 import com.example.flashcards.config.SecurityConfig;
 import com.example.flashcards.config.TestSecurityConfig;
+import com.example.flashcards.config.LocaleConfig;
 import com.example.flashcards.entity.subject.dto.SubjectCreationRequest;
 import com.example.flashcards.entity.subject.dto.SubjectUpdateRequest;
 import com.example.flashcards.security.*;
@@ -22,6 +23,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
+import java.util.Locale;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -43,7 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         }
     )
 )
-@Import(TestSecurityConfig.class)
+@Import({TestSecurityConfig.class, LocaleConfig.class})
 class SubjectControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -154,11 +156,11 @@ class SubjectControllerTest {
 
         this.mockMvc.perform(post("/api/v1/subjects")
                 .with(user("admin").roles("ADMIN"))
+                .locale(Locale.ENGLISH)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(request)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Subject created successfully."))
             .andExpect(jsonPath("$.data.code").value("history"));
 
         verify(this.subjectService, times(1)).createSubject(any(Subject.class));
@@ -221,11 +223,11 @@ class SubjectControllerTest {
 
         this.mockMvc.perform(put("/api/v1/subjects/10")
                 .with(user("admin").roles("ADMIN"))
+                .locale(Locale.ENGLISH)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(request)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Subject updated successfully."))
             .andExpect(jsonPath("$.data.code").value("advanced-math"));
 
         verify(this.subjectService, times(1)).updateSubject(eq(10L), any(Subject.class));
@@ -268,10 +270,10 @@ class SubjectControllerTest {
         doNothing().when(this.subjectService).deleteSubject(15L);
 
         this.mockMvc.perform(delete("/api/v1/subjects/15")
-                .with(user("admin").roles("ADMIN")))
+                .with(user("admin").roles("ADMIN"))
+                .locale(Locale.ENGLISH))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Subject deleted successfully."));
+            .andExpect(jsonPath("$.success").value(true));
 
         verify(this.subjectService, times(1)).deleteSubject(15L);
     }

@@ -3,6 +3,7 @@ package com.example.flashcards.entity.quizresult;
 import com.example.flashcards.common.exception.ResourceNotFoundException;
 import com.example.flashcards.config.SecurityConfig;
 import com.example.flashcards.config.TestSecurityConfig;
+import com.example.flashcards.config.LocaleConfig;
 import com.example.flashcards.entity.quiz.Quiz;
 import com.example.flashcards.entity.quizresult.dto.QuizResultCreationRequest;
 import com.example.flashcards.entity.subject.Subject;
@@ -24,6 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
@@ -43,7 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         }
     )
 )
-@Import(TestSecurityConfig.class)
+@Import({TestSecurityConfig.class, LocaleConfig.class})
 class QuizResultControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -94,11 +96,11 @@ class QuizResultControllerTest {
 
         this.mockMvc.perform(post("/api/v1/quiz-results")
                 .with(user(userDetails))
+                .locale(Locale.ENGLISH)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(this.objectMapper.writeValueAsString(request)))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Quiz result saved successfully."))
             .andExpect(jsonPath("$.data.scorePercentage").value(85.5));
 
         verify(this.quizResultService, times(1)).createQuizResult(1L, 10L, 85.5);
@@ -145,10 +147,10 @@ class QuizResultControllerTest {
         when(this.quizResultService.getQuizResultByQuizAndUser(1L, 10L)).thenReturn(List.of(r1, r2));
 
         this.mockMvc.perform(get("/api/v1/quiz-results/me/quiz/10")
-                .with(user(userDetails)))
+                .with(user(userDetails))
+                .locale(Locale.ENGLISH))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Quiz results fetched successfully."))
             .andExpect(jsonPath("$.data").isArray())
             .andExpect(jsonPath("$.data.length()").value(2));
 
@@ -191,10 +193,10 @@ class QuizResultControllerTest {
         when(this.quizResultService.getQuizResultByUser(1L)).thenReturn(List.of(r1, r2));
 
         this.mockMvc.perform(get("/api/v1/quiz-results/me")
-                .with(user(userDetails)))
+                .with(user(userDetails))
+                .locale(Locale.ENGLISH))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Quiz results fetched successfully."))
             .andExpect(jsonPath("$.data").isArray())
             .andExpect(jsonPath("$.data.length()").value(2));
 

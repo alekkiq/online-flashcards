@@ -6,6 +6,7 @@ import com.example.flashcards.common.exception.DuplicateResourceException;
 import com.example.flashcards.common.exception.UnauthorizedException;
 import com.example.flashcards.config.SecurityConfig;
 import com.example.flashcards.config.TestSecurityConfig;
+import com.example.flashcards.config.LocaleConfig;
 import com.example.flashcards.entity.user.User;
 import com.example.flashcards.entity.user.UserRole;
 import com.example.flashcards.security.*;
@@ -41,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         }
     )
 )
-@Import(TestSecurityConfig.class)
+@Import({TestSecurityConfig.class, LocaleConfig.class})
 class AuthControllerTest {
     @Autowired
     private MockMvc mockMvc;

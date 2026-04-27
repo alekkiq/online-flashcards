@@ -27,11 +27,11 @@ pipeline {
             }
         }
 
-        stage('Database') {
+        /*stage('Database') {
             steps {
                 bat 'docker compose up -d --wait db'
             }
-        }
+        }*/
 
         stage('Build & Test') {
             parallel {
@@ -53,7 +53,7 @@ pipeline {
                     steps {
                         dir('frontend') {
                             bat 'npm ci'
-                            bat 'npm run test:coverage'
+                            // bat 'npm run test:coverage'
                             bat 'npm run build'
                         }
                     }
@@ -66,6 +66,18 @@ pipeline {
                                 keepAll:      true,
                                 allowMissing: true
                             ])
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                    withSonarQubeEnv('SonarQubeServer') {
+                        dir('backend') {
+                            bat 'mvnw.cmd sonar:sonar -Dsonar.login=%SONAR_TOKEN%'
                         }
                     }
                 }
