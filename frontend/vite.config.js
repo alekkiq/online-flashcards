@@ -4,7 +4,7 @@ import path from "path";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 
-export default defineConfig(({mode}) => {
+export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, path.resolve(__dirname, "../"), "");
   return {
     plugins: [react(), tailwindcss()],
@@ -19,7 +19,7 @@ export default defineConfig(({mode}) => {
     server: {
       proxy: {
         "/api/v1": {
-          target: env.BACKEND_URL || "http://localhost:8080",
+          target: env.BACKEND_URL || "http://localhost:8081",
           changeOrigin: true,
           secure: false,
         },
@@ -37,18 +37,8 @@ export default defineConfig(({mode}) => {
         reporter: ["text", "json", "html"],
         reportsDirectory: "./coverage",
         all: true,
-        include: [
-          "src/hooks/**/*.{js,jsx}",
-          "src/context/**/*.{js,jsx}",
-          "src/lib/**/*.{js,jsx}",
-        ],
-        exclude: [
-          "node_modules/",
-          "src/test/",
-          "**/*.d.ts",
-          "**/*.config.{js,ts}",
-          "**/main.jsx",
-        ],
+        include: ["src/hooks/**/*.{js,jsx}", "src/context/**/*.{js,jsx}", "src/lib/**/*.{js,jsx}"],
+        exclude: ["node_modules/", "src/test/", "**/*.d.ts", "**/*.config.{js,ts}", "**/main.jsx"],
       },
     },
   };
