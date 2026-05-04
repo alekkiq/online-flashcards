@@ -1,4 +1,4 @@
-# ONLINE FLASHCARDS (OnlyCards)
+# ONLINE FLASHCARDS
 
 A web-based quiz and flashcard learning platform built as the second-year Software Engineering project at Metropolia UAS.
 
