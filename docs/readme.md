@@ -197,6 +197,7 @@ Final documentation pass, architecture diagrams, and deployment polish.
 - Technical docs: [backend_dev.md](./dev/backend_dev.md) · [frontend_guidelines.md](./dev/frontend_guidelines.md)
 - API docs: SpringDoc OpenAPI / Swagger UI at `http://localhost:8080/swagger-ui.html`
 - Architecture diagrams: [Deployment](./diagrams/deployment_diagram.pdf) · [Class](./diagrams/class_diagram.pdf) · [Sequence](./diagrams/sequence_diagram.pdf) · [Activity](./diagrams/activity_diagram.pdf) · [Use Case](./diagrams/use-case.pdf) · [ER](./diagrams/er-diagram-l10n.png) · [DB Schema](./diagrams/db-diagram-l10n.png)
+- [Planning Report](./sprint_report/sprint_8_planning_report.pdf)
 
 All sprint reports: [`docs/sprint_report/`](./sprint_report)
 
@@ -473,9 +474,13 @@ This project deploys to Railway, so there is no `/k8s` directory; Docker Compose
 
 ## AUTHORS
 
-**Course:** Application Development — Spring 2026
+**Course:** Application Development — Ohjelmistotuotantoprojekti 1 & 2, Metropolia UAS, Spring 2026
 
-**Team members & roles:** *(to be filled in by the team — name and Scrum role for each member, e.g., Product Owner, Scrum Master, Developer, QA Lead.)*
+**Team members:**
+- Teemu Laasio
+- Aleksi Putkonen
+- Blendi Grajeqvci
+- Alkhrsany Alabass
 
 ---
 
