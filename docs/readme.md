@@ -206,7 +206,6 @@ Internationalization on the client.
   | `fa` | فارسی | Yes |
   | `zh` | 中文 | No |
 - **Localization approach:** [i18next](https://www.i18next.com/) + `react-i18next`. Translation JSON lives at `frontend/public/locales/<lang>/translation.json` and is loaded at runtime via `i18next-http-backend`. The `LanguageSwitcher` component (`src/components/ui/LanguageSwitcher.jsx`) in the navbar lets users switch at runtime; initial language is detected from the browser, falling back to English. Languages flagged `isRtl: true` in `src/config/languages.js` (currently `fa`) trigger RTL layout handling.
-- **Kubernetes:** **not applied.** The team chose Railway's managed container platform instead; horizontal scaling and routing are delegated to Railway. Docker Compose covers local orchestration.
 
 Reports: [Sprint 5 Planning](./sprint_report/sprint_planning_report_5.pdf) · [Sprint 5 Review](./sprint_report/sprint_review_report_5.pdf)
 
@@ -260,7 +259,6 @@ How quality was ensured.
 
 - **SonarQube** — runs from the Jenkins pipeline against the backend (config: `backend/sonar-project.properties`). Tracked metrics: bugs, vulnerabilities, code smells, duplications, unit-test coverage. Latest report: [SonarQube_jenkins_report.pdf](./QA/SonarQube_jenkins_report.pdf). History: [sprint_6_stasticial_code_scan_report.docx.pdf](./reports/sprint_6_stasticial_code_scan_report.docx.pdf).
 - **Code quality goals:** zero blockers/criticals on the backend quality gate, low code-smell density, ESLint clean on the frontend, Prettier-formatted source repo-wide.
-- **JMeter:** **not done** — performance was sanity-checked manually rather than via load testing.
 - **Functional testing:**
   - Backend: JUnit 5 unit + integration tests (Spring Boot Test).
   - Frontend: Vitest + React Testing Library component tests.
@@ -314,7 +312,6 @@ How the project was finalized.
 - **Frontend unit tests:** `cd frontend && npm run test:run`
 - **Frontend coverage (V8):** `cd frontend && npm run test:coverage` → `frontend/coverage/index.html`
 - **End-to-end (Playwright):** `cd e2e && npm install && npx playwright test` → `e2e/playwright-report/index.html`
-- **Performance testing:** not performed (no JMeter scenarios authored).
 
 CI publishes the backend and frontend coverage reports automatically on every Jenkins build.
 
