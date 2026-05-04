@@ -8,7 +8,7 @@ This is the second year Software Engineering project. The application is a quiz 
 - **Main technologies:** React 19, Spring Boot 4, MariaDB 11, Docker, Jenkins, Railway
 - **Overall duration:** 8 sprints × 2 weeks (≈ 16 weeks)
 
-## PRODUCT DESCRIPTION
+## 1. PRODUCT DESCRIPTION
 
 **OnlyCards** is a web-based quiz and flashcard learning platform designed for students and educators. Users can create, share, discover, and study flashcard quizzes across a variety of subjects — all through a modern, responsive single-page application.
 
@@ -63,7 +63,7 @@ Authenticated users have a **profile page** where they can:
 - Submit a promotion request (Student > Teacher)
 - See quick links to their quizzes and classrooms
 
-## PRODUCT VISION
+## 2. PRODUCT VISION
 
 Detailed vision document: [product_vision.pdf](./planning/product_vision.pdf)
 
@@ -77,7 +77,7 @@ Detailed vision document: [product_vision.pdf](./planning/product_vision.pdf)
 
 **Definition of success:** the full stack runs end-to-end via `docker compose up` and on Railway; backend + frontend test suites pass in CI with coverage published; SonarQube quality gate passes; and the UI is usable in all four supported languages (incl. RTL).
 
-## TECHNOLOGIES USED
+## 3. TECHNOLOGIES USED
 
 ### Frontend
 | Technology | Purpose |
@@ -139,69 +139,190 @@ Detailed vision document: [product_vision.pdf](./planning/product_vision.pdf)
 | **Prettier**      | Code formatting                     |
 | **SonarQube**     | Static code analysis & quality gate |
 
-## PROJECT PLAN & SPRINT STRUCTURE
+## 4. Project Plan & Sprint Structure
+
+Full project plan: [project_planning.pdf](./planning/project_planning.pdf)
 
 - **Methodology:** Agile / Scrum
 - **Sprint length:** 2 weeks
 - **Total sprints:** 8
 
-| Sprint | Focus | Primary Deliverable |
-|--------|-------|---------------------|
-| 1 | Project Planning & Vision | Backlog, vision, risk/scope |
-| 2 | Requirements & Database | Use case + ER diagrams, schema, unit tests |
-| 3 | UI Implementation & CI | React SPA + Jenkins pipeline |
-| 4 | Docker Containerization | Dockerfiles + `docker-compose.yaml` |
-| 5 | UI Localization (+ K8s if applied) | i18next translations for 4 languages |
-| 6 | Database Localization | Row-method localized content + migration |
-| 7 | Quality Assurance | SonarQube, UAT, heuristic evaluation, e2e |
-| 8 | Documentation & Finalization | Final docs and architecture diagrams |
+| Sprint | Focus                              | Primary Deliverable                                |
+| ------ | ---------------------------------- | -------------------------------------------------- |
+| 1      | Project Planning & Vision          | Backlog, vision, risk/scope                        |
+| 2      | Requirements & Database            | Use case + ER diagrams, DB schema, unit test setup |
+| 3      | UI Implementation & CI             | React SPA + Jenkins pipeline                       |
+| 4      | Docker Containerization            | Dockerfiles + `docker-compose.yaml`                |
+| 5      | UI Localization (+ K8s if applied) | i18next translations for 4 languages               |
+| 6      | Database Localization              | Row-method localized content + schema migration    |
+| 7      | Quality Assurance                  | SonarQube, UAT, heuristic evaluation, e2e tests    |
+| 8      | Documentation & Finalization       | Final docs, architecture diagrams, deployment      |
 
-Full project plan: [project_planning.pdf](./planning/project_planning.pdf)
+---
 
-### Sprint 1 — Project Planning & Vision
-Foundational planning: project plan, initial backlog, vision validation, and risk/scope definition.
-- Plan: [project_planning.pdf](./planning/project_planning.pdf) · Vision: [product_vision.pdf](./planning/product_vision.pdf)
-- [Planning Report](./sprint_report/sprint_planning_report_1.pdf) · [Review Report](./sprint_report/sprint_review_report_1.pdf)
+## 5. Sprint 1 – Project Planning & Vision
 
-### Sprint 2 — Requirements & Database
-Functional requirements captured; data model designed and implemented in MariaDB via Spring Data JPA. Unit testing set up with JUnit 5 and Vitest.
-- Diagrams: [Use Case](./diagrams/use-case.pdf) · [ER Diagram](./diagrams/er-diagram-l10n.png) · [DB Schema](./diagrams/db-diagram-l10n.png)
-- [Planning Report](./sprint_report/sprint_planning_report_2.pdf) · [Review Report](./sprint_report/sprint_review_report_2.pdf)
+Foundational planning artifacts produced in this sprint:
 
-### Sprint 3 — UI Implementation & CI
-React 19 + Vite + Tailwind SPA implemented (Login, Register, Home, Search, Quiz Play, Results, Classrooms, Profile, Admin). Jenkins pipeline added for build, test, and coverage (JaCoCo + V8). See the **CI/CD Pipeline** section below.
-- [Planning Report](./sprint_report/sprint_planning_report_3.pdf) · [Review Report](./sprint_report/sprint_review_report_3.pdf)
+- **Project plan summary** — scope, timeline, and roles documented in [project_planning.pdf](./planning/project_planning.pdf).
+- **Backlog creation** — initial product backlog drafted from the vision document.
+- **Vision validation** — captured in [product_vision.pdf](./planning/product_vision.pdf).
+- **Risk and scope definition** — covered inside the project plan (technical risk, schedule risk, scope boundaries).
 
-### Sprint 4 — Docker Containerization
-Backend, frontend, and MariaDB containerized; orchestrated via `docker-compose.yaml` with healthcheck-gated startup. Same images run locally, in CI, and on Railway. See the **Docker Setup** section below.
-- [Planning Report](./sprint_report/sprint_planning_report_4.pdf)
+Reports:
 
-### Sprint 5 — UI Localization & Kubernetes
-UI fully localized into English, Suomi, فارسی (RTL), and 中文 via i18next. **Kubernetes was not applied** — production scaling is handled by Railway's managed platform. See the **Frontend Localization** section below.
-- [Planning Report](./sprint_report/sprint_planning_report_5.pdf) · [Review Report](./sprint_report/sprint_review_report_5.pdf)
+- [Sprint 1 Planning Report](./sprint_report/sprint_planning_report_1.pdf)
+- [Sprint 1 Review Report](./sprint_report/sprint_review_report_1.pdf)
 
-### Sprint 6 — Database Localization
-Row-method localization applied to user-facing reference content (e.g. `subjects`); schema migrated to add a `language` column with English fallback. See the **Database Content Localization** section below.
-- [Localization Plan](./planning/database_localization_plan.pdf) · [Implementation Report](./reports/database_localization_report.pdf)
-- [Planning Report](./sprint_report/sprint_planning_report_6.pdf) · [Review Report](./sprint_report/sprint_review_report_6.pdf)
+---
 
-### Sprint 7 — Quality Assurance
-SonarQube integrated into Jenkins (bugs, vulnerabilities, smells, coverage); functional testing via JUnit, Vitest, and Playwright; non-functional testing via UAT and Nielsen heuristic evaluation. **JMeter performance testing was not done.**
-- [SonarQube Report](./QA/SonarQube_jenkins_report.pdf) · [Static Scan Report](./reports/sprint_6_stasticial_code_scan_report.docx.pdf)
-- [Acceptance Test Plan](./QA/acceptance_test_planning_04_2026.pdf) · [UAT Report](./QA/ua_acceptance_test_online_flashcards_04_2026.pdf)
-- [Heuristic Evaluation](./QA/heuristic_evaluation_online_flashcards_04_2026.pdf) · [Bug & Issue Table](./QA/bug_&_issue_table.md)
-- [Planning Report](./sprint_report/sprint_planning_report_7.pdf) · [Review Report](./sprint_report/sprint_review_report_7.pdf)
+## 6. Sprint 2 – Requirements & Database
 
-### Sprint 8 — Documentation & Finalization
-Final documentation pass, architecture diagrams, and deployment polish.
-- Technical docs: [backend_dev.md](./dev/backend_dev.md) · [frontend_guidelines.md](./dev/frontend_guidelines.md)
-- API docs: SpringDoc OpenAPI / Swagger UI at `http://localhost:8080/swagger-ui.html`
-- Architecture diagrams: [Deployment](./diagrams/deployment_diagram.pdf) · [Class](./diagrams/class_diagram.pdf) · [Sequence](./diagrams/sequence_diagram.pdf) · [Activity](./diagrams/activity_diagram.pdf) · [Use Case](./diagrams/use-case.pdf) · [ER](./diagrams/er-diagram-l10n.png) · [DB Schema](./diagrams/db-diagram-l10n.png)
-- [Planning Report](./sprint_report/sprint_8_planning_report.pdf)
+System requirements and data design.
 
-All sprint reports: [`docs/sprint_report/`](./sprint_report)
+- **Functional requirements summary** — auth, quiz CRUD, flashcard play, classroom management, results tracking, multilingual content.
+- **Use Case Diagram:** [use-case.pdf](./diagrams/use-case.pdf)
+- **ER Diagram:** [er-diagram-l10n.png](./diagrams/er-diagram-l10n.png)
+- **Database schema:** [db-diagram-l10n.png](./diagrams/db-diagram-l10n.png)
+- **Database technology:** MariaDB 11 (relational, run via Docker).
+- **Database implementation:** Spring Data JPA / Hibernate manages the schema; `data.sql` seeds reference data (subjects, default admin).
+- **Unit testing strategy:**
+  - Backend: JUnit 5 via Spring Boot Test, with `@DataJpaTest` for repositories and `@WebMvcTest` for controllers.
+  - Frontend: Vitest + jsdom + React Testing Library.
+  - Coverage: JaCoCo (backend) and V8 coverage (frontend).
 
-## CI/CD PIPELINE
+Reports:
+
+- [Sprint 2 Planning Report](./sprint_report/sprint_planning_report_2.pdf)
+- [Sprint 2 Review Report](./sprint_report/sprint_review_report_2.pdf)
+
+---
+
+## 7. Sprint 3 – UI Implementation & CI
+
+User interface and CI automation.
+
+- **UI framework & approach:** React 19 + Vite 7 + Tailwind CSS 4, with React Router 7 for client-side routing and React Hook Form + Zod for forms/validation. Component-based design, mobile-responsive.
+- **Screens implemented:** Login, Register, Home, Search Quizzes, Quiz Play (flip-card), Quiz Results, Classroom List/Detail, Profile, Admin Dashboard.
+- **Code coverage goals & tools:**
+  - Frontend: V8 coverage via `vitest run --coverage` (HTML report at `frontend/coverage/index.html`).
+  - Backend: JaCoCo (`backend/target/site/jacoco`).
+- **Jenkins pipeline** (declarative, Windows agent — see [`/Jenkinsfile`](../Jenkinsfile)):
+  - **Build:** `./mvnw clean package` (backend), `npm ci && npm run build` (frontend).
+  - **Test:** Backend tests run during Maven `package`; frontend runs `vitest --coverage`.
+  - **Coverage:** JaCoCo Publisher (backend) and HTML Publisher (frontend) push reports back to Jenkins.
+  - **Containerization:** `docker compose build` produces the production images.
+
+Reports:
+
+- [Sprint 3 Planning Report](./sprint_report/sprint_planning_report_3.pdf)
+- [Sprint 3 Review Report](./sprint_report/sprint_review_report_3.pdf)
+
+---
+
+## 8. Sprint 4 – Docker Containerization
+
+How the system was containerized.
+
+- **Purpose:** reproducible local development and one-command deployment to Railway; isolates Java, Node, and MariaDB runtimes.
+- **Services containerized:**
+  - `backend` — Spring Boot JAR on `eclipse-temurin:21-jre-alpine`.
+  - `frontend` — Vite production build served by `nginx:stable-alpine` with `/api/v1/` reverse-proxied to the backend.
+  - `db` — `mariadb:11` with persistent `db_data` volume and a healthcheck gating backend startup.
+- **Dockerfile & compose overview:** [`backend/Dockerfile`](../backend/Dockerfile), [`frontend/Dockerfile`](../frontend/Dockerfile), and [`docker-compose.yaml`](../docker-compose.yaml). The compose file orchestrates all three services on a private bridge network and reads credentials from `.env`.
+- **Use in development/testing:** developers run `docker compose up -d` to bring up the full stack; CI runs `docker compose up -d --wait db` so the backend tests hit a real MariaDB instance, then `docker compose build` to produce release images.
+
+Report:
+
+- [Sprint 4 Planning Report](./sprint_report/sprint_planning_report_4.pdf)
+
+---
+
+## 9. Sprint 5 – UI Localization & Kubernetes
+
+Scalability and internationalization on the client.
+
+- **Supported UI languages:**
+
+  | Code | Language | RTL |
+  | ---- | -------- | --- |
+  | `en` | English  | No  |
+  | `fi` | Suomi    | No  |
+  | `fa` | فارسی    | Yes |
+  | `zh` | 中文     | No  |
+
+- **Localization approach:** [i18next](https://www.i18next.com/) + `react-i18next`, with translations stored as JSON files at `frontend/public/locales/<lang>/translation.json` and loaded at runtime via `i18next-http-backend`. A `LanguageSwitcher` component in the navbar lets users switch at runtime; the initial language is detected from the browser. Languages flagged `isRtl: true` (currently `fa`) trigger RTL layout handling.
+- **Kubernetes:** **not applied.** The team chose Railway's managed container platform for production deployment instead of Kubernetes; horizontal scaling and routing are delegated to Railway. Docker Compose covers local orchestration.
+
+Reports:
+
+- [Sprint 5 Planning Report](./sprint_report/sprint_planning_report_5.pdf)
+- [Sprint 5 Review Report](./sprint_report/sprint_review_report_5.pdf)
+
+---
+
+## 10. Sprint 6 – Database Localization
+
+Database-level localization of user-facing reference data.
+
+- **Plan:** [database_localization_plan.pdf](./planning/database_localization_plan.pdf)
+- **Implementation report:** [database_localization_report.pdf](./reports/database_localization_report.pdf)
+- **Approach — Row Method:** localized entities (e.g., `subjects`) store one row per language, keyed by a stable `code` plus a `language` column. Example:
+  ```sql
+  INSERT INTO subjects (code, name, language) VALUES ('math', 'Mathematics', 'en');
+  INSERT INTO subjects (code, name, language) VALUES ('math', 'Matematiikka', 'fi');
+  INSERT INTO subjects (code, name, language) VALUES ('math', 'ریاضیات',     'fa');
+  INSERT INTO subjects (code, name, language) VALUES ('math', '数学',         'zh');
+  ```
+- **Migration / schema changes:** added `language` column to localized tables and a composite uniqueness constraint on `(code, language)`. Updated seed data in `backend/src/main/resources/data.sql`.
+- **Validation approach:** the backend's `AcceptHeaderLocaleResolver` reads the `Accept-Language` header and queries the row matching the resolved language; if no row exists for that language, the query falls back to English (`en`). Backend exception messages also resolve via Spring's `MessageSource` against `messages_<lang>.properties`.
+- **Schema reference:** [db-diagram-l10n.png](./diagrams/db-diagram-l10n.png), [er-diagram-l10n.png](./diagrams/er-diagram-l10n.png).
+
+Reports:
+
+- [Sprint 6 Planning Report](./sprint_report/sprint_planning_report_6.pdf)
+- [Sprint 6 Review Report](./sprint_report/sprint_review_report_6.pdf)
+
+---
+
+## 11. Sprint 7 – Quality Assurance
+
+How quality was ensured.
+
+- **SonarQube usage and metrics:** SonarQube Scanner runs from the Jenkins pipeline against the backend (config at `backend/sonar-project.properties`). Tracked metrics: bugs, vulnerabilities, code smells, duplications, and unit-test coverage. Latest report: [SonarQube_jenkins_report.pdf](./QA/SonarQube_jenkins_report.pdf). Static-scan history: [sprint_6_stasticial_code_scan_report.docx.pdf](./reports/sprint_6_stasticial_code_scan_report.docx.pdf).
+- **Code quality goals:** zero blockers and criticals on the backend quality gate, low code-smell density, ESLint clean on the frontend, and Prettier-formatted source across the repo.
+- **JMeter test scenarios:** **not done** — performance was sanity-checked manually rather than via load testing.
+- **Functional testing:**
+  - Backend: JUnit 5 unit + integration tests (Spring Boot Test).
+  - Frontend: Vitest + React Testing Library component tests.
+  - End-to-end: Playwright user-journey tests in [`/e2e`](../e2e).
+- **Non-functional testing:**
+  - User Acceptance Testing (UAT): [acceptance_test_planning_04_2026.pdf](./QA/acceptance_test_planning_04_2026.pdf), results in [ua_acceptance_test_online_flashcards_04_2026.pdf](./QA/ua_acceptance_test_online_flashcards_04_2026.pdf).
+  - Heuristic Evaluation (Nielsen's 10): [heuristic_evaluation_online_flashcards_04_2026.pdf](./QA/heuristic_evaluation_online_flashcards_04_2026.pdf).
+  - Bug & issue tracking: [bug\_&_issue_table.md](./QA/bug_&_issue_table.md).
+
+Reports:
+
+- [Sprint 7 Planning Report](./sprint_report/sprint_planning_report_7.pdf)
+- [Sprint 7 Review Report](./sprint_report/sprint_review_report_7.pdf)
+
+---
+
+## 12. Sprint 8 – Documentation & Finalization
+
+How the project was finalized.
+- **Final system architecture diagrams:**
+  - [Deployment diagram](./diagrams/deployment_diagram.pdf)
+  - [Class diagram](./diagrams/class_diagram.pdf)
+  - [Sequence diagram](./diagrams/sequence_diagram.pdf)
+  - [Activity diagram](./diagrams/activity_diagram.pdf)
+  - [Use-case diagram](./diagrams/use-case.pdf)
+  - [ER diagram](./diagrams/er-diagram-l10n.png) and [DB schema](./diagrams/db-diagram-l10n.png)
+  - [Figma reference](./diagrams/figma.md)
+
+---
+
+## 13. CI/CD PIPELINE
 
 The project uses a **Jenkins declarative pipeline** (`Jenkinsfile`) that automates building, testing, and containerizing the application. The pipeline runs on a **Windows** Jenkins agent and uses `bat` commands throughout.
 
@@ -267,13 +388,13 @@ Docker Compose automatically reads the `.env` file to populate service environme
 
 ---
 
-## STATIC CODE ANALYSIS
+## 14. STATIC CODE ANALYSIS
 
 The Jenkins pipeline runs **SonarQube** analysis on the backend after the build and test stages. It reports on code quality metrics such as bugs, vulnerabilities, code smells, and test coverage. Configuration is defined in `backend/sonar-project.properties`. Latest report: [SonarQube_jenkins_report.pdf](./QA/SonarQube_jenkins_report.pdf).
 
 ---
 
-## DOCKER SETUP
+## 15. DOCKER SETUP
 
 ### Docker Images
 
@@ -306,7 +427,7 @@ The MariaDB service uses a `mariadb -e "SELECT 1"` health check (10s interval, u
 
 ---
 
-## DEPLOYMENT (RAILWAY)
+## 16. DEPLOYMENT (RAILWAY)
 
 Production images are deployed to **[Railway](https://railway.app)** as three separate services:
 
@@ -324,7 +445,7 @@ Railway services communicate over a **private internal network**. The frontend N
 
 Each service must have its environment variables configured in the Railway dashboard — the same variables that appear in the `.env` file locally (database credentials, `JWT_SECRET`, `JWT_EXPIRATION`, `BACKEND_URL`, etc.).
 
-## FRONTEND LOCALIZATION (i18n)
+## 17. FRONTEND LOCALIZATION (i18n)
 
 The app uses [i18next](https://www.i18next.com/) with `react-i18next` for internationalization.
 
@@ -352,7 +473,7 @@ public/
 
 The `LanguageSwitcher` component (`src/components/ui/LanguageSwitcher.jsx`) renders a dropdown in the navbar that lets users switch languages at runtime. The selected language is detected from the browser on first load and falls back to English if unsupported. Languages flagged `isRtl: true` in `src/config/languages.js` (currently Farsi) trigger RTL layout handling.
 
-## BACKEND LOCALIZATION (i18n)
+## 18. BACKEND LOCALIZATION (i18n)
 
 The backend implements **server-side message localization** using Spring's built-in i18n framework, returning error and validation messages in the user's preferred language based on the **Accept-Language** HTTP header.
 
@@ -393,7 +514,7 @@ All custom exceptions inherit from `ApiException` and store a **message key** (n
 
 ---
 
-## DATABASE CONTENT LOCALIZATION (Row Method)
+## 19. DATABASE CONTENT LOCALIZATION (Row Method)
 
 User-generated content is localized using the **Row Method** where each entity stores **one row per language** with a `language` column.
 
@@ -406,7 +527,7 @@ INSERT INTO subjects (code, name, language) VALUES ('math', '数学', 'zh');
 
 If a row for the requested language doesn't exist the application falls back to English. The schema and ER diagram below show how the Row Method is wired in.
 
-## ARCHITECTURE DESIGN
+## 20. ARCHITECTURE DESIGN
 
 ### ER Diagram
 
@@ -416,7 +537,7 @@ If a row for the requested language doesn't exist the application falls back to 
 
 ![Database Schema](./diagrams/db-diagram-l10n.png)
 
-## QUALITY ASSURANCE
+## 21. QUALITY ASSURANCE
 
 The project includes two QA evaluations conducted during development:
 
@@ -427,7 +548,7 @@ The full reports are available in [`docs/QA/`](./QA).
 
 ---
 
-## HOW TO RUN THE PROJECT
+## 22. HOW TO RUN THE PROJECT
 
 **Prerequisites:** Docker + Docker Compose. For local non-Docker dev: JDK 21, Maven 3+, Node.js 20+.
 
@@ -441,7 +562,7 @@ The full reports are available in [`docs/QA/`](./QA).
 - Swagger UI: http://localhost:8080/swagger-ui.html
 - Database: `localhost:3307`
 
-## TESTING INSTRUCTIONS
+## 23. TESTING INSTRUCTIONS
 
 - **Backend unit tests:** `cd backend && ./mvnw test`
 - **Backend coverage (JaCoCo):** `cd backend && ./mvnw verify` → `backend/target/site/jacoco/index.html`
@@ -452,7 +573,7 @@ The full reports are available in [`docs/QA/`](./QA).
 
 CI publishes the backend and frontend coverage reports automatically on every Jenkins build.
 
-## REPOSITORY STRUCTURE
+## 24. REPOSITORY STRUCTURE
 
 ```
 /backend             Spring Boot REST API (Java 21, MariaDB)
@@ -472,7 +593,7 @@ CI publishes the backend and frontend coverage reports automatically on every Je
 
 This project deploys to Railway, so there is no `/k8s` directory; Docker Compose covers local orchestration.
 
-## AUTHORS
+## 25. AUTHORS
 
 **Course:** Application Development — Ohjelmistotuotantoprojekti 1 & 2, Metropolia UAS, Spring 2026
 
@@ -480,10 +601,4 @@ This project deploys to Railway, so there is no `/k8s` directory; Docker Compose
 - Teemu Laasio
 - Aleksi Putkonen
 - Blendi Grajeqvci
-- Alkhrsany Alabass
-
----
-
-## SPRINT REPORTS
-
-[Sprint Report Directory](./sprint_report)
+- Alabass Alkhrsany
