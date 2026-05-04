@@ -235,6 +235,7 @@ How the system was containerized.
 Report:
 
 - [Sprint 4 Planning Report](./sprint_report/sprint_planning_report_4.pdf)
+- [Sprint 4 Review Report](./sprint_report/sprint_review_report_5.pdf)
 
 ---
 
