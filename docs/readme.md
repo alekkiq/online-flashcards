@@ -1,531 +1,353 @@
-# ONLINE FLASHCARDS
+# ONLINE FLASHCARDS (OnlyCards)
 
-This is the second year Software Engineering project. The application is a quiz learning platform where the main learning method is flashcard learning.
+A web-based quiz and flashcard learning platform built as the second-year Software Engineering project at Metropolia UAS.
 
-## PRODUCT DESCRIPTION
+- **Project name:** Online Flashcards (OnlyCards)
+- **Problem solved:** Fragmented tooling for flashcard study — content creation, group study, and progress tracking are normally split across multiple apps.
+- **Target users:** Students, Teachers, Admins
+- **Main technologies:** React 19, Spring Boot 4, MariaDB 11, Docker, Jenkins, Railway
+- **Overall duration:** 8 sprints × 2 weeks (≈ 16 weeks)
 
-**OnlyCards** is a web-based quiz and flashcard learning platform designed for students and educators. Users can create, share, discover, and study flashcard quizzes across a variety of subjects — all through a modern, responsive single-page application.
+---
 
-### Core Features
+## 1. Product Vision
 
-#### Authentication & User Roles
+Detailed vision document: [product_vision.pdf](./planning/product_vision.pdf)
 
-The platform supports three user roles with increasing privileges:
+**Vision statement:** Empower students and teachers to learn and teach more effectively through a single, multilingual platform where flashcard quizzes can be created, shared, and practiced inside virtual classrooms.
 
-- **Student** — the default role. Can browse, search, and play quizzes, join classrooms, and view results.
-- **Teacher** — a promoted role. Can do everything a student can, plus create and manage quizzes and classrooms.
-- **Admin** — has full administrative privileges, including approving or rejecting promotion requests and managing all users and classrooms.
+**Main goals:**
+- Make flashcard study fast, collaborative, and language-inclusive.
+- Give teachers lightweight tools to organize quizzes and classrooms without IT overhead.
+- Track learner progress over time so users can identify weak topics.
+- Stay deployable on commodity cloud (Docker / Railway) so it remains low-cost to operate.
 
-Users register with a username, email, and password. Authentication is handled via **JWT tokens**, so sessions are stateless and secure. Students who want to create content can submit a **promotion request** to be upgraded to the Teacher role, which an Admin can then approve or reject.
+**Key features:**
+- **Authentication & roles** — Student / Teacher / Admin with JWT-based stateless auth and a Student → Teacher promotion request flow approved by Admins.
+- **Quizzes & flashcards** — teachers create quizzes (title, description, subject) containing flashcards; quizzes are publicly searchable and playable.
+- **Quiz game** — interactive flip-card UI with sliding transitions and self-evaluation; result saved as a score percentage.
+- **Progress tracking** — every attempt stored as a quiz result with score and timestamp.
+- **Search & discovery** — public search page with subject filtering, accessible to anonymous visitors too.
+- **Classrooms** — virtual study groups with join code, attached quizzes, learning materials, and member management.
+- **Profile management** — view/edit profile, submit promotion request, quick links to owned quizzes and classrooms.
+- **Multilingual UI + content** — 4 languages (en, fi, fa, zh), including RTL layout for Farsi.
 
-#### Quizzes & Flashcards
+**Definition of success:** the full stack runs end-to-end via `docker compose up` and on Railway; backend + frontend test suites pass in CI with coverage published; SonarQube quality gate passes; and the UI is usable in all four supported languages (incl. RTL).
 
-The central learning unit is the **quiz**, which is a named collection of **flashcards**. Each flashcard has a question side and an answer side. Quizzes are categorized by **subject** (e.g. Mathematics, History) for easy filtering.
+---
 
-Teachers create quizzes by giving them a title, description, subject, and then adding individual flashcards. Quizzes are publicly searchable and playable by all users.
-
-#### Quiz Game
-
-When a user plays a quiz, they are presented with flashcards one at a time in an interactive **flip-card** UI. The user reads the question, mentally answers, then flips the card to reveal the correct answer and self-evaluates. Navigation between cards is animated with sliding transitions. After completing all cards, the result (score percentage) is recorded and the user is taken to a **results page**.
-
-#### Quiz Results & Progress Tracking
-
-Each quiz attempt is saved as a **quiz result**, recording the score percentage and timestamp. This allows users to track their learning progress over time and revisit quizzes to improve.
-
-#### Search & Discovery
-
-The **Search Quizzes** page lets any visitor — authenticated or not — browse and search the full library of community-created quizzes. Quizzes can be filtered by subject. Each quiz card shows the title, creator, subject, and flashcard count.
-
-#### Classrooms
-
-Teachers and Admins can create **classrooms** — virtual study groups organized around a subject. A classroom has:
-
-- A **title**, **description**, and optional **note**
-- A **join code** that students use to enroll
-- **Quizzes** assigned to the classroom for guided study
-- **Learning materials** (text-based resources) uploaded by the owner
-- A **members list** managed by the owner
-
-Classroom owners can add or remove members, attach quizzes, and upload learning materials. Students can join using the code, view all classroom content, and leave at any time.
-
-#### Profile Management
-
-Authenticated users have a **profile page** where they can:
-
-- View their username, email, and role
-- Edit their profile (change username, email, or password)
-- Submit a promotion request (Student > Teacher)
-- See quick links to their quizzes and classrooms
-
-## TECHNOLOGIES USED
+## 2. Technologies Used
 
 ### Frontend
 | Technology | Purpose |
 |---|---|
 | **React 19** | UI library |
 | **Vite 7** | Build tool & dev server |
-| **i18next** + **react-i18next** | Frontend internationalization and localization |
-| **Tailwind CSS 4** | Utility-first CSS framework |
+| **i18next** + **react-i18next** | Frontend internationalization |
+| **Tailwind CSS 4** | Utility-first CSS |
 | **React Router 7** | Client-side routing |
-| **React Hook Form** + **Zod** | Form handling & validation |
+| **React Hook Form** + **Zod** | Forms & validation |
 | **Lucide React** | Icon library |
-| **Nginx** | Production static file serving & reverse proxy |
+| **Nginx** | Production static serving & reverse proxy |
 
 ### Backend
+| Technology | Purpose |
+|---|---|
+| **Java 17** | Programming language |
+| **Spring Boot 4** | Application framework |
+| **Spring Security** | Auth & authorization |
+| **Spring Data JPA / Hibernate** | ORM & database access |
+| **JWT (jjwt)** | Token-based authentication |
+| **SpringDoc OpenAPI** | API documentation (Swagger UI) |
+| **Maven** | Build & dependency management |
 
-| Technology                          | Purpose                        |
-| ----------------------------------- | ------------------------------ |
-| **Java 17**                         | Programming language           |
-| **Spring Boot 4**                   | Application framework          |
-| **Spring Security**                 | Authentication & authorization |
-| **Spring Data JPA** / **Hibernate** | ORM & database access          |
-| **JWT (jjwt)**                      | Token-based authentication     |
-| **Jackson**                         | JSON serialization             |
-| **SpringDoc OpenAPI**               | API documentation (Swagger UI) |
-| **Maven**                           | Build & dependency management  |
-
-### Database
-
-| Technology     | Purpose             |
-| -------------- | ------------------- |
+### Database, Testing, DevOps & Quality
+| Technology | Purpose |
+|---|---|
 | **MariaDB 11** | Relational database |
+| **Vitest** + **jsdom** + **React Testing Library** | Frontend unit/component tests |
+| **JUnit 5** (Spring Boot Test) | Backend unit & integration tests |
+| **JaCoCo** / **V8 Coverage** | Backend / frontend code coverage |
+| **Playwright** | End-to-end testing |
+| **Docker** + **Docker Compose** | Containerization & orchestration |
+| **Jenkins** | CI/CD pipeline |
+| **Docker Hub** | Container image registry |
+| **Railway** | Cloud hosting & deployment |
+| **ESLint 9** + **Prettier** | Frontend linting & formatting |
+| **SonarQube** | Static code analysis & quality gate |
 
-### Testing
+---
 
-| Technology                     | Purpose                            |
-| ------------------------------ | ---------------------------------- |
-| **Vitest** + **jsdom**         | Frontend unit testing              |
-| **React Testing Library**      | Component testing                  |
-| **V8 Coverage**                | Frontend code coverage             |
-| **JUnit 5** (Spring Boot Test) | Backend unit & integration testing |
-| **JaCoCo**                     | Backend code coverage              |
+## 3. Project Plan & Sprint Structure
 
-### DevOps & Deployment
+Full project plan: [project_planning.pdf](./planning/project_planning.pdf)
 
-| Technology         | Purpose                       |
-| ------------------ | ----------------------------- |
-| **Docker**         | Containerization              |
-| **Docker Compose** | Multi-container orchestration |
-| **Jenkins**        | CI/CD pipeline                |
-| **Docker Hub**     | Container image registry      |
-| **Railway**        | Cloud hosting & deployment    |
+- **Methodology:** Agile / Scrum
+- **Sprint length:** 2 weeks
+- **Total sprints:** 8
 
-### Code Quality
+| Sprint | Focus | Primary Deliverable |
+|---|---|---|
+| 1 | Project Planning & Vision | Backlog, vision, risk/scope |
+| 2 | Requirements & Database | Use case + ER diagrams, DB schema, unit test setup |
+| 3 | UI Implementation & CI | React SPA + Jenkins pipeline |
+| 4 | Docker Containerization | Dockerfiles + `docker-compose.yaml` |
+| 5 | UI Localization (+ K8s if applied) | i18next translations for 4 languages |
+| 6 | Database Localization | Row-method localized content + schema migration |
+| 7 | Quality Assurance | SonarQube, UAT, heuristic evaluation, e2e tests |
+| 8 | Documentation & Finalization | Final docs, architecture diagrams, deployment |
 
-| Technology        | Purpose                             |
-| ----------------- | ----------------------------------- |
-| **ESLint 9**      | Frontend linting                    |
-| **Prettier**      | Code formatting                     |
-| **SonarQube**     | Static code analysis & quality gate |
+---
 
-## CI/CD PIPELINE
+## 4. Sprint 1 – Project Planning & Vision
 
-The project uses a **Jenkins declarative pipeline** (`Jenkinsfile`) that automates building, testing, and containerizing the application. The pipeline runs on a **Windows** Jenkins agent and uses `bat` commands throughout.
+Foundational planning artifacts produced in this sprint:
 
-### Pipeline Overview
+- **Project plan summary** — scope, timeline, and roles documented in [project_planning.pdf](./planning/project_planning.pdf).
+- **Backlog creation** — initial product backlog drafted from the vision document.
+- **Vision validation** — captured in [product_vision.pdf](./planning/product_vision.pdf).
+- **Risk and scope definition** — covered inside the project plan (technical risk, schedule risk, scope boundaries).
+
+Reports: [Sprint 1 Planning](./sprint_report/sprint_planning_report_1.pdf) · [Sprint 1 Review](./sprint_report/sprint_review_report_1.pdf)
+
+---
+
+## 5. Sprint 2 – Requirements & Database
+
+System requirements and data design.
+
+- **Functional requirements summary** — auth, quiz CRUD, flashcard play, classroom management, results tracking, multilingual content.
+- **Use Case Diagram:** [use-case.pdf](./diagrams/use-case.pdf)
+- **ER Diagram:** [er-diagram-l10n.png](./diagrams/er-diagram-l10n.png)
+- **Database schema:** [db-diagram-l10n.png](./diagrams/db-diagram-l10n.png)
+- **Database technology:** MariaDB 11 (relational, run via Docker).
+- **Database implementation:** Spring Data JPA / Hibernate manages the schema; `data.sql` seeds reference data (subjects, default admin).
+- **Unit testing strategy:**
+  - Backend: JUnit 5 via Spring Boot Test, with `@DataJpaTest` for repositories and `@WebMvcTest` for controllers.
+  - Frontend: Vitest + jsdom + React Testing Library.
+  - Coverage: JaCoCo (backend) and V8 coverage (frontend).
+
+Reports: [Sprint 2 Planning](./sprint_report/sprint_planning_report_2.pdf) · [Sprint 2 Review](./sprint_report/sprint_review_report_2.pdf)
+
+---
+
+## 6. Sprint 3 – UI Implementation & CI
+
+User interface and CI automation.
+
+- **UI framework & approach:** React 19 + Vite 7 + Tailwind CSS 4, with React Router 7 for client-side routing and React Hook Form + Zod for forms/validation. Component-based design, mobile-responsive.
+- **Screens implemented:** Login, Register, Home, Search Quizzes, Quiz Play (flip-card), Quiz Results, Classroom List/Detail, Profile, Admin Dashboard.
+- **Code coverage goals & tools:**
+  - Frontend: V8 coverage via `vitest run --coverage` (HTML report at `frontend/coverage/index.html`).
+  - Backend: JaCoCo (`backend/target/site/jacoco`).
+
+### Jenkins Pipeline
+
+Declarative pipeline (`Jenkinsfile`) running on a Windows Jenkins agent:
 
 ```
 Checkout & Setup ➜ Build & Test (parallel) ➜ Build Docker Images ➜ Cleanup
 ```
 
-### Pipeline Stages
+| Stage | Description |
+|---|---|
+| **Setup & Checkout** | `checkout scm`, then injects the `flashcards-env` Jenkins file credential into the workspace as `.env` |
+| **Backend** *(parallel)* | `docker compose up -d --wait db`, then `mvnw.cmd clean package` (compile, test, package) |
+| **Frontend** *(parallel)* | `npm ci`, `npm run test:coverage` (Vitest + V8), `npm run build` |
+| **Build Docker Images** | `docker compose build` produces production images |
 
-| Stage                     | Description                                                                                                                                                 |
-| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Setup & Checkout**      | Clones the repository via `checkout scm` and injects the `.env` credentials file from Jenkins into the workspace root                                       |
-| **Backend** _(parallel)_  | Spins up a MariaDB container (`docker compose up -d --wait db`), then runs `mvnw.cmd clean package` which compiles, tests, and packages the Spring Boot JAR |
-| **Frontend** _(parallel)_ | Installs dependencies (`npm ci`), runs Vitest with V8 coverage (`npm run test:coverage`), and builds the production bundle (`npm run build`)                |
-| **Build Docker Images**   | Runs `docker compose build` to create production-ready images for all services                                                                              |
+**Jenkins tools** (configured under *Manage Jenkins → Tools*): `nodejs 'node-20'`, `jdk 'jdk-21'`, `maven 'Maven3'`.
 
-### Jenkins Tools
+**Test reporting published back to Jenkins:**
+| Report | Tool | Location |
+|---|---|---|
+| Backend unit tests | JUnit Publisher | `backend/target/surefire-reports/*.xml` |
+| Backend coverage | JaCoCo Publisher | `backend/target/jacoco.exec` |
+| Frontend coverage | HTML Publisher | `frontend/coverage/index.html` |
 
-The pipeline declares three managed tools in the `tools` block:
+**Required plugins:** NodeJS, JUnit, JaCoCo, HTML Publisher, Docker Pipeline, SonarQube Scanner.
 
-```groovy
-tools {
-    nodejs 'node-20'    // NodeJS plugin – Node.js 20.x
-    jdk    'jdk-21'     // JDK 21
-    maven  'Maven3'     // Maven 3.x
-}
-```
-
-These must be configured in **Manage Jenkins → Tools** with the exact names shown above.
-
-### Environment & Credentials
-
-All environment variables (database credentials, JWT secret, etc.) are stored in a **single `.env` file** managed as a Jenkins `file` credential (`flashcards-env`). During the _Setup & Checkout_ stage, the file is copied into the workspace root:
-
-```groovy
-withCredentials([file(credentialsId: 'flashcards-env', variable: 'ENV_FILE')]) {
-    bat 'copy "%ENV_FILE%" .env'
-}
-```
-
-Docker Compose automatically reads the `.env` file to populate service environment variables.
-
-### Test Reporting
-
-| Report                 | Tool             | Location                                |
-| ---------------------- | ---------------- | --------------------------------------- |
-| Backend unit tests     | JUnit Publisher  | `backend/target/surefire-reports/*.xml` |
-| Backend code coverage  | JaCoCo Publisher | `backend/target/jacoco.exec`            |
-| Frontend code coverage | HTML Publisher   | `frontend/coverage/index.html`          |
-
-### Post-Pipeline Cleanup
-
-The `post > always` block ensures resources are freed after every run:
-
-```groovy
-post {
-    always {
-        bat 'docker compose down -v || exit 0'   // stop containers & remove volumes
-        cleanWs()                                  // delete the workspace
-    }
-}
-```
-
-### Required Jenkins Plugins
-
-| Plugin              | Purpose                                |
-| ------------------- | -------------------------------------- |
-| **NodeJS**          | Provides the `nodejs` tool installer   |
-| **JUnit**           | Publishes backend test results         |
-| **JaCoCo**          | Publishes backend code coverage        |
-| **HTML Publisher**  | Publishes the frontend coverage report |
-| **Docker Pipeline** | Docker integration for building images |
-| **SonarQube Scanner** | Runs SonarQube analysis from the pipeline |
+Reports: [Sprint 3 Planning](./sprint_report/sprint_planning_report_3.pdf) · [Sprint 3 Review](./sprint_report/sprint_review_report_3.pdf)
 
 ---
 
-## STATIC CODE ANALYSIS
+## 7. Sprint 4 – Docker Containerization & Deployment
 
-The Jenkins pipeline runs **SonarQube** analysis on the backend after the build and test stages. It reports on code quality metrics such as bugs, vulnerabilities, code smells, and test coverage. Configuration is defined in `backend/sonar-project.properties`.
+How the system was containerized and deployed.
 
----
+- **Purpose:** reproducible local development and one-command deployment to Railway; isolates Java, Node, and MariaDB runtimes.
+- **Services containerized:**
+  | Service | Image | Notes |
+  |---|---|---|
+  | `backend` | `eclipse-temurin:21-jre-alpine` | Spring Boot JAR run with `java -jar` |
+  | `frontend` | `nginx:stable-alpine` | Vite `dist/` served by Nginx; `/api/v1/` reverse-proxied to backend |
+  | `db` | `mariadb:11` | Persistent `db_data` volume, healthcheck gates backend startup |
+- **Compose orchestration:** [`docker-compose.yaml`](../docker-compose.yaml) wires all three services on a private bridge network and reads credentials from `.env`. The MariaDB healthcheck (`mariadb -e "SELECT 1"`, 10s interval, up to 20 retries) ensures the backend only starts once the DB is ready.
+- **Ports:** frontend `3000:80`, backend `8080:8080`, db `3307:3306`.
+- **Use in development/testing:** `docker compose up -d` brings up the full stack; CI uses `docker compose up -d --wait db` so backend tests hit a real MariaDB, then `docker compose build` for release images.
 
-## DOCKER SETUP
+### Deployment (Railway)
 
-### Docker Images
+Production images deploy to **[Railway](https://railway.app)** as three services (frontend, backend, MariaDB plugin). Services communicate over Railway's internal network — the frontend's Nginx `proxy_pass` resolves the backend via internal DNS (`http://online-flashcards-backend.railway.internal:8080`), configured through the `BACKEND_URL` env var. All other env vars (DB credentials, `JWT_SECRET`, `JWT_EXPIRATION`) are set per-service in the Railway dashboard.
 
-| Image        | Base                            | Description                                                                               |
-| ------------ | ------------------------------- | ----------------------------------------------------------------------------------------- |
-| **Backend**  | `eclipse-temurin:21-jre-alpine` | Copies the pre-built `online-flashcards-api.jar` into `/app` and runs it with `java -jar` |
-| **Frontend** | `nginx:stable-alpine`           | Copies the Vite `dist/` output and a custom `nginx.conf` into the container               |
-| **Database** | `mariadb:11`                    | Official MariaDB image, configured entirely via environment variables                     |
-
-### Backend Dockerfile
-
-```dockerfile
-FROM eclipse-temurin:21-jre-alpine
-WORKDIR /app
-COPY target/online-flashcards-api.jar app.jar
-CMD ["java", "-jar", "app.jar"]
-```
-
-The JAR is built by Maven during the pipeline's _Backend_ stage **before** Docker builds the image.
-
-### Frontend Dockerfile
-
-```dockerfile
-FROM nginx:stable-alpine
-COPY dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
-```
-
-The Vite production build (`dist/`) is created during the pipeline's _Frontend_ stage.
-
-### Nginx Reverse Proxy (`nginx.conf`)
-
-```nginx
-server {
-    listen 80;
-
-    location / {
-        root /usr/share/nginx/html;
-        index index.html;
-        try_files $uri $uri/ /index.html;   # SPA fallback
-    }
-
-    location /api/v1/ {
-        proxy_pass http://backend:8080;      # resolves via Docker network / Railway internal networking
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-    }
-}
-```
-
-- **`/`** — serves the static React SPA with `try_files` fallback for client-side routing
-- **`/api/v1/`** — proxies all API requests to the backend service on port `8080`
-
-### Docker Compose Services
-
-The `docker-compose.yaml` orchestrates three services:
-
-| Service      | Container Name        | Ports       | Notes                                                                        |
-| ------------ | --------------------- | ----------- | ---------------------------------------------------------------------------- |
-| **db**       | `flashcards-db`       | `3307:3306` | MariaDB with health check, persistent `db_data` volume                       |
-| **backend**  | `flashcards-backend`  | `8080:8080` | Starts only after `db` is healthy (`depends_on: condition: service_healthy`) |
-| **frontend** | `flashcards-frontend` | `3000:80`   | Depends on `backend`; Nginx proxies `/api/v1/` to `http://backend:8080`      |
-
-### Database Health Check
-
-The database service uses a health check to ensure it is fully ready before the backend starts:
-
-```yaml
-healthcheck:
-  test:
-    [
-      "CMD",
-      "mariadb",
-      "-u",
-      "root",
-      "-p${MYSQL_ROOT_PASSWORD}",
-      "-e",
-      "SELECT 1",
-    ]
-  interval: 10s
-  timeout: 30s
-  retries: 20
-  start_period: 60s
-```
+Reports: [Sprint 4 Planning](./sprint_report/sprint_planning_report_4.pdf) · [Sprint 4 Review](./sprint_report/sprint_review_report_5.pdf)
 
 ---
 
-## DEPLOYMENT (RAILWAY)
+## 8. Sprint 5 – UI Localization & Kubernetes
 
-Production images are deployed to **[Railway](https://railway.app)** as three separate services:
+Internationalization on the client.
 
-| Railway Service | Source                 | Description                                          |
-| --------------- | ---------------------- | ---------------------------------------------------- |
-| **Frontend**    | `frontend/Dockerfile`  | Nginx serving the SPA and reverse-proxying API calls |
-| **Backend**     | `backend/Dockerfile`   | Spring Boot API                                      |
-| **Database**    | Railway MariaDB plugin | Managed MariaDB instance                             |
+- **Supported UI languages:**
+  | Code | Language | RTL |
+  |---|---|---|
+  | `en` | English | No |
+  | `fi` | Suomi | No |
+  | `fa` | فارسی | Yes |
+  | `zh` | 中文 | No |
+- **Localization approach:** [i18next](https://www.i18next.com/) + `react-i18next`. Translation JSON lives at `frontend/public/locales/<lang>/translation.json` and is loaded at runtime via `i18next-http-backend`. The `LanguageSwitcher` component (`src/components/ui/LanguageSwitcher.jsx`) in the navbar lets users switch at runtime; initial language is detected from the browser, falling back to English. Languages flagged `isRtl: true` in `src/config/languages.js` (currently `fa`) trigger RTL layout handling.
+- **Kubernetes:** **not applied.** The team chose Railway's managed container platform instead; horizontal scaling and routing are delegated to Railway. Docker Compose covers local orchestration.
 
-### Internal Networking
+Reports: [Sprint 5 Planning](./sprint_report/sprint_planning_report_5.pdf) · [Sprint 5 Review](./sprint_report/sprint_review_report_5.pdf)
 
-Railway services communicate over a **private internal network**. The frontend Nginx `proxy_pass` resolves the backend via Railway's internal DNS (e.g., `http://online-flashcards-backend.railway.internal:8080`). The `BACKEND_URL` environment variable is set on the frontend Railway service to configure this.
+---
 
-### Required Railway Environment Variables
+## 9. Sprint 6 – Database Localization
 
-Each service must have its environment variables configured in the Railway dashboard — the same variables that appear in the `.env` file locally (database credentials, `JWT_SECRET`, `JWT_EXPIRATION`, `BACKEND_URL`, etc.).
+Server-side and database-level localization of user-facing content.
 
-## Frontend Localization (i18n)
+- **Plan:** [database_localization_plan.pdf](./planning/database_localization_plan.pdf) · **Implementation report:** [database_localization_report.pdf](./reports/database_localization_report.pdf)
 
-The app uses [i18next](https://www.i18next.com/) with `react-i18next` for internationalization.
+### Backend message localization
 
-### Supported languages
+Spring's `AcceptHeaderLocaleResolver` parses the `Accept-Language` header. Supported languages are configured in `application.yaml`:
 
-| Code | Language | RTL |
-| ---- | -------- | --- |
-| `en` | English  | No  |
-| `fi` | Suomi    | No  |
-| `fa` | فارسی    | Yes |
-| `zh` | 普通话   | No  |
-
-### Translation files
-
-Translations are stored as JSON files under `public/locales/<lang>/translation.json`. The app loads them at runtime via `i18next-http-backend`.
-
-```
-public/
-  locales/
-    en/translation.json
-    fi/translation.json
-    fa/translation.json
-    zh/translation.json
-```
-
-### Adding a new language
-
-1. Add an entry to `src/config/languages.js`:
-   ```js
-   sv: {
-     locale: 'sv_SE',
-     lng: 'sv',
-     label: 'Svenska',
-     isRtl: false,
-   }
-   ```
-2. Create `public/locales/sv/translation.json` with the translated strings (use `en/translation.json` as a reference).
-
-### Using translations in components
-
-```jsx
-import { useTranslation } from "react-i18next";
-
-function MyComponent() {
-  const { t } = useTranslation();
-  return <p>{t("common.loading")}</p>;
-}
-```
-
-The `LanguageSwitcher` component (`src/components/ui/LanguageSwitcher.jsx`) renders a dropdown in the navbar that lets users switch languages at runtime. The selected language is detected from the browser on first load and falls back to English if unsupported.
-
-### RTL support
-
-Languages marked `isRtl: true` in `src/config/languages.js` (currently Farsi) require RTL layout handling in CSS. This flag is available app-wide via the `LANGUAGES` config so components can conditionally apply RTL styles.
-
-## BACKEND LOCALIZATION (i18n)
-
-The backend implements **server-side message localization** using Spring's built-in i18n framework. This enables the API to return error messages, validation messages, and other user-facing strings in the user's preferred language based on their **Accept-Language** HTTP header.
-
-
-#### LocaleResolver Configuration
-
-The backend uses **Spring's `AcceptHeaderLocaleResolver`** to automatically parse the **Accept-Language** header and determine the user's locale:
-
-
-**Supported languages** are configured in `application.yaml`:
 ```yaml
 app:
   i18n:
     default-language: en
     supported-languages:
-      - code: en
-        tag: en-UK
-        label: English
-      - code: fi
-        tag: fi-FI
-        label: Suomi
-      - code: fa
-        tag: fa-IR
-        label: فارسی
-      - code: zh
-        tag: zh-CN
-        label: 中文
+      - { code: en, tag: en-UK, label: English }
+      - { code: fi, tag: fi-FI, label: Suomi }
+      - { code: fa, tag: fa-IR, label: فارسی }
+      - { code: zh, tag: zh-CN, label: 中文 }
 ```
 
-- If the user's language matches a supported language, **that language is used**.
-- If not, the **default language (English)** is used.
+Localized strings live in `messages_<lang>.properties` files under `backend/src/main/resources/`. All custom exceptions inherit from `ApiException` and store a **message key** (not the message itself) plus optional parameters; the global exception handler resolves the localized message via Spring's `MessageSource` using the locale Spring injects from the header. The API returns localized JSON errors directly — no frontend translation needed for backend errors.
 
-### Message Properties Files
+### Database content localization (Row Method)
 
-Error messages and other localizable strings are stored in **property files** in the `backend/src/main/resources/` directory:
-
-| File                     | Language           | Coverage                   |
-| ------------------------ | ------------------ | -------------------------- |
-| `messages.properties`    | English (default)  | All supported message keys |
-| `messages_en.properties` | English (fallback) | English-specific messages  |
-| `messages_fi.properties` | Finnish            | Finnish translations       |
-| `messages_fa.properties` | Farsi              | Farsi translations         |
-| `messages_zh.properties` | Chinese            | Chinese translations       |
-
-Each file contains **key-value pairs** organized by domain. For example, from `messages.properties`:
-
-```properties
-# Auth errors
-error.auth.username.taken=This username is already taken. Please choose another one.
-error.auth.email.duplicate=An account with this email already exists.
-error.auth.invalid.credentials=Invalid username or password.
-
-# Quiz errors
-error.quiz.notFound=Quiz with ID {0} not found.
-error.quiz.notOwner=You are not the owner of this quiz.
-
-# Classroom errors
-error.classroom.joinCode.tooShort=Join code must be at least 6 characters.
-error.classroom.notOwner=You are not allowed to update this classroom.
-```
-
-#### Message Parameters (Placeholders)
-
-Messages can include **placeholders** like `{0}`, `{1}`, etc., for dynamic values:
-
-```properties
-error.user.notFound=User with ID {0} not found.
-error.subject.nameNotFound=Subject with name ''{0}'' not found.
-```
-
-These are filled in at runtime based on the arguements:
-
-```java
-throw new ResourceNotFoundException("User", userId, "error.user.notFound", new Object[]{userId});
-```
-
-### Locale-Aware Exception Handling
-
-The backend's **global exception handler** automatically resolves error messages in the user's language using Spring's `MessageSource` bean. Spring **automatically injects the `Locale`** parameter (resolved from the `Accept-Language` header) into handler methods.
-
-### Exception Classes with Message Keys
-
-All custom exceptions inherit from `ApiException` and store a **message key** (not the message itself) plus optional parameters:
-
-```java
-public abstract class ApiException extends RuntimeException {
-    private final String messageKey;
-    private final Object[] args;
-
-    public ApiException(String messageKey, Object[] args) {
-        super(messageKey);
-        this.messageKey = messageKey;
-        this.args = args;  // Parameters for {0}, {1}, etc.
-    }
-}
-```
-### API Response Structure
-
-When an error is thrown, the API returns a **localized JSON response**:
-
-```json
-{
-  "success": false,
-  "data": null,
-  "error": {
-    "status": 404,
-    "message": "Quiz with ID 123 not found."
-  }
-}
-```
-
-The **message is already translated** based on the client's `Accept-Language` header, so no frontend translation is needed for backend errors.
-
----
-
----
-
-## DATABASE CONTENT LOCALIZATION (Row Method)
-
-User-generated content is localized using the **Row Method** where each entity stores **one row per language** with a `language` column.
-
-### Example
-
-**Subjects table**:
+Localized entities (e.g. `subjects`) store **one row per language**, keyed by a stable `code` plus a `language` column:
 
 ```sql
-INSERT INTO subjects (code, name, language) VALUES ('math', 'Mathematics', 'en');
+INSERT INTO subjects (code, name, language) VALUES ('math', 'Mathematics',  'en');
 INSERT INTO subjects (code, name, language) VALUES ('math', 'Matematiikka', 'fi');
-INSERT INTO subjects (code, name, language) VALUES ('math', 'ریاضیات', 'fa');
-INSERT INTO subjects (code, name, language) VALUES ('math', '数学', 'zh');
+INSERT INTO subjects (code, name, language) VALUES ('math', 'ریاضیات',     'fa');
+INSERT INTO subjects (code, name, language) VALUES ('math', '数学',         'zh');
 ```
-If a language doesn't exist the application falls back to English.
-The schema and diagram in the next section display how the Row Method was utilized.
 
-## ARCHITECTURE DESIGN
+- **Migration / schema changes:** added `language` column to localized tables and a composite uniqueness constraint on `(code, language)`. Updated seed data in `backend/src/main/resources/data.sql`.
+- **Validation / fallback:** queries match the row for the resolved language; if no row exists for that language, the query falls back to English (`en`).
+- **Schema reference:** [db-diagram-l10n.png](./diagrams/db-diagram-l10n.png), [er-diagram-l10n.png](./diagrams/er-diagram-l10n.png).
 
-### ER Diagram
-
-![Entity Relationship Diagram](./diagrams/er-diagram-l10n.png)
-
-### Database schema
-
-![Database Schema](./diagrams/db-diagram-l10n.png)
-
-## QUALITY ASSURANCE
-
-The project includes two QA evaluations conducted during development:
-
-- **User Acceptance Testing (UAT)** — real users tested the application against defined acceptance criteria to validate functionality and usability.
-- **Heuristic Evaluation (Nielsen's 10 Usability Heuristics)** — the UI was evaluated against Nielsen's heuristics to identify usability issues.
-
-The full reports are available in [`docs/QA/`](./QA).
+Reports: [Sprint 6 Planning](./sprint_report/sprint_planning_report_6.pdf) · [Sprint 6 Review](./sprint_report/sprint_review_report_6.pdf)
 
 ---
 
-## SPRINT REPORTS
+## 10. Sprint 7 – Quality Assurance
 
-[Sprint Report Directory](./sprint_report)
+How quality was ensured.
+
+- **SonarQube** — runs from the Jenkins pipeline against the backend (config: `backend/sonar-project.properties`). Tracked metrics: bugs, vulnerabilities, code smells, duplications, unit-test coverage. Latest report: [SonarQube_jenkins_report.pdf](./QA/SonarQube_jenkins_report.pdf). History: [sprint_6_stasticial_code_scan_report.docx.pdf](./reports/sprint_6_stasticial_code_scan_report.docx.pdf).
+- **Code quality goals:** zero blockers/criticals on the backend quality gate, low code-smell density, ESLint clean on the frontend, Prettier-formatted source repo-wide.
+- **JMeter:** **not done** — performance was sanity-checked manually rather than via load testing.
+- **Functional testing:**
+  - Backend: JUnit 5 unit + integration tests (Spring Boot Test).
+  - Frontend: Vitest + React Testing Library component tests.
+  - End-to-end: Playwright user-journey tests in [`/e2e`](../e2e).
+- **Non-functional testing:**
+  - **UAT:** [acceptance_test_planning_04_2026.pdf](./QA/acceptance_test_planning_04_2026.pdf) · results in [ua_acceptance_test_online_flashcards_04_2026.pdf](./QA/ua_acceptance_test_online_flashcards_04_2026.pdf).
+  - **Heuristic Evaluation** (Nielsen's 10): [heuristic_evaluation_online_flashcards_04_2026.pdf](./QA/heuristic_evaluation_online_flashcards_04_2026.pdf).
+  - **Bug & issue tracking:** [bug\_&_issue_table.md](./QA/bug_&_issue_table.md).
+
+Reports: [Sprint 7 Planning](./sprint_report/sprint_planning_report_7.pdf) · [Sprint 7 Review](./sprint_report/sprint_review_report_7.pdf)
+
+---
+
+## 11. Sprint 8 – Documentation & Finalization
+
+How the project was finalized.
+
+- **Final architecture diagrams:**
+  - [Deployment diagram](./diagrams/deployment_diagram.pdf)
+  - [Class diagram](./diagrams/class_diagram.pdf)
+  - [Sequence diagram](./diagrams/sequence_diagram.pdf)
+  - [Activity diagram](./diagrams/activity_diagram.pdf)
+  - [Use-case diagram](./diagrams/use-case.pdf)
+  - [ER diagram](./diagrams/er-diagram-l10n.png) and [DB schema](./diagrams/db-diagram-l10n.png)
+  - [Figma reference](./diagrams/figma.md)
+- **API documentation:** Swagger UI at `http://localhost:8080/swagger-ui.html` (generated by SpringDoc OpenAPI).
+- **User documentation:** in-app help and the QA acceptance-test scenarios listed under Sprint 7.
+
+---
+
+## 12. How to Run the Project
+
+**Prerequisites:** Docker + Docker Compose. For local non-Docker dev: JDK 21, Maven 3+, Node.js 20+.
+
+1. Clone the repository.
+2. Copy the env template: `cp .env.example .env` and fill in `MYSQL_*`, `JWT_SECRET`, `JWT_EXPIRATION`.
+3. Start the stack: `docker compose up -d`.
+
+**Access:**
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:8080/api/v1
+- Swagger UI: http://localhost:8080/swagger-ui.html
+- Database: `localhost:3307`
+
+---
+
+## 13. Testing Instructions
+
+- **Backend unit tests:** `cd backend && ./mvnw test`
+- **Backend coverage (JaCoCo):** `cd backend && ./mvnw verify` → `backend/target/site/jacoco/index.html`
+- **Frontend unit tests:** `cd frontend && npm run test:run`
+- **Frontend coverage (V8):** `cd frontend && npm run test:coverage` → `frontend/coverage/index.html`
+- **End-to-end (Playwright):** `cd e2e && npm install && npx playwright test` → `e2e/playwright-report/index.html`
+- **Performance testing:** not performed (no JMeter scenarios authored).
+
+CI publishes the backend and frontend coverage reports automatically on every Jenkins build.
+
+---
+
+## 14. Repository Structure
+
+```
+/backend             Spring Boot REST API (Java 21, MariaDB)
+/frontend            React 19 + Vite SPA
+/e2e                 Playwright end-to-end tests
+/docs                Documentation, planning, QA reports, diagrams
+  /planning          Project plan, vision, localization plan
+  /diagrams          Use-case, ER, DB schema, class, sequence, activity, deployment
+  /sprint_report     Sprint planning + review PDFs
+  /QA                UAT, heuristic evaluation, SonarQube reports, bug list
+  /reports           Localization & static-scan reports
+  /dev               Developer guidelines (backend/frontend)
+/docker-compose.yaml Multi-service orchestration
+/Jenkinsfile         CI/CD pipeline definition
+/.env.example        Environment variable template
+```
+
+This project deploys to Railway, so there is no `/k8s` directory; Docker Compose covers local orchestration.
+
+---
+
+## 15. Authors
+
+**Course:** Application Development — Ohjelmistotuotantoprojekti 1 & 2, Metropolia UAS, Spring 2026
+
+**Team members:**
+- Teemu Laasio
+- Aleksi Putkonen
+- Blendi Grajeqvci
+- Alabass Alkhrsany
