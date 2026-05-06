@@ -194,7 +194,7 @@ Reports: [Sprint 4 Planning](./sprint_report/sprint_planning_report_4.pdf) · [S
 
 ---
 
-## 8. Sprint 5 – UI Localization & Kubernetes
+## 8. Sprint 5 – UI Localization
 
 Internationalization on the client.
 
